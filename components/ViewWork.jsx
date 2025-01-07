@@ -50,10 +50,12 @@ export default function ViewWork() {
   const [displayedProjects, setDisplayedProjects] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
-  const refreshProjects = () => {
+  const refreshProjects = async () => {
+    const res = await fetch('/api/projects')
+    const data = await res.json()
     setIsLoading(true)
     setTimeout(() => {
-      const shuffled = shuffleArray(projects)
+      const shuffled = shuffleArray(data.data)
       const selected = shuffled.slice(0, 8)
       setDisplayedProjects(selected)
       setIsLoading(false)
@@ -145,7 +147,7 @@ export default function ViewWork() {
               ))
           : displayedProjects.map((project) => (
               <motion.div
-                key={project.id}
+                key={project._id}
                 variants={{
                   hidden: { opacity: 0, y: 20 },
                   show: { opacity: 1, y: 0 },
@@ -153,7 +155,7 @@ export default function ViewWork() {
               >
                 <Card className='group relative overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm transition-all hover:shadow-lg'>
                   <CardContent className='p-0'>
-                    <Link href={`/projects/${project.id}`}>
+                    <Link href={`/projects/${project._id}`}>
                       <div className='relative overflow-hidden'>
                         <motion.div className='overflow-hidden'>
                           <Image
@@ -180,7 +182,7 @@ export default function ViewWork() {
                   </CardContent>
                   <CardFooter className='h-fit w-full border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-0'>
                     <div className='flex items-center w-full justify-between !px-3 !py-2'>
-                      <span>{project.tech}</span>
+                      <span>{project.details.framework}</span>
                       <div className='flex gap-3'>
                         <div>
                           <Link

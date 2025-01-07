@@ -4,7 +4,7 @@ export const projects = [
     title: 'Chrem',
     description: "Get Everything You Need In One place using Chrem's library.",
     image: '/file1.webp',
-    tech: 'Next.js',
+
     details: {
       framework: 'Next.js',
       useCase: 'Library',
@@ -32,7 +32,7 @@ export const projects = [
     title: 'Apneck',
     description: 'A React Frontend Ecommerce Website built with Bootstrap 5',
     image: '/file1.webp',
-    tech: 'React',
+
     details: {
       framework: 'React',
       useCase: 'Ecommerce',
@@ -61,7 +61,7 @@ export const projects = [
     description:
       'Search by title, genre, or actors to discover information like year, rating, and more.',
     image: '/file1.webp',
-    tech: 'Vite',
+
     details: {
       framework: 'Vite',
       useCase: 'Movie Search',
@@ -90,7 +90,7 @@ export const projects = [
     description:
       'Simplify your reading with XMize, an open-source article summarizer.',
     image: '/file1.webp',
-    tech: 'Next.js',
+
     details: {
       framework: 'Next.js',
       useCase: 'AI Summarizer',
@@ -126,7 +126,7 @@ export const projects = [
     description:
       'A dashboard for Tuuze Ecommerce shop. Updating and managing products made easy.',
     image: '/file1.webp',
-    tech: 'Next.js',
+
     details: {
       framework: 'Next.js',
       useCase: 'Ecommerce Dashboard',
@@ -155,7 +155,7 @@ export const projects = [
     description:
       'Experience the shadcn landing page with modern design patterns.',
     image: '/file1.webp',
-    tech: 'Next.js',
+
     details: {
       framework: 'Next.js',
       useCase: 'Landing Page',
@@ -184,7 +184,7 @@ export const projects = [
     description:
       'Get all AI features in one place. From chatting, video, music, and more.',
     image: '/file1.webp',
-    tech: 'Next.js',
+
     details: {
       framework: 'Next.js',
       useCase: 'AI Platform',
@@ -212,7 +212,7 @@ export const projects = [
     title: 'Tuuze - Ecommerce',
     description: 'Tuuze, an innovative and user-centric ecommerce platform.',
     image: '/file1.webp',
-    tech: 'Next.js',
+
     details: {
       framework: 'Next.js',
       useCase: 'Ecommerce',
@@ -240,7 +240,7 @@ export const projects = [
     title: 'Tuuze - Ecommerce',
     description: 'Tuuze, an innovative and user-centric ecommerce platform.',
     image: '/file1.webp',
-    tech: 'Next.js',
+
     details: {
       framework: 'Next.js',
       useCase: 'Ecommerce',

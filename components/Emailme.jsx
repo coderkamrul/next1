@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { ArrowRight, X } from 'lucide-react'
+import { ArrowRight, Mail, X } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
@@ -104,7 +104,7 @@ const EmailMe = () => {
           ease: 'linear',
         }}
       >
-        <ArrowRight className='ml-2 h-4 w-4' />
+        <Mail className='ml-2 h-4 w-4' />
       </motion.span>
     </Button>
   ))

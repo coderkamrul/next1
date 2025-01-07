@@ -1,18 +1,74 @@
-import { ArrowLeft } from 'lucide-react'
+'use client'
+
+import React, { useEffect, useState } from 'react'
+import { ArrowLeft, ExternalLink, Github } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Card } from '@/components/ui/card'
-
-import { projects } from '@/components/data/projects'
 import AccessCode from '@/components/AccessCode'
+import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import { toast } from '@/hooks/use-toast'
+import parse from 'html-react-parser'
 
-export default function ProjectPage({ params }) {
-  const project = projects.find((p) => p.id === params.id)
+export default function ProjectPage({ params: paramsPromise, codeString }) {
+  const params = React.use(paramsPromise)
+  const [project, setProject] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    fetchProject()
+  }, [params.id])
+
+  const fetchProject = async () => {
+    setIsLoading(true)
+    setError(null)
+    try {
+      const res = await fetch(`/api/projects/${params.id}`)
+      if (!res.ok) {
+        throw new Error('Failed to fetch project')
+      }
+      const data = await res.json()
+      if (data.success) {
+        setProject(data.data)
+      } else {
+        throw new Error(data.error || 'Failed to fetch project')
+      }
+    } catch (err) {
+      setError(err.message)
+      toast({
+        title: 'Error',
+        description: err.message,
+        variant: 'destructive',
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <div className='flex justify-center items-center h-screen'>
+        <div className='animate-spin h-5 w-5 border-b-2 border-gray-900'></div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className='flex justify-center items-center h-screen text-red-500'>
+        {error}
+      </div>
+    )
+  }
 
   if (!project) {
-    return <div>Project not found</div>
+    return (
+      <div className='flex justify-center items-center h-screen'>
+        Project not found
+      </div>
+    )
   }
 
   return (
@@ -35,27 +91,20 @@ export default function ProjectPage({ params }) {
           </div>
 
           <div className='space-y-6'>
-            <div className='flex justify-between items-center border-b pb-2 border-gray-200'>
-              <h3 className='font-medium mb-1'>Framework</h3>
-              <Badge variant='secondary'>{project.details.framework}</Badge>
-            </div>
-            <div className='flex justify-between items-center border-b pb-2 border-gray-200'>
-              <h3 className='font-medium mb-1'>UseCase</h3>
-              <Badge variant='secondary'>{project.details.useCase}</Badge>
-            </div>
-            <div className='flex justify-between items-center border-b pb-2 border-gray-200'>
-              <h3 className='font-medium mb-1'>CSS</h3>
-              <Badge variant='secondary'>{project.details.css}</Badge>
-            </div>
-            <div className='flex justify-between items-center border-b pb-2 border-gray-200'>
-              <h3 className='font-medium mb-1'>Deployment</h3>
-              <Badge variant='secondary'>{project.details.deployment}</Badge>
-            </div>
+            {Object.entries(project.details).map(([key, value]) => (
+              <div
+                key={key}
+                className='flex justify-between items-center border-b pb-2 border-gray-200'
+              >
+                <h3 className='font-medium mb-1 capitalize'>{key}</h3>
+                <Badge variant='secondary'>{value}</Badge>
+              </div>
+            ))}
           </div>
 
           <div className='flex gap-4'>
             <AccessCode />
-            <Link href={project.link} target='_blank'>
+            <Link href={project.demo} target='_blank' rel='noopener noreferrer'>
               <Button className='w-full' variant='outline'>
                 Live Preview
               </Button>
@@ -71,6 +120,7 @@ export default function ProjectPage({ params }) {
               alt={project.title}
               fill
               className='object-cover'
+              loading='lazy'
             />
           </div>
 
@@ -84,13 +134,50 @@ export default function ProjectPage({ params }) {
           </Card>
 
           <Card className='p-6'>
-            <div
-              dangerouslySetInnerHTML={{ __html: project.setupInstructions }}
-              className='prose prose-sm max-w-none prose-pre:bg-muted prose-pre:p-4 prose-pre:rounded-lg'
-            />
+            <h2 className='text-2xl font-bold mb-4'>Tags</h2>
+            <div className='flex flex-wrap gap-2'>
+              {project.tags.map((tag, index) => (
+                <Badge key={index} variant='secondary'>
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          </Card>
+          <Card className='p-6'>
+            <h2 className='text-2xl font-bold mb-4'>Setup Instructions</h2>
+            <div className='parsed-html'>
+              {parse(`${project.setupinstructions}`)}
+            </div>
+          </Card>
+
+          <Card className='p-6'>
+            <h2 className='text-2xl font-bold mb-4'>Links</h2>
+            <div className='flex gap-4'>
+              <Link
+                href={project.github}
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <Button variant='outline' className='flex items-center gap-2'>
+                  <Github className='h-4 w-4' />
+                  GitHub
+                </Button>
+              </Link>
+              <Link
+                href={project.demo}
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <Button variant='outline' className='flex items-center gap-2'>
+                  <ExternalLink className='h-4 w-4' />
+                  Demo
+                </Button>
+              </Link>
+            </div>
           </Card>
         </div>
       </div>
+
       <Card className='p-8 bg-slate-900 text-white w-full my-8'>
         <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4'>
           <div className='space-y-2'>

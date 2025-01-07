@@ -5,12 +5,12 @@ import { FaDiscord, FaGithub, FaYoutube } from 'react-icons/fa'
 
 const Footer = () => {
   return (
-    <footer className='max-w-7xl mx-auto mt-20 z-10 '>
+    <footer className='max-w-7xl mx-auto  z-10 '>
       <div className='border-t pt-6 sm:flex sm:items-center sm:justify-between'>
         <ul className='flex flex-wrap justify-center gap-4 text-base lg:justify-end'>
           <li>
             <p className='text-gray-500 transition hover:opacity-75'>
-              Eclark Khalid
+              Shahin Alam
             </p>
           </li>
           <li>

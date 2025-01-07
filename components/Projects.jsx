@@ -12,101 +12,6 @@ import Image from 'next/image'
 
 import { projects } from '@/components/data/projects'
 
-// Mock data
-const mockProjects = [
-  {
-    id: '1',
-    title: 'MailCraft AI',
-    description: 'Generate responses to your emails with AI',
-    image: '/file1.webp',
-    tech: 'Next.js',
-    tags: ['Next.js', 'AI'],
-    github: 'https://github.com/example/mailcraft',
-    demo: 'https://mailcraft.demo',
-  },
-  {
-    id: '2',
-    title: 'Nike Website Clone',
-    description: 'This is a landing page for the Nike website.',
-    image: '/file1.webp',
-    tech: 'Vite',
-    tags: ['Vite', 'Landing page'],
-    github: 'https://github.com/example/nike-clone',
-    demo: 'https://nike-clone.demo',
-  },
-  {
-    id: '3',
-    title: 'XMize - AI Summarizer',
-    description:
-      'Simplify your reading with Xmize, an open-source article summarizer',
-    image: '/file1.webp',
-    tech: 'Next.js',
-    tags: ['Next.js', 'AI'],
-    github: 'https://github.com/example/xmize',
-    demo: 'https://xmize.demo',
-  },
-  {
-    id: '4',
-    title: 'Apneck',
-    description: 'A React Frontend Ecommerce Website built with Bootstrap 5',
-    image: '/file1.webp',
-    tech: 'React',
-    tags: ['React', 'Ecommerce', 'Bootstrap'],
-    github: 'https://github.com/example/apneck',
-    demo: 'https://apneck.demo',
-  },
-  {
-    id: '5',
-    title: 'Apneck',
-    description: 'A React Frontend Ecommerce Website built with Bootstrap 5',
-    image: '/file1.webp',
-    tech: 'React',
-    tags: ['React', 'Ecommerce', 'Bootstrap'],
-    github: 'https://github.com/example/apneck',
-    demo: 'https://apneck.demo',
-  },
-  {
-    id: '6',
-    title: 'Apneck',
-    description: 'A React Frontend Ecommerce Website built with Bootstrap 5',
-    image: '/file1.webp',
-    tech: 'React',
-    tags: ['React', 'Ecommerce', 'Bootstrap'],
-    github: 'https://github.com/example/apneck',
-    demo: 'https://apneck.demo',
-  },
-  {
-    id: '7',
-    title: 'Apneck',
-    description: 'A React Frontend Ecommerce Website built with Bootstrap 5',
-    image: '/file1.webp',
-    tech: 'React',
-    tags: ['React', 'Ecommerce', 'Bootstrap'],
-    github: 'https://github.com/example/apneck',
-    demo: 'https://apneck.demo',
-  },
-  {
-    id: '8',
-    title: 'Apneck',
-    description: 'A React Frontend Ecommerce Website built with Bootstrap 5',
-    image: '/file1.webp',
-    tech: 'React',
-    tags: ['React', 'Ecommerce', 'Bootstrap'],
-    github: 'https://github.com/example/apneck',
-    demo: 'https://apneck.demo',
-  },
-  {
-    id: '9',
-    title: 'Apneck',
-    description: 'A React Frontend Ecommerce Website built with Bootstrap 5',
-    image: '/file1.webp',
-    tech: 'React',
-    tags: ['React', 'Ecommerce', 'Bootstrap'],
-    github: 'https://github.com/example/apneck',
-    demo: 'https://apneck.demo',
-  },
-]
-
 const filters = [
   'Next.js',
   'Vite',
@@ -155,13 +60,21 @@ export default function ProjectsPage() {
   }, [])
 
   const fetchProjects = async () => {
-    setIsLoading(true)
-    // Simulate API call
-    setTimeout(() => {
-      setProjects(projects)
+    const res = await fetch('/api/projects')
+    const data = await res.json()
+    if (data.success) {
+      setProjects(data.data)
       setIsLoading(false)
-    }, 1000)
+    }
   }
+  // const fetchProjects = async () => {
+  //   setIsLoading(true)
+  //   // Simulate API call
+  //   setTimeout(() => {
+  //     setProjects(projects)
+  //     setIsLoading(false)
+  //   }, 1000)
+  // }
 
   const filteredProjects = projectss.filter((project) => {
     const matchesSearch =
@@ -169,7 +82,14 @@ export default function ProjectsPage() {
       project.description.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesFilters =
       activeFilters.length === 0 ||
-      activeFilters.some((filter) => project.tags.includes(filter))
+      activeFilters.some(
+        (filter) =>
+          project.details.framework.includes(filter) ||
+          project.details.useCase.includes(filter) ||
+          project.details.css.includes(filter) ||
+          project.tags.includes(filter) ||
+          project.techStack.includes(filter)
+      )
     return matchesSearch && matchesFilters
   })
 
@@ -281,7 +201,7 @@ export default function ProjectsPage() {
                 ))
             : paginatedProjects.map((project) => (
                 <motion.div
-                  key={project.id}
+                  key={project._id}
                   variants={{
                     hidden: { opacity: 0, y: 20 },
                     show: { opacity: 1, y: 0 },
@@ -289,7 +209,7 @@ export default function ProjectsPage() {
                 >
                   <Card className='group overflow-hidden'>
                     <CardContent className='p-0'>
-                      <Link href={`/projects/${project.id}`}>
+                      <Link href={`/projects/${project._id}`}>
                         <div className='relative'>
                           <Image
                             src={project.image}
@@ -311,7 +231,7 @@ export default function ProjectsPage() {
                     </CardContent>
                     <CardFooter className='border-t p-4 flex justify-between items-center'>
                       <span className='text-sm text-muted-foreground'>
-                        {project.tech}
+                        {project.details.framework}
                       </span>
 
                       <div className='flex gap-3'>

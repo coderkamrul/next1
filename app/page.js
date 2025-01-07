@@ -8,6 +8,7 @@ import {
   MessageSquareShare,
   MoveRight,
   Quote,
+  RefreshCw,
   Send,
   Star,
   Youtube,
@@ -18,7 +19,12 @@ import { motion } from 'framer-motion'
 import Services from '@/components/Services'
 import ViewWork from '@/components/ViewWork'
 import { IoCodeSlashOutline } from 'react-icons/io5'
-import { HiOutlineUserGroup } from 'react-icons/hi2'
+import {
+  HiOutlineAcademicCap,
+  HiOutlineChartBar,
+  HiOutlinePuzzlePiece,
+  HiOutlineUserGroup,
+} from 'react-icons/hi2'
 import Hireme from '@/components/Hireme'
 import HiremeHero from '@/components/HiremeHero'
 import EmailMe from '@/components/Emailme'
@@ -36,33 +42,33 @@ const experiencedata = [
   },
   {
     id: 2,
-    title: 'Mobile',
-    description: 'Flutter, React Native, Kotlin, Swift',
-    icon: <HiOutlineUserGroup size={25} className='text-white' />,
+    title: 'Problem-Solving',
+    description: 'Innovative solutions to complex challenges',
+    icon: <HiOutlinePuzzlePiece size={25} className='text-white' />,
   },
   {
     id: 3,
-    title: 'UI/UX',
-    description: 'Figma, Adobe XD, Sketch, Adobe Illustrator',
-    icon: <IoCodeSlashOutline size={25} className='text-white' />,
+    title: 'Collaboration',
+    description: 'Effective team player and communicator',
+    icon: <HiOutlineUserGroup size={25} className='text-white' />,
   },
   {
     id: 4,
-    title: 'Backend',
-    description: 'Node.js, Python, Java, C++',
-    icon: <IoCodeSlashOutline size={25} className='text-white' />,
+    title: 'Continuous Learning',
+    description: 'Up-to-date with latest web technologies',
+    icon: <HiOutlineAcademicCap size={25} className='text-white' />,
   },
   {
     id: 5,
-    title: 'DevOps',
-    description: 'Docker, Kubernetes, AWS, Firebase',
-    icon: <IoCodeSlashOutline size={25} className='text-white' />,
+    title: 'Versatility',
+    description: 'Seamless front-end and back-end development',
+    icon: <RefreshCw size={25} className='text-white' />,
   },
   {
     id: 6,
-    title: 'Database',
-    description: 'MongoDB, MySQL, PostgreSQL',
-    icon: <IoCodeSlashOutline size={25} className='text-white' />,
+    title: 'Performance',
+    description: 'Efficient, scalable web applications',
+    icon: <HiOutlineChartBar size={25} className='text-white' />,
   },
 ]
 
@@ -132,7 +138,7 @@ export default function Home() {
   } = useForm()
 
   return (
-    <div className='relative z-0'>
+    <div className='relative z-0 mb-32'>
       <div className='relative isolate md:px-4 md:pt-14 lg:px-8'>
         <div
           className='absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80'
@@ -266,12 +272,19 @@ export default function Home() {
                   <div className='relative pl-16 group' key={index}>
                     <dt className='text-base font-semibold leading-7 text-gray-900 dark:text-white'>
                       <motion.div
-                        initial={{ rotate: 0 }}
+                        initial={{
+                          rotate: [0, -60, -360],
+                          transition: {
+                            duration: 2,
+                            ease: 'easeInOut',
+                            repeatType: 'mirror',
+                          },
+                        }}
                         whileHover={{
                           rotate: [0, 60, 360],
                           transition: {
                             duration: 2,
-                            ease: 'anticipate',
+                            ease: 'easeInOut',
                             repeatType: 'mirror',
                           },
                         }}
