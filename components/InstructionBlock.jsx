@@ -154,11 +154,15 @@ const InstructionBlock = ({ instruction }) => {
   }
   if (type === 'embed') {
     return (
-      <div className='w-full overflow-hidden'>
+      <div
+        className='relative w-full aspect-video rounded my-4 overflow-hidden'
+        style={{ paddingBottom: `${(data.height / data.width) * 100}%` }}
+      >
         <iframe
-          src={data.url}
-          width='100%'
-          height='100%'
+          src={data.embed}
+          className='absolute inset-0 w-full h-full'
+          width={data.width}
+          height={data.height}
           frameBorder='0'
           allowFullScreen
         ></iframe>
