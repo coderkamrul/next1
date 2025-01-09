@@ -8,10 +8,9 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/hooks/use-toast'
 import ImageUpload from './ImageUpload'
-import NovelEditor from './NovelEditor'
-import Editor from './Editor'
-import parse from 'html-react-parser'
 
+import EditorForEdit from './EditorForEdit'
+import Editor from './Editor'
 export default function EditProjectForm({ id }) {
   const [formData, setFormData] = useState({
     title: '',
@@ -23,13 +22,15 @@ export default function EditProjectForm({ id }) {
       css: '',
       deployment: '',
     },
-    setupinstructions: '',
+    setupinstructions: {},
     techStack: '',
     link: '',
     tags: '',
     github: '',
     demo: '',
   })
+  const [editorState, setEditorState] = useState(null)
+  const [textEditor, setTextEditor] = useState({ isReady: false })
 
   const router = useRouter()
   const [content, setContent] = useState(formData.setupinstructions)
@@ -88,6 +89,7 @@ export default function EditProjectForm({ id }) {
           ...formData,
           techStack: formData.techStack.split(',').map((tech) => tech.trim()),
           tags: formData.tags.split(',').map((tag) => tag.trim()),
+          setupinstructions: formData.setupinstructions,
         }),
       })
 
@@ -115,7 +117,7 @@ export default function EditProjectForm({ id }) {
       setupinstructions: prev.setupinstructions + content,
     }))
   }
-  console.log(content)
+  console.log(formData)
 
   return (
     <form onSubmit={handleSubmit} className='space-y-4'>
@@ -143,9 +145,13 @@ export default function EditProjectForm({ id }) {
       </div>
       <div>
         <Label htmlFor='setupinstructions'>Set Up Instruction</Label>
-        <div className='parsed-html'>
-          {parse(`${formData.setupinstructions}`)}
-        </div>
+        <Editor
+          setTextEditor={setTextEditor}
+          textEditor={textEditor}
+          setEditorState={setEditorState}
+          formData={formData}
+          setFormData={setFormData}
+        />
         {/* <NovelEditor content={content} setContent={setContent} /> */}
         {/* <Editor
           initialValue={formData.setupinstructions}

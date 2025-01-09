@@ -27,7 +27,13 @@ const ProjectSchema = new mongoose.Schema(
     tags: [String],
     github: String,
     demo: String,
-    setupinstructions: String,
+    setupinstructions: {
+      type: Object,
+      type: [],
+      time: Number,
+      blocks: [],
+      version: String,
+    },
   },
   {
     timestamps: true,

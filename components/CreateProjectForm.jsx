@@ -8,7 +8,6 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/hooks/use-toast'
 import ImageUpload from './ImageUpload'
-import NovelEditor from './NovelEditor'
 import Editor from './Editor'
 
 export default function CreateProjectForm() {
@@ -22,14 +21,15 @@ export default function CreateProjectForm() {
       css: '',
       deployment: '',
     },
-    setupinstructions: '',
+    setupinstructions: {},
     techStack: '',
     link: '',
     tags: '',
     github: '',
     demo: '',
   })
-
+  const [editorState, setEditorState] = useState('editor')
+  const [textEditor, setTextEditor] = useState({ isReady: false })
   const router = useRouter()
 
   const handleChange = (e) => {
@@ -57,6 +57,7 @@ export default function CreateProjectForm() {
       image: imageUrl,
     }))
   }
+  console.log(formData.setupinstructions)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -70,6 +71,7 @@ export default function CreateProjectForm() {
           ...formData,
           techStack: formData.techStack.split(',').map((tech) => tech.trim()),
           tags: formData.tags.split(',').map((tag) => tag.trim()),
+          setupinstructions: formData.setupinstructions,
         }),
       })
 
@@ -124,7 +126,13 @@ export default function CreateProjectForm() {
       </div>
       <div>
         <Label htmlFor='setupinstructions'>Set Up Instruction</Label>
-        <NovelEditor setContent={handleRichTextChange} />
+        <Editor
+          setTextEditor={setTextEditor}
+          setEditorState={setEditorState}
+          formData={formData}
+          setFormData={setFormData}
+        />
+        {/* <NovelEditor setContent={handleRichTextChange} /> */}
         {/* <Editor initialValue={content} onChange={setContent} /> */}
       </div>
       <ImageUpload onImageUpload={handleImageUpload} />

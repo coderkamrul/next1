@@ -27,9 +27,9 @@ export default function SettingsPage() {
     if (profilePicture) {
       const formData = new FormData()
       formData.append('file', profilePicture)
-      formData.append('upload_preset', 'your_cloudinary_upload_preset')
+      formData.append('upload_preset', 'ml_default')
       const response = await fetch(
-        'https://api.cloudinary.com/v1_1/your_cloud_name/image/upload',
+        'https://api.cloudinary.com/v1_1/ecommerce-tech/raw/upload',
         {
           method: 'POST',
           body: formData,

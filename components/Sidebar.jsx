@@ -19,7 +19,7 @@ export default function Sidebar() {
   const { data: session } = useSession()
 
   return (
-    <div className='w-64 bg-gray-100 h-full flex flex-col sticky top-0'>
+    <div className='w-64 bg-gray-100 h-full flex flex-col sticky top-0 dark:bg-gray-800'>
       <div className='p-4'>
         <Avatar>
           <AvatarImage src={session?.user?.profilePicture} />

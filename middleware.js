@@ -7,12 +7,14 @@ export async function middleware(req) {
 
   // Protect dashboard routes
   if (pathname.startsWith('/dashboard') && !token) {
-    return NextResponse.redirect(new URL('/login', req.url))
+    console.log('Redirecting to /login')
+    return NextResponse.redirect(new URL('/login', req.nextUrl.origin))
   }
 
   // Redirect logged-in users away from login and signup pages
   if ((pathname === '/login' || pathname === '/signup') && token) {
-    return NextResponse.redirect(new URL('/dashboard', req.url))
+    console.log('Redirecting to /dashboard')
+    return NextResponse.redirect(new URL('/dashboard', req.nextUrl.origin))
   }
 
   return NextResponse.next()

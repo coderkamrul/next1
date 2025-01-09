@@ -4,13 +4,7 @@
 // import dbConnect from '@/lib/mongodb'
 // import User from '@/models/User'
 
-// // Ensure we have a secret
-// if (!process.env.NEXTAUTH_SECRET) {
-//   throw new Error('Please define NEXTAUTH_SECRET environment variable')
-// }
-
 // const handler = NextAuth({
-//   secret: process.env.NEXTAUTH_SECRET,
 //   providers: [
 //     CredentialsProvider({
 //       name: 'Credentials',
@@ -52,10 +46,6 @@
 //       },
 //     }),
 //   ],
-//   session: {
-//     strategy: 'jwt',
-//     maxAge: 30 * 24 * 60 * 60, // 30 days
-//   },
 //   callbacks: {
 //     async jwt({ token, user }) {
 //       if (user) {
@@ -76,7 +66,6 @@
 //   },
 //   pages: {
 //     signIn: '/login',
-//     error: '/auth/error',
 //   },
 // })
 
@@ -97,29 +86,34 @@ const handler = NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
+        // Ensure login and password are provided
         if (!credentials?.login || !credentials?.password) {
-          return null
+          throw new Error('Login and password are required.')
         }
 
+        // Connect to the database
         await dbConnect()
 
+        // Find the user by email or username
         const user = await User.findOne({
           $or: [{ email: credentials.login }, { username: credentials.login }],
         })
 
         if (!user) {
-          return null
+          throw new Error('User not found.')
         }
 
+        // Validate the password
         const isPasswordValid = await bcrypt.compare(
           credentials.password,
           user.password
         )
 
         if (!isPasswordValid) {
-          return null
+          throw new Error('Invalid password.')
         }
 
+        // Return user data for the JWT token
         return {
           id: user._id.toString(),
           name: user.name,
@@ -131,6 +125,7 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
+    // Attach user details to the JWT token
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id
@@ -139,6 +134,8 @@ const handler = NextAuth({
       }
       return token
     },
+
+    // Attach JWT token details to the session
     async session({ session, token }) {
       if (token) {
         session.user.id = token.id
@@ -149,8 +146,9 @@ const handler = NextAuth({
     },
   },
   pages: {
-    signIn: '/login',
+    signIn: '/login', // Custom sign-in page
   },
+  secret: process.env.NEXTAUTH_SECRET, // Add a secret for JWT signing
 })
 
 export { handler as GET, handler as POST }

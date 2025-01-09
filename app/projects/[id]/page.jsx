@@ -10,6 +10,8 @@ import AccessCode from '@/components/AccessCode'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { toast } from '@/hooks/use-toast'
 import parse from 'html-react-parser'
+import useAddCopyButtons from '@/hooks/useAddCopyButtons'
+import InstructionBlock from '@/components/InstructionBlock'
 
 export default function ProjectPage({ params: paramsPromise, codeString }) {
   const params = React.use(paramsPromise)
@@ -21,6 +23,7 @@ export default function ProjectPage({ params: paramsPromise, codeString }) {
     fetchProject()
   }, [params.id])
 
+  useAddCopyButtons()
   const fetchProject = async () => {
     setIsLoading(true)
     setError(null)
@@ -145,9 +148,9 @@ export default function ProjectPage({ params: paramsPromise, codeString }) {
           </Card>
           <Card className='p-6'>
             <h2 className='text-2xl font-bold mb-4'>Setup Instructions</h2>
-            <div className='parsed-html'>
-              {parse(`${project.setupinstructions}`)}
-            </div>
+            {project.setupinstructions[0].blocks.map((instruction, index) => (
+              <InstructionBlock key={index} instruction={instruction} />
+            ))}
           </Card>
 
           <Card className='p-6'>

@@ -9,9 +9,12 @@ export async function PUT(req) {
     if (!session) {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
     }
+    console.log(session)
 
     await dbConnect()
     const { name, email, profilePicture } = await req.json()
+
+    console.log('Updating user:', { name, email, profilePicture })
 
     const updatedUser = await User.findByIdAndUpdate(
       session.user.id,
