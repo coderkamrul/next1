@@ -187,10 +187,14 @@ const InstructionBlock = ({ instruction }) => {
   }
   if (type === 'raw') {
     return (
+<<<<<<< HEAD
       <div
         className='my-4 w-full'
         dangerouslySetInnerHTML={{ __html: data.html }}
       />
+=======
+      <div className='my-4' dangerouslySetInnerHTML={{ __html: data.html }} />
+>>>>>>> b5d8ee27123428c6454fd6ae7eb7c3e9de64dcdc
     )
   }
   if (type === 'linkTool') {
