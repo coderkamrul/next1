@@ -9,7 +9,6 @@ import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/hooks/use-toast'
 import ImageUpload from './ImageUpload'
 
-import EditorForEdit from './EditorForEdit'
 import Editor from './Editor'
 export default function EditProjectForm({ id }) {
   const [formData, setFormData] = useState({

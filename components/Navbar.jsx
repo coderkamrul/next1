@@ -80,7 +80,7 @@ const Navbar = () => {
                     <Link href='/dashboard'>Dashboard</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <Link href='/profile'>Profile</Link>
+                    <Link href='/dashboard/settings'>Profile</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <button onClick={() => signOut()}>Logout</button>

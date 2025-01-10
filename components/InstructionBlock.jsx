@@ -1,4 +1,4 @@
-import { CheckCheck, Copy } from 'lucide-react'
+import { CheckCheck, Copy, Minus } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
 
@@ -65,10 +65,9 @@ const InstructionBlock = ({ instruction }) => {
 
     return (
       <div className='relative my-8'>
-        <pre
-          className='rounded-lg border p-4 text-sm leading-6 overflow-x-auto bg-gray-900 text-white shadow-md'
-          dangerouslySetInnerHTML={{ __html: data.code }}
-        />
+        <pre className='rounded-lg border p-4 text-sm leading-6 overflow-x-auto bg-gray-900 text-white shadow-md'>
+          {data.code}
+        </pre>
         <button
           type='button'
           className='absolute top-2 right-2 flex items-center px-2 py-1 rounded-md bg-background text-foreground hover:bg-muted-foreground'
@@ -154,14 +153,65 @@ const InstructionBlock = ({ instruction }) => {
   }
   if (type === 'embed') {
     return (
-      <div className='w-full overflow-hidden'>
+      <div
+        className='relative w-full aspect-video rounded my-4 overflow-hidden'
+        style={{ paddingBottom: `${(data.height / data.width) * 100}%` }}
+      >
         <iframe
-          src={data.url}
-          width='100%'
-          height='100%'
+          src={data.embed}
+          className='absolute inset-0 w-full h-full'
+          width={data.width}
+          height={data.height}
           frameBorder='0'
           allowFullScreen
         ></iframe>
+      </div>
+    )
+  }
+  if (type === 'checklist') {
+    return (
+      <ul className='list-none m-0 p-0 space-y-2 my-4'>
+        {data.items.map((item, index) => (
+          <li key={index} className='flex items-center'>
+            <input
+              type='checkbox'
+              className='mr-2 rounded border-gray-300 text-primary-600 shadow-sm focus:border-primary-300 focus:ring focus:ring-offset-0 focus:ring-primary-200'
+              checked={item.checked}
+              onChange={() => {}}
+            />
+            <span className='select-none'>{item.text}</span>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  if (type === 'raw') {
+    return (
+      <div
+        className='my-4 w-full'
+        dangerouslySetInnerHTML={{ __html: data.html }}
+      />
+    )
+  }
+  if (type === 'linkTool') {
+    return (
+      <div className='my-4 w-full'>
+        <a
+          href={data.link}
+          className='text-primary hover:underline w-full bg-gray-600/10 my-4 p-3 border-primary rounded block'
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          {data.link}
+        </a>
+      </div>
+    )
+  }
+
+  if (type === 'delimiter') {
+    return (
+      <div className='my-6 flex items-center justify-center'>
+        <Minus className='w-6 h-6 text-gray-300' />
       </div>
     )
   }

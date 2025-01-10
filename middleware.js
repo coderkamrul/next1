@@ -29,9 +29,6 @@ export async function middleware(req) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
   const { pathname } = req.nextUrl
 
-  console.log('Middleware Triggered: Pathname:', pathname)
-  console.log('Token:', token)
-
   // Protect dashboard routes
   if (pathname.startsWith('/dashboard') && !token) {
     return NextResponse.redirect(new URL('/login', req.url))

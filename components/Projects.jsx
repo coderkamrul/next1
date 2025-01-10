@@ -60,7 +60,7 @@ export default function ProjectsPage() {
   }, [])
 
   const fetchProjects = async () => {
-    const res = await fetch('/api/projects')
+    const res = await fetch('/api/projects/all')
     const data = await res.json()
     if (data.success) {
       setProjects(data.data)

@@ -64,13 +64,21 @@ export default function LoginPage() {
                 />
               </div>
             </div>
-            <CardFooter className='flex justify-between'>
-              <Button type='submit'>Login</Button>
+            <CardFooter className='flex flex-col justify-between items-stretch p-0 mt-4'>
+              <div className='flex justify-between'>
+                <Button type='submit'>Login</Button>
+                <Link
+                  href='/forgot-password'
+                  className='text-sm text-blue-500 hover:underline'
+                >
+                  Forgot Password?
+                </Link>
+              </div>
               <Link
-                href='/forgot-password'
-                className='text-sm text-blue-500 hover:underline'
+                href='/signup'
+                className='text-sm mt-6 text-blue-500 hover:underline'
               >
-                Forgot Password?
+                Don't have an account?
               </Link>
             </CardFooter>
           </form>

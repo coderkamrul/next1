@@ -51,7 +51,7 @@ export default function ViewWork() {
   const [isLoading, setIsLoading] = useState(true)
 
   const refreshProjects = async () => {
-    const res = await fetch('/api/projects')
+    const res = await fetch('/api/projects/all')
     const data = await res.json()
     setIsLoading(true)
     setTimeout(() => {

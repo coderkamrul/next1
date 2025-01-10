@@ -13,29 +13,34 @@
 //         password: { label: 'Password', type: 'password' },
 //       },
 //       async authorize(credentials) {
+//         // Ensure login and password are provided
 //         if (!credentials?.login || !credentials?.password) {
-//           return null
+//           throw new Error('Login and password are required.')
 //         }
 
+//         // Connect to the database
 //         await dbConnect()
 
+//         // Find the user by email or username
 //         const user = await User.findOne({
 //           $or: [{ email: credentials.login }, { username: credentials.login }],
 //         })
 
 //         if (!user) {
-//           return null
+//           throw new Error('User not found.')
 //         }
 
+//         // Validate the password
 //         const isPasswordValid = await bcrypt.compare(
 //           credentials.password,
 //           user.password
 //         )
 
 //         if (!isPasswordValid) {
-//           return null
+//           throw new Error('Invalid password.')
 //         }
 
+//         // Return user data for the JWT token
 //         return {
 //           id: user._id.toString(),
 //           name: user.name,
@@ -47,6 +52,7 @@
 //     }),
 //   ],
 //   callbacks: {
+//     // Attach user details to the JWT token
 //     async jwt({ token, user }) {
 //       if (user) {
 //         token.id = user.id
@@ -55,6 +61,8 @@
 //       }
 //       return token
 //     },
+
+//     // Attach JWT token details to the session
 //     async session({ session, token }) {
 //       if (token) {
 //         session.user.id = token.id
@@ -65,8 +73,9 @@
 //     },
 //   },
 //   pages: {
-//     signIn: '/login',
+//     signIn: '/login', // Custom sign-in page
 //   },
+//   secret: process.env.NEXTAUTH_SECRET, // Add a secret for JWT signing
 // })
 
 // export { handler as GET, handler as POST }
@@ -77,7 +86,7 @@ import bcrypt from 'bcryptjs'
 import dbConnect from '@/lib/mongodb'
 import User from '@/models/User'
 
-const handler = NextAuth({
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -149,6 +158,8 @@ const handler = NextAuth({
     signIn: '/login', // Custom sign-in page
   },
   secret: process.env.NEXTAUTH_SECRET, // Add a secret for JWT signing
-})
+}
+
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST }

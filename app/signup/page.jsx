@@ -13,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import Link from 'next/link'
 
 export default function SignupPage() {
   const [name, setName] = useState('')
@@ -52,7 +53,7 @@ export default function SignupPage() {
       // Sign in the user
       const result = await signIn('credentials', {
         redirect: false,
-        email,
+        login: email,
         password,
       })
 
@@ -116,8 +117,14 @@ export default function SignupPage() {
                 />
               </div>
             </div>
-            <CardFooter className='flex justify-between'>
+            <CardFooter className='flex justify-between flex-col items-start p-0 mt-4'>
               <Button type='submit'>Sign Up</Button>
+              <Link
+                href='/login'
+                className='text-sm mt-6 text-blue-500 hover:underline'
+              >
+                Already have an account? Login
+              </Link>
             </CardFooter>
           </form>
         </CardContent>
