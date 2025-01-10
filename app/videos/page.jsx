@@ -1,4 +1,4 @@
-import Blogs from '@/components/Blogs'
+import Videos from '@/components/Videos'
 import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
@@ -7,14 +7,14 @@ import React from 'react'
 const page = () => {
   return (
     <div className='py-4 max-w-7xl mx-auto'>
-      <Blogs />
+      <Videos />
       <div className='my-6 p-6 flex md:justify-between items-center flex-wrap gap-4 md:gap-0 justify-center text-center md:text-left'>
         <div className='flex gap-2 flex-col'>
           <h1 className='text-2xl md:text-3xl font-bold text-primary'>
-            More blogs of the same
+            More videos of the same
           </h1>
           <p className='text-md md:text-lg text-muted-foreground'>
-            View blogs that have been uploaded to YouTube.
+            View videos that have been uploaded to YouTube.
           </p>
         </div>
         <Link href='/youtube'>

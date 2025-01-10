@@ -33,6 +33,8 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { Textarea } from '@/components/ui/textarea'
+import { useEffect, useState } from 'react'
+
 const experiencedata = [
   {
     id: 1,
@@ -131,6 +133,19 @@ const reviewdata = [
 ]
 
 export default function Home() {
+  const [youtubedata, setyoutubedata] = useState([])
+
+  useEffect(() => {
+    fetchYoutubes()
+  }, [])
+  const fetchYoutubes = async () => {
+    const res = await fetch('/api/youtube/all')
+    const data = await res.json()
+    if (data.success) {
+      setyoutubedata(data.data)
+    }
+  }
+
   const {
     register,
     handleSubmit,
@@ -343,19 +358,21 @@ export default function Home() {
                 <Youtube />
                 Subscribe
               </Button>
-              <Button variant='outline' className='w-fit h-10'>
-                All Videos
-                <motion.span
-                  animate={{ x: [0, 3, -3, 0] }}
-                  transition={{
-                    repeat: Infinity,
-                    duration: 1.5,
-                    ease: 'linear',
-                  }}
-                >
-                  <MoveRight />
-                </motion.span>
-              </Button>
+              <Link href='/videos'>
+                <Button variant='outline' className='w-fit h-10'>
+                  All Videos
+                  <motion.span
+                    animate={{ x: [0, 3, -3, 0] }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 1.5,
+                      ease: 'linear',
+                    }}
+                  >
+                    <MoveRight />
+                  </motion.span>
+                </Button>
+              </Link>
             </div>
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
               {youtubedata.map((video, index) => (
@@ -363,28 +380,34 @@ export default function Home() {
                   className='group relative overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-all duration-300'
                   key={index}
                 >
-                  <Link href={video.url} className='flex flex-col h-full'>
+                  <Link
+                    href={video.link}
+                    target='_blank'
+                    className='flex flex-col h-full'
+                  >
                     <div className='relative aspect-video overflow-hidden'>
                       <Image
                         src={video.image}
                         alt={video.title}
-                        className='h-full w-full object-cover'
+                        className='h-full w-full object-cover group-hover:scale-110 transition-all duration-300'
                         width={500}
                         height={500}
                       />
-                      <div className='absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
                     </div>
                     <div className='flex-grow p-4'>
                       <h3 className='text-base sm:text-lg font-semibold line-clamp-2 group-hover:text-primary transition-colors duration-300'>
                         {video.title}
                       </h3>
+                      <p className='mt-2 text-sm text-muted-foreground line-clamp-2'>
+                        {video.description}
+                      </p>
                     </div>
                     <div className='w-full bg-muted/50 p-3 border-t'>
                       <div className='flex justify-between items-center'>
                         <span className='text-sm font-medium text-muted-foreground'>
                           {video.category}
                         </span>
-                        <button variant='ghost' href={video.url}>
+                        <button variant='ghost' href={video.link}>
                           <ExternalLink className='h-5 w-5 text-primary hover:scale-110 transition-all duration-300' />
                         </button>
                       </div>

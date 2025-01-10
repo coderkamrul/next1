@@ -93,12 +93,6 @@ export default function CreateProjectForm() {
       })
     }
   }
-  const handleRichTextChange = (content) => {
-    setFormData((prev) => ({
-      ...prev,
-      setupinstructions: content,
-    }))
-  }
 
   return (
     <form onSubmit={handleSubmit} className='space-y-4'>

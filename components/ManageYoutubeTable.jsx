@@ -1,5 +1,4 @@
 'use client'
-
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
@@ -24,21 +23,21 @@ import {
 import { toast } from '@/hooks/use-toast'
 import Image from 'next/image'
 
-export default function ManageProjectsTable() {
-  const [projects, setProjects] = useState([])
+export default function ManageYoutubeTable() {
+  const [youtubes, setYoutubes] = useState([])
   const [sorting, setSorting] = useState([])
   const [columnFilters, setColumnFilters] = useState([])
   const router = useRouter()
 
   useEffect(() => {
-    fetchProjects()
+    fetchYoutubes()
   }, [])
 
-  const fetchProjects = async () => {
-    const res = await fetch('/api/projects')
+  const fetchYoutubes = async () => {
+    const res = await fetch('/api/youtube')
     const data = await res.json()
     if (data.success) {
-      setProjects(data.data)
+      setYoutubes(data.data)
     }
   }
 
@@ -63,17 +62,24 @@ export default function ManageProjectsTable() {
       ),
     },
     {
-      accessorKey: 'description',
-      header: 'Description',
+      accessorKey: 'category',
+      header: 'Category',
       cell: ({ row }) => (
-        <div className='truncate max-w-[300px]'>
-          {row.getValue('description')}
-        </div>
+        <div className='capitalize'>{row.getValue('category')}</div>
       ),
     },
     {
-      accessorKey: 'details.framework',
-      header: 'Framework',
+      accessorKey: 'link',
+      header: 'Link',
+      cell: ({ row }) => (
+        <a
+          href={row.getValue('link')}
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          Link
+        </a>
+      ),
     },
     {
       id: 'actions',
@@ -81,14 +87,14 @@ export default function ManageProjectsTable() {
       accessorKey: '_id',
       header: 'Actions',
       cell: ({ row }) => {
-        const project = row.original
+        const youtube = row.original
         return (
           <div className='flex items-center gap-2'>
             <Button
               variant='outline'
               size='sm'
               onClick={() =>
-                router.push(`/dashboard/projects/edit/${project._id}`)
+                router.push(`/dashboard/youtube/edit/${youtube._id}`)
               }
             >
               Edit
@@ -96,7 +102,7 @@ export default function ManageProjectsTable() {
             <Button
               variant='destructive'
               size='sm'
-              onClick={() => handleDelete(project._id)}
+              onClick={() => handleDelete(youtube._id)}
             >
               Delete
             </Button>
@@ -105,10 +111,9 @@ export default function ManageProjectsTable() {
       },
     },
   ]
-  console.log(projects)
 
   const table = useReactTable({
-    data: projects,
+    data: youtubes,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -123,19 +128,19 @@ export default function ManageProjectsTable() {
   })
 
   const handleDelete = async (id) => {
-    if (confirm('Are you sure you want to delete this project?')) {
-      const res = await fetch(`/api/projects/${id}`, { method: 'DELETE' })
+    if (confirm('Are you sure you want to delete this youtube project?')) {
+      const res = await fetch(`/api/youtube/${id}`, { method: 'DELETE' })
       const data = await res.json()
       if (data.success) {
-        fetchProjects()
+        fetchYoutubes()
         toast({
-          title: 'Project deleted',
-          description: 'The project has been deleted successfully.',
+          title: 'Youtube project deleted',
+          description: 'The youtube project has been deleted successfully.',
         })
       } else {
         toast({
           title: 'Error',
-          description: 'Failed to delete project. Please try again.',
+          description: 'Failed to delete youtube project. Please try again.',
           variant: 'destructive',
         })
       }
@@ -146,7 +151,7 @@ export default function ManageProjectsTable() {
     <>
       <div className='flex items-center py-4'>
         <Input
-          placeholder='Filter projects...'
+          placeholder='Filter youtube projects...'
           value={table.getColumn('title')?.getFilterValue() ?? ''}
           onChange={(event) =>
             table.getColumn('title')?.setFilterValue(event.target.value)

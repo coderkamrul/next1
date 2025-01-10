@@ -10,6 +10,8 @@ import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import Image from 'next/image'
 
+const filters = []
+
 function ProjectSkeleton() {
   return (
     <Card className='group relative overflow-hidden rounded-xl border'>
@@ -30,8 +32,8 @@ function ProjectSkeleton() {
   )
 }
 
-export default function ProjectsPage() {
-  const [projectss, setProjects] = useState([])
+export default function VideosPage() {
+  const [projects, setProjects] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [activeFilters, setActiveFilters] = useState([])
@@ -44,16 +46,16 @@ export default function ProjectsPage() {
   }, [])
 
   const fetchProjects = async () => {
-    const res = await fetch('/api/projects/all')
+    const res = await fetch('/api/youtube/all')
     const data = await res.json()
     if (data.success) {
       setProjects(data.data)
       setIsLoading(false)
-      setFilters(data.data.map((project) => project.tags).flat())
+      setFilters(data.data.map((project) => project.category).flat())
     }
   }
 
-  const filteredProjects = projectss.filter((project) => {
+  const filteredProjects = projects.filter((project) => {
     const matchesSearch =
       project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       project.description.toLowerCase().includes(searchQuery.toLowerCase())
@@ -61,11 +63,7 @@ export default function ProjectsPage() {
       activeFilters.length === 0 ||
       activeFilters.some(
         (filter) =>
-          project.details.framework.includes(filter) ||
-          project.details.useCase.includes(filter) ||
-          project.details.css.includes(filter) ||
-          project.tags.includes(filter) ||
-          project.techStack.includes(filter)
+          project.category.includes(filter) || project.tags.includes(filter)
       )
     return matchesSearch && matchesFilters
   })
@@ -97,7 +95,7 @@ export default function ProjectsPage() {
       <div className='bg-slate-900 text-white py-12 px-4 mb-8 rounded-lg mx-4'>
         <div className='container mx-auto max-w-7xl text-center'>
           <h1 className='text-3xl font-bold mb-2'>
-            The projects I have done on YouTube
+            The projects I have worked on
           </h1>
           <p className='text-slate-400 mb-4'>
             Check out my YouTube channel for more content!
@@ -186,7 +184,7 @@ export default function ProjectsPage() {
                 >
                   <Card className='group overflow-hidden'>
                     <CardContent className='p-0'>
-                      <Link href={`/projects/${project._id}`}>
+                      <Link href={project.link} target='_blank'>
                         <div className='relative'>
                           <Image
                             src={project.image}
@@ -208,30 +206,18 @@ export default function ProjectsPage() {
                     </CardContent>
                     <CardFooter className='border-t p-4 flex justify-between items-center'>
                       <span className='text-sm text-muted-foreground'>
-                        {project.details.framework}
+                        {project.category}
                       </span>
 
                       <div className='flex gap-3'>
-                        <div>
-                          <Link
-                            href={project.github}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            className='text-gray-600 hover:text-primary'
-                          >
-                            <Github className='h-5 w-5 hover:scale-110' />
-                          </Link>
-                        </div>
-                        <div>
-                          <Link
-                            href={project.demo}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            className='text-gray-600 hover:text-primary'
-                          >
-                            <ExternalLink className='h-5 w-5 hover:scale-110' />
-                          </Link>
-                        </div>
+                        <Link
+                          href={project.link}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                          className='text-gray-600 hover:text-primary'
+                        >
+                          <ExternalLink className='h-5 w-5 hover:scale-110' />
+                        </Link>
                       </div>
                     </CardFooter>
                   </Card>

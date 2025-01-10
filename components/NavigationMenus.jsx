@@ -69,6 +69,7 @@ export function NavigationMenus() {
   const menuItems = [
     { href: '/', label: 'About' },
     { href: '/projects', label: 'Project' },
+    { href: '/videos', label: 'Video' },
     { href: '/blogs', label: 'Blog' },
   ]
 

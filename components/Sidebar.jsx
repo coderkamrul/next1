@@ -9,6 +9,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 const navItems = [
   { href: '/dashboard', label: 'Dashboard' },
   { href: '/dashboard/projects', label: 'Projects' },
+  { href: '/dashboard/youtube', label: 'Youtube' },
+  { href: '/dashboard/blogs', label: 'Blogs' },
   { href: '/dashboard/submissions', label: 'Submissions' },
   { href: '/dashboard/products', label: 'Products' },
   { href: '/dashboard/settings', label: 'Settings' },

@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import Image from 'next/image'
 
-function ProjectSkeleton() {
+function BlogSkeleton() {
   return (
     <Card className='group relative overflow-hidden rounded-xl border'>
       <CardContent className='p-0'>
@@ -30,43 +30,37 @@ function ProjectSkeleton() {
   )
 }
 
-export default function ProjectsPage() {
-  const [projectss, setProjects] = useState([])
+export default function Blogs() {
+  const [blogs, setBlogs] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [activeFilters, setActiveFilters] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [filters, setFilters] = useState([])
-  const projectsPerPage = 8
+  const blogsPerPage = 8
 
   useEffect(() => {
-    fetchProjects()
+    fetchBlogs()
   }, [])
+  console.log(blogs)
 
-  const fetchProjects = async () => {
-    const res = await fetch('/api/projects/all')
+  const fetchBlogs = async () => {
+    const res = await fetch('/api/blogs/all')
     const data = await res.json()
     if (data.success) {
-      setProjects(data.data)
+      setBlogs(data.data)
       setIsLoading(false)
-      setFilters(data.data.map((project) => project.tags).flat())
+      setFilters(data.data.map((blog) => blog.tags).flat())
     }
   }
 
-  const filteredProjects = projectss.filter((project) => {
+  const filteredBlogs = blogs.filter((blog) => {
     const matchesSearch =
-      project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.description.toLowerCase().includes(searchQuery.toLowerCase())
+      blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      blog.description.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesFilters =
       activeFilters.length === 0 ||
-      activeFilters.some(
-        (filter) =>
-          project.details.framework.includes(filter) ||
-          project.details.useCase.includes(filter) ||
-          project.details.css.includes(filter) ||
-          project.tags.includes(filter) ||
-          project.techStack.includes(filter)
-      )
+      activeFilters.some((filter) => blog.tags.includes(filter))
     return matchesSearch && matchesFilters
   })
 
@@ -85,10 +79,10 @@ export default function ProjectsPage() {
     setCurrentPage(1)
   }
 
-  const pageCount = Math.ceil(filteredProjects.length / projectsPerPage)
-  const paginatedProjects = filteredProjects.slice(
-    (currentPage - 1) * projectsPerPage,
-    currentPage * projectsPerPage
+  const pageCount = Math.ceil(filteredBlogs.length / blogsPerPage)
+  const paginatedBlogs = filteredBlogs.slice(
+    (currentPage - 1) * blogsPerPage,
+    currentPage * blogsPerPage
   )
 
   return (
@@ -96,11 +90,9 @@ export default function ProjectsPage() {
       {/* Header */}
       <div className='bg-slate-900 text-white py-12 px-4 mb-8 rounded-lg mx-4'>
         <div className='container mx-auto max-w-7xl text-center'>
-          <h1 className='text-3xl font-bold mb-2'>
-            The projects I have done on YouTube
-          </h1>
+          <h1 className='text-3xl font-bold mb-2'>The blogs I have written</h1>
           <p className='text-slate-400 mb-4'>
-            Check out my YouTube channel for more content!
+            I write about my experiences and the things I learn.
           </p>
           <Button className='bg-purple-600 hover:bg-purple-700'>
             <Youtube className='mr-2 h-4 w-4' />
@@ -116,7 +108,7 @@ export default function ProjectsPage() {
             <div className='relative mb-4 w-full max-w-lg'>
               <Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground' />
               <Input
-                placeholder='Search projects...'
+                placeholder='Search blogs...'
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className='pl-9'
@@ -149,7 +141,7 @@ export default function ProjectsPage() {
           </div>
         </div>
 
-        {/* Projects Grid */}
+        {/* Blogs Grid */}
         <motion.div
           className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'
           initial='hidden'
@@ -173,12 +165,12 @@ export default function ProjectsPage() {
                       show: { opacity: 1, y: 0 },
                     }}
                   >
-                    <ProjectSkeleton />
+                    <BlogSkeleton />
                   </motion.div>
                 ))
-            : paginatedProjects.map((project) => (
+            : paginatedBlogs.map((blog) => (
                 <motion.div
-                  key={project._id}
+                  key={blog._id}
                   variants={{
                     hidden: { opacity: 0, y: 20 },
                     show: { opacity: 1, y: 0 },
@@ -186,21 +178,21 @@ export default function ProjectsPage() {
                 >
                   <Card className='group overflow-hidden'>
                     <CardContent className='p-0'>
-                      <Link href={`/projects/${project._id}`}>
+                      <Link href={`/blogs/${blog._id}`}>
                         <div className='relative'>
                           <Image
-                            src={project.image}
-                            alt={project.title}
+                            src={blog.image}
+                            alt={blog.title}
                             width={500}
                             height={300}
                             className='w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105'
                           />
                           <div className='p-4'>
                             <h3 className='font-semibold mb-2 group-hover:text-purple-600'>
-                              {project.title}
+                              {blog.title}
                             </h3>
                             <p className='text-sm text-muted-foreground line-clamp-2'>
-                              {project.description}
+                              {blog.description}
                             </p>
                           </div>
                         </div>
@@ -208,13 +200,17 @@ export default function ProjectsPage() {
                     </CardContent>
                     <CardFooter className='border-t p-4 flex justify-between items-center'>
                       <span className='text-sm text-muted-foreground'>
-                        {project.details.framework}
+                        {blog.tags.map((tag) => (
+                          <Badge key={tag} variant='outline' className='mr-2'>
+                            {tag}
+                          </Badge>
+                        ))}
                       </span>
 
                       <div className='flex gap-3'>
                         <div>
                           <Link
-                            href={project.github}
+                            href={`/blog/${blog._id}`}
                             target='_blank'
                             rel='noopener noreferrer'
                             className='text-gray-600 hover:text-primary'
@@ -224,7 +220,7 @@ export default function ProjectsPage() {
                         </div>
                         <div>
                           <Link
-                            href={project.demo}
+                            href={`/blog/${blog._id}`}
                             target='_blank'
                             rel='noopener noreferrer'
                             className='text-gray-600 hover:text-primary'
