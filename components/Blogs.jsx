@@ -200,11 +200,15 @@ export default function Blogs() {
                     </CardContent>
                     <CardFooter className='border-t p-4 flex justify-between items-center'>
                       <span className='text-sm text-muted-foreground'>
-                        {blog.tags.map((tag) => (
-                          <Badge key={tag} variant='outline' className='mr-2'>
-                            {tag}
+                        {blog.tags.length > 0 && (
+                          <Badge
+                            key={blog.tags[0]}
+                            variant='outline'
+                            className='mr-2'
+                          >
+                            {blog.tags[0]}
                           </Badge>
-                        ))}
+                        )}
                       </span>
 
                       <div className='flex gap-3'>
