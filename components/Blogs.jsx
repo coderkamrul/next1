@@ -50,7 +50,9 @@ export default function Blogs() {
     if (data.success) {
       setBlogs(data.data)
       setIsLoading(false)
-      setFilters(data.data.map((blog) => blog.tags).flat())
+      const tags = data.data.map((blog) => blog.tags).flat()
+      const uniqueTags = Array.from(new Set(tags))
+      setFilters(uniqueTags)
     }
   }
 

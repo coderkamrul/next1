@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -13,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { toast } from '@/hooks/use-toast'
 import Link from 'next/link'
 
 export default function SignupPage() {
@@ -21,9 +22,19 @@ export default function SignupPage() {
   const [password, setPassword] = useState('')
   const [profilePicture, setProfilePicture] = useState(null)
   const router = useRouter()
+  const { data: session } = useSession()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    if (session) {
+      toast({
+        title: 'Already Signed Up',
+        description: 'You already have an account, please login.',
+        variant: 'error',
+      })
+      return
+    }
 
     // Upload image to Cloudinary
     let imageUrl = ''
@@ -64,7 +75,11 @@ export default function SignupPage() {
       }
     } else {
       const data = await res.json()
-      console.error(data.error)
+      toast({
+        title: 'Sign Up Failed',
+        description: data.error || 'An error occurred while signing up.',
+        variant: 'error',
+      })
     }
   }
 

@@ -74,37 +74,6 @@ const experiencedata = [
   },
 ]
 
-const youtubedata = [
-  {
-    id: 1,
-    title:
-      'BUILD and Deploy a Modern REACT.Js  Ecommerce Application | FINAL PART #ecommercewebsite | react',
-    url: 'https://www.youtube.com/watch?v=abc123',
-    category: 'Ecommerce',
-    image: '/file1.webp',
-  },
-  {
-    id: 2,
-    title: 'Build a React.js 3D Portfolio Website | Final Part | React',
-    url: 'https://www.youtube.com/watch?v=abc123',
-    category: 'Portfolio',
-    image: '/file1.webp',
-  },
-  {
-    id: 3,
-    title: 'Build a React.js 3D Portfolio Website | Final Part | React',
-    url: 'https://www.youtube.com/watch?v=abc123',
-    category: 'Portfolio',
-    image: '/file1.webp',
-  },
-  {
-    id: 4,
-    title: 'Build a React.js 3D Portfolio Website | Final Part | React',
-    url: 'https://www.youtube.com/watch?v=abc123',
-    category: 'Portfolio',
-    image: '/file1.webp',
-  },
-]
 const reviewdata = [
   {
     id: 1,
@@ -134,15 +103,24 @@ const reviewdata = [
 
 export default function Home() {
   const [youtubedata, setyoutubedata] = useState([])
+  const [blogdata, setblogdata] = useState([])
 
   useEffect(() => {
     fetchYoutubes()
+    fetchBlogs()
   }, [])
   const fetchYoutubes = async () => {
     const res = await fetch('/api/youtube/all')
     const data = await res.json()
     if (data.success) {
       setyoutubedata(data.data)
+    }
+  }
+  const fetchBlogs = async () => {
+    const res = await fetch('/api/blogs/admin')
+    const data = await res.json()
+    if (data.success) {
+      setblogdata(data.data)
     }
   }
 
@@ -381,8 +359,7 @@ export default function Home() {
                   key={index}
                 >
                   <Link
-                    href={video.link}
-                    target='_blank'
+                    href={`/videos/${video._id}`}
                     className='flex flex-col h-full'
                   >
                     <div className='relative aspect-video overflow-hidden'>
@@ -467,6 +444,66 @@ export default function Home() {
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Blog  */}
+        <section className='py-16 bg-gradient-to-b from-background to-muted/20'>
+          <div className='max-w-6xl mx-auto space-y-10 max-sm:px-4'>
+            <div className='text-center space-y-6'>
+              <h2 className='text-2xl font-semibold text-foreground lg:text-3xl'>
+                Latest Blog Posts
+              </h2>
+              <div className='flex justify-center items-center space-x-1'>
+                <span className='h-1 bg-primary rounded-full w-40'></span>
+                <span className='h-1 bg-primary rounded-full w-3'></span>
+                <span className='h-1 bg-primary rounded-full w-1'></span>
+              </div>
+              <p className='max-w-2xl mx-auto text-muted-foreground'>
+                Check out my latest blog posts.
+              </p>
+            </div>
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
+              {blogdata.map((blog, index) => (
+                <div
+                  className='group relative overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-all duration-300'
+                  key={index}
+                >
+                  <Link
+                    href={`/blogs/${blog._id}`}
+                    className='flex flex-col h-full'
+                  >
+                    <div className='relative aspect-video overflow-hidden'>
+                      <Image
+                        src={blog.image}
+                        alt={blog.title}
+                        className='h-full w-full object-cover group-hover:scale-110 transition-all duration-300'
+                        width={500}
+                        height={500}
+                      />
+                    </div>
+                    <div className='flex-grow p-4'>
+                      <h3 className='text-base sm:text-lg font-semibold line-clamp-2 group-hover:text-primary transition-colors duration-300'>
+                        {blog.title}
+                      </h3>
+                      <p className='mt-2 text-sm text-muted-foreground line-clamp-2'>
+                        {blog.description}
+                      </p>
+                    </div>
+                    <div className='w-full bg-muted/50 p-3 border-t'>
+                      <div className='flex justify-between items-center'>
+                        <span className='text-sm font-medium text-muted-foreground'>
+                          {blog.tags && blog.tags[0]}
+                        </span>
+                        <button variant='ghost' href={blog.link}>
+                          <ExternalLink className='h-5 w-5 text-primary hover:scale-110 transition-all duration-300' />
+                        </button>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              ))}
             </div>
           </div>
         </section>

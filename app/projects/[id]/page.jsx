@@ -9,16 +9,19 @@ import { Badge } from '@/components/ui/badge'
 import AccessCode from '@/components/AccessCode'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { toast } from '@/hooks/use-toast'
-import parse from 'html-react-parser'
 import useAddCopyButtons from '@/hooks/useAddCopyButtons'
 import InstructionBlock from '@/components/InstructionBlock'
+import { FaStar } from 'react-icons/fa'
+import { useSession } from 'next-auth/react'
 
 export default function ProjectPage({ params: paramsPromise, codeString }) {
   const params = React.use(paramsPromise)
   const [project, setProject] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
-
+  const [starred, setStarred] = useState(false)
+  const [stars, setStars] = useState(0)
+  const { data: session } = useSession()
   useEffect(() => {
     fetchProject()
   }, [params.id])
@@ -35,6 +38,8 @@ export default function ProjectPage({ params: paramsPromise, codeString }) {
       const data = await res.json()
       if (data.success) {
         setProject(data.data)
+        setStars(data.data.stars.length)
+        setStarred(data.data.stars.includes(session?.user.id))
       } else {
         throw new Error(data.error || 'Failed to fetch project')
       }
@@ -47,6 +52,27 @@ export default function ProjectPage({ params: paramsPromise, codeString }) {
       })
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const handleStar = async () => {
+    try {
+      const res = await fetch(`/api/projects/stars/${params.id}`, {
+        method: starred ? 'DELETE' : 'PUT',
+      })
+      const data = await res.json()
+      if (data.success) {
+        setStarred(!starred)
+        setStars(data.data.stars.length)
+      } else {
+        throw new Error(data.error || 'Failed to star/unstar project')
+      }
+    } catch (err) {
+      toast({
+        title: 'Error',
+        description: err.message,
+        variant: 'destructive',
+      })
     }
   }
 
@@ -107,11 +133,19 @@ export default function ProjectPage({ params: paramsPromise, codeString }) {
 
           <div className='flex gap-4'>
             <AccessCode />
-            <Link href={project.demo} target='_blank' rel='noopener noreferrer'>
+            <Link href={project.link} target='_blank' rel='noopener noreferrer'>
               <Button className='w-full' variant='outline'>
                 Live Preview
               </Button>
             </Link>
+            <Button
+              onClick={handleStar}
+              className='w-full flex items-center justify-center gap-2'
+              variant={starred ? 'secondary' : 'outline'}
+            >
+              <FaStar className='h-5 w-5' />
+              {stars}
+            </Button>
           </div>
         </div>
 
@@ -127,7 +161,7 @@ export default function ProjectPage({ params: paramsPromise, codeString }) {
             />
           </div>
 
-          <Card className='p-6'>
+          <Card className='p-6 '>
             <h2 className='text-2xl font-bold mb-4'>Tech Stack</h2>
             <ul className='list-disc pl-6 space-y-2'>
               {project.techStack.map((tech, index) => (
@@ -136,22 +170,11 @@ export default function ProjectPage({ params: paramsPromise, codeString }) {
             </ul>
           </Card>
 
-          <Card className='p-6'>
-            <h2 className='text-2xl font-bold mb-4'>Tags</h2>
-            <div className='flex flex-wrap gap-2'>
-              {project.tags.map((tag, index) => (
-                <Badge key={index} variant='secondary'>
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          </Card>
-          <Card className='p-6'>
-            <h2 className='text-2xl font-bold mb-4'>Setup Instructions</h2>
+          <div className='space-y-4 mb-8 p-6 md:p-2'>
             {project.setupinstructions[0].blocks.map((instruction, index) => (
               <InstructionBlock key={index} instruction={instruction} />
             ))}
-          </Card>
+          </div>
 
           <Card className='p-6'>
             <h2 className='text-2xl font-bold mb-4'>Links</h2>
@@ -167,7 +190,7 @@ export default function ProjectPage({ params: paramsPromise, codeString }) {
                 </Button>
               </Link>
               <Link
-                href={project.demo}
+                href={project.link}
                 target='_blank'
                 rel='noopener noreferrer'
               >
@@ -176,6 +199,16 @@ export default function ProjectPage({ params: paramsPromise, codeString }) {
                   Demo
                 </Button>
               </Link>
+            </div>
+          </Card>
+          <Card className='p-6'>
+            <h2 className='text-2xl font-bold mb-4'>Tags</h2>
+            <div className='flex flex-wrap gap-2'>
+              {project.tags.map((tag, index) => (
+                <Badge key={index} variant='secondary'>
+                  {tag}
+                </Badge>
+              ))}
             </div>
           </Card>
         </div>

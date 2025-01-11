@@ -49,7 +49,9 @@ export default function ProjectsPage() {
     if (data.success) {
       setProjects(data.data)
       setIsLoading(false)
-      setFilters(data.data.map((project) => project.tags).flat())
+      const tags = data.data.map((project) => project.tags).flat()
+      const uniqueTags = Array.from(new Set(tags))
+      setFilters(uniqueTags)
     }
   }
 
@@ -224,7 +226,7 @@ export default function ProjectsPage() {
                         </div>
                         <div>
                           <Link
-                            href={project.demo}
+                            href={project.link}
                             target='_blank'
                             rel='noopener noreferrer'
                             className='text-gray-600 hover:text-primary'

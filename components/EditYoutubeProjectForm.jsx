@@ -7,17 +7,20 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/hooks/use-toast'
 import ImageUpload from './ImageUpload'
+import Editor from './Editor'
 
 export default function EditYoutubeProjectForm({ id }) {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
+    setupinstructions: {},
     image: '',
     category: '',
     link: '',
   })
   const router = useRouter()
-  console.log(formData)
+  const [editorState, setEditorState] = useState(null)
+  const [textEditor, setTextEditor] = useState({ isReady: false })
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -99,6 +102,13 @@ export default function EditYoutubeProjectForm({ id }) {
           rows='3'
         />
       </div>
+      <Editor
+        setTextEditor={setTextEditor}
+        textEditor={textEditor}
+        setEditorState={setEditorState}
+        formData={formData}
+        setFormData={setFormData}
+      />
       <ImageUpload onImageUpload={handleImageUpload} />
       {formData.image && (
         <img
@@ -128,6 +138,19 @@ export default function EditYoutubeProjectForm({ id }) {
           onChange={handleChange}
         />
       </div>
+      {formData.link && (
+        <div className='mt-4 flex w-full items-center '>
+          <iframe
+            src={`https://www.youtube.com/embed/${formData.link
+              .split('/')
+              .pop()}`}
+            frameBorder='0'
+            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+            allowFullScreen
+            className='h-[360px] w-[640px] rounded'
+          />
+        </div>
+      )}
       <Button type='submit'>Update Project</Button>
     </form>
   )

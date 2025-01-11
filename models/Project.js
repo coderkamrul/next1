@@ -7,6 +7,7 @@ const ProjectSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
+    stars: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     title: {
       type: String,
       required: [true, 'Please provide a title for this project.'],
@@ -31,7 +32,6 @@ const ProjectSchema = new mongoose.Schema(
     link: String,
     tags: [String],
     github: String,
-    demo: String,
     setupinstructions: {
       type: Object,
       type: [],

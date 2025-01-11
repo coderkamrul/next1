@@ -26,7 +26,6 @@ export default function CreateProjectForm() {
     link: '',
     tags: '',
     github: '',
-    demo: '',
   })
   const [editorState, setEditorState] = useState('editor')
   const [textEditor, setTextEditor] = useState({ isReady: false })
@@ -200,16 +199,6 @@ export default function CreateProjectForm() {
         />
       </div>
       <div>
-        <Label htmlFor='tags'>Tags (comma-separated)</Label>
-        <Input
-          type='text'
-          name='tags'
-          id='tags'
-          value={formData.tags}
-          onChange={handleChange}
-        />
-      </div>
-      <div>
         <Label htmlFor='github'>GitHub URL</Label>
         <Input
           type='url'
@@ -220,12 +209,12 @@ export default function CreateProjectForm() {
         />
       </div>
       <div>
-        <Label htmlFor='demo'>Demo URL</Label>
+        <Label htmlFor='tags'>Tags (comma-separated)</Label>
         <Input
-          type='url'
-          name='demo'
-          id='demo'
-          value={formData.demo}
+          type='text'
+          name='tags'
+          id='tags'
+          value={formData.tags}
           onChange={handleChange}
         />
       </div>

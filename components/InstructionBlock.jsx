@@ -1,13 +1,28 @@
+// 'use client'
+
 // import { CheckCheck, Copy, Minus } from 'lucide-react'
 // import Image from 'next/image'
 // import React from 'react'
+// import { Button } from '@/components/ui/button'
+// import { Card } from '@/components/ui/card'
+// import { Checkbox } from '@/components/ui/checkbox'
+// import {
+//   Table,
+//   TableBody,
+//   TableCell,
+//   TableHead,
+//   TableHeader,
+//   TableRow,
+// } from '@/components/ui/table'
 
 // const List = ({ style, data }) => {
 //   return (
 //     <ol
-//       className={`pl-5 ${style === 'unordered' ? 'list-disc' : 'list-decimal'}`}
+//       className={`pl-5 space-y-4 ${
+//         style === 'unordered' ? 'list-disc' : 'list-decimal'
+//       }`}
 //     >
-//       {data?.items?.map((item, index) => (
+//       {data.items.map((item, index) => (
 //         <li
 //           key={index}
 //           className='my-4'
@@ -22,37 +37,27 @@
 //   let { type, data } = instruction
 
 //   if (type === 'paragraph') {
-//     return <p dangerouslySetInnerHTML={{ __html: data.text }} />
+//     return (
+//       <p
+//         className='leading-7 [&:not(:first-child)]:mt-6'
+//         dangerouslySetInnerHTML={{ __html: data.text }}
+//       />
+//     )
 //   }
 
 //   if (type === 'header') {
-//     if (data.level === 3) {
-//       return (
-//         <h3
-//           className='text-lg font-semibold'
-//           dangerouslySetInnerHTML={{ __html: data.text }}
-//         />
-//       )
+//     const headerClasses = {
+//       1: 'scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl',
+//       2: 'scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0',
+//       3: 'scroll-m-20 text-2xl font-semibold tracking-tight',
 //     }
 
-//     if (data.level === 2) {
-//       return (
-//         <h2
-//           className='text-xl font-bold'
-//           dangerouslySetInnerHTML={{ __html: data.text }}
-//         />
-//       )
-//     }
-
-//     if (data.level === 1) {
-//       return (
-//         <h1
-//           className='text-2xl font-extrabold'
-//           dangerouslySetInnerHTML={{ __html: data.text }}
-//         />
-//       )
-//     }
+//     return React.createElement(`h${data.level}`, {
+//       className: headerClasses[data.level],
+//       dangerouslySetInnerHTML: { __html: data.text },
+//     })
 //   }
+
 //   if (type === 'code') {
 //     const [copied, setCopied] = React.useState(false)
 
@@ -65,156 +70,180 @@
 
 //     return (
 //       <div className='relative my-8'>
-//         <pre className='rounded-lg border p-4 text-sm leading-6 overflow-x-auto bg-gray-900 text-white shadow-md'>
+//         <pre
+//           className='rounded-lg border bg-muted px-4 py-4 font-mono text-sm overflow-x-auto'
+//           style={{
+//             wordBreak: 'break-word',
+//             whiteSpace: 'pre-wrap',
+//           }}
+//         >
 //           {data.code}
 //         </pre>
-//         <button
-//           type='button'
-//           className='absolute top-2 right-2 flex items-center px-2 py-1 rounded-md bg-background text-foreground hover:bg-muted-foreground'
+//         <Button
+//           variant='ghost'
+//           size='icon'
+//           className='absolute right-4 top-2 text-muted-foreground'
 //           onClick={handleCopy}
-//           title={copied ? 'Copied!' : 'Copy'}
 //         >
 //           {copied ? (
-//             <CheckCheck className='w-4 h-4' />
+//             <CheckCheck className='h-4 w-4' />
 //           ) : (
-//             <Copy className='w-4 h-4' />
+//             <Copy className='h-4 w-4' />
 //           )}
-//         </button>
+//           <span className='sr-only'>Copy code</span>
+//         </Button>
 //       </div>
 //     )
 //   }
+
 //   if (type === 'image') {
+//     const { caption, withBorder, withBackground, stretched, file } = data
+
+//     const imageClasses = [
+//       'w-full',
+//       'object-cover',
+//       'transition-all',
+//       'hover:scale-105',
+//       withBorder ? 'border' : '',
+//       withBackground ? 'bg-background' : '',
+//       stretched ? 'h-full' : '',
+//     ].join(' ')
+
 //     return (
-//       <div className='w-full overflow-hidden'>
-//         <Image
-//           src={data.file.url}
-//           alt={data.caption}
-//           title={data.caption}
-//           width={1000}
-//           height={1000}
-//         />
-//         <p className='text-center'>{data.caption}</p>
-//       </div>
+//       <figure className='my-8'>
+//         <div>
+//           <Image
+//             src={file.url}
+//             alt={caption}
+//             width={1000}
+//             height={1000}
+//             className={imageClasses}
+//           />
+//         </div>
+//         {caption && (
+//           <figcaption className='mt-2 text-center text-sm text-muted-foreground'>
+//             {caption}
+//           </figcaption>
+//         )}
+//       </figure>
 //     )
 //   }
+
 //   if (type === 'quote') {
 //     return (
-//       <div className='bg-purple-600/10 p-3 pl-5 border-l-4 border-purple-600'>
-//         <p className='text-xl leading-10 '>{data.text}</p>
-//         <p className='w-full text-purple-600 text-base'>{data.caption}</p>
-//       </div>
+//       <Card className='my-8'>
+//         <blockquote className='border-l-4 border-primary p-6'>
+//           <p className='text-xl font-semibold leading-loose'>{data.text}</p>
+//           {data.caption && (
+//             <footer className='mt-2 text-sm text-muted-foreground'>
+//               — {data.caption}
+//             </footer>
+//           )}
+//         </blockquote>
+//       </Card>
 //     )
 //   }
+
 //   if (type === 'horizontalRule') {
-//     return <hr />
+//     return <hr className='my-8' />
 //   }
+
 //   if (type === 'list') {
-//     return <List style={data.style} items={data.items} />
+//     return <List style={data.style} data={data} />
 //   }
+
 //   if (type === 'table') {
 //     return (
-//       <div
-//         className={`w-full overflow-x-auto ${
-//           data.withHeadings ? '' : 'table-auto'
-//         }`}
-//       >
-//         <table className='w-full'>
+//       <div className='my-8 w-full overflow-auto'>
+//         <Table>
 //           {data.withHeadings && (
-//             <thead>
-//               <tr>
+//             <TableHeader>
+//               <TableRow>
 //                 {data.content[0].map((header, index) => (
-//                   <th
-//                     key={index}
-//                     className='border border-gray-300 px-4 py-2 text-left'
-//                   >
-//                     {header}
-//                   </th>
+//                   <TableHead key={index}>{header}</TableHead>
 //                 ))}
-//               </tr>
-//             </thead>
+//               </TableRow>
+//             </TableHeader>
 //           )}
-//           <tbody>
-//             {data.content.map((row, rowIndex) => (
-//               <tr key={rowIndex}>
-//                 {row.map((cell, cellIndex) => (
-//                   <td
-//                     key={cellIndex}
-//                     className='border border-gray-300 px-4 py-2 text-left'
-//                   >
-//                     {cell}
-//                   </td>
-//                 ))}
-//               </tr>
-//             ))}
-//           </tbody>
-//         </table>
+//           <TableBody>
+//             {(data.withHeadings ? data.content.slice(1) : data.content).map(
+//               (row, rowIndex) => (
+//                 <TableRow key={rowIndex}>
+//                   {row.map((cell, cellIndex) => (
+//                     <TableCell key={cellIndex}>{cell}</TableCell>
+//                   ))}
+//                 </TableRow>
+//               )
+//             )}
+//           </TableBody>
+//         </Table>
 //       </div>
 //     )
 //   }
+
 //   if (type === 'embed') {
 //     return (
-//       <div
-//         className='relative w-full aspect-video rounded my-4 overflow-hidden'
-//         style={{ paddingBottom: `${(data.height / data.width) * 100}%` }}
-//       >
+//       <div className='my-8 aspect-video overflow-hidden rounded-lg'>
 //         <iframe
 //           src={data.embed}
-//           className='absolute inset-0 w-full h-full'
+//           className='h-full w-full'
 //           width={data.width}
 //           height={data.height}
 //           frameBorder='0'
 //           allowFullScreen
-//         ></iframe>
+//         />
 //       </div>
 //     )
 //   }
+
 //   if (type === 'checklist') {
 //     return (
-//       <ul className='list-none m-0 p-0 space-y-2 my-4'>
+//       <div className='my-8 space-y-4'>
 //         {data.items.map((item, index) => (
-//           <li key={index} className='flex items-center'>
-//             <input
-//               type='checkbox'
-//               className='mr-2 rounded border-gray-300 text-primary-600 shadow-sm focus:border-primary-300 focus:ring focus:ring-offset-0 focus:ring-primary-200'
-//               checked={item.checked}
-//               onChange={() => {}}
-//             />
-//             <span className='select-none'>{item.text}</span>
-//           </li>
+//           <div key={index} className='flex items-center space-x-2'>
+//             <Checkbox id={`item-${index}`} checked={item.checked} />
+//             <label
+//               htmlFor={`item-${index}`}
+//               className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+//             >
+//               {item.text}
+//             </label>
+//           </div>
 //         ))}
-//       </ul>
+//       </div>
 //     )
 //   }
+
 //   if (type === 'raw') {
 //     return (
-//       <div
-//         className='my-4 w-full'
-//         dangerouslySetInnerHTML={{ __html: data.html }}
-//       />
+//       <div className='my-8' dangerouslySetInnerHTML={{ __html: data.html }} />
 //     )
 //   }
+
 //   if (type === 'linkTool') {
 //     return (
-//       <div className='my-4 w-full'>
+//       <Card className='my-8'>
 //         <a
 //           href={data.link}
-//           className='text-primary hover:underline w-full bg-gray-600/10 my-4 p-3 border-primary rounded block'
+//           className='block p-6 hover:bg-muted/50'
 //           target='_blank'
 //           rel='noopener noreferrer'
 //         >
-//           {data.link}
+//           <p className='text-sm text-muted-foreground'>{data.link}</p>
 //         </a>
-//       </div>
+//       </Card>
 //     )
 //   }
 
 //   if (type === 'delimiter') {
 //     return (
-//       <div className='my-6 flex items-center justify-center'>
-//         <Minus className='w-6 h-6 text-gray-300' />
+//       <div className='my-8 flex items-center justify-center'>
+//         <Minus className='h-6 w-6 text-muted-foreground' />
 //       </div>
 //     )
 //   }
+
+//   return null
 // }
 
 // export default InstructionBlock
@@ -291,13 +320,19 @@ const InstructionBlock = ({ instruction }) => {
 
     return (
       <div className='relative my-8'>
-        <pre className='rounded-lg border bg-muted px-4 py-4 font-mono text-sm'>
+        <pre
+          className='rounded-lg border bg-muted px-4 py-4 font-mono text-sm overflow-x-auto'
+          style={{
+            wordBreak: 'break-word',
+            whiteSpace: 'pre-wrap',
+          }}
+        >
           {data.code}
         </pre>
         <Button
           variant='ghost'
           size='icon'
-          className='absolute right-4 top-4'
+          className='absolute right-4 top-2 text-muted-foreground'
           onClick={handleCopy}
         >
           {copied ? (
@@ -320,7 +355,7 @@ const InstructionBlock = ({ instruction }) => {
       'transition-all',
       'hover:scale-105',
       withBorder ? 'border' : '',
-      withBackground ? 'bg-background' : '',
+      withBackground ? 'bg-background scale-80' : '',
       stretched ? 'h-full' : '',
     ].join(' ')
 

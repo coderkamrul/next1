@@ -14,6 +14,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import Link from 'next/link'
+import { toast } from '@/hooks/use-toast'
 
 export default function LoginPage() {
   const [login, setLogin] = useState('')
@@ -29,7 +30,11 @@ export default function LoginPage() {
     })
 
     if (result?.error) {
-      console.error(result.error)
+      toast({
+        title: 'Login Failed',
+        description: result.error,
+        variant: 'error',
+      })
     } else {
       router.push('/dashboard')
     }

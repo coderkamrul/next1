@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { CalendarDays, FileText, Film, Folder, Eye } from 'lucide-react'
+import { CalendarDays, FileText, Folder, Eye } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -42,7 +42,7 @@ export default function DashboardPage() {
     )
   }
 
-  const { blogs, projects, videos, stats } = dashboardData || {}
+  const { blogs, stats } = dashboardData || {}
 
   return (
     <div className='p-8'>
@@ -59,30 +59,6 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-bold'>{stats?.totalBlogs || 0}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>
-              Total Projects
-            </CardTitle>
-            <Folder className='h-4 w-4 text-muted-foreground' />
-          </CardHeader>
-          <CardContent>
-            <div className='text-2xl font-bold'>
-              {stats?.totalProjects || 0}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Total Videos</CardTitle>
-            <Film className='h-4 w-4 text-muted-foreground' />
-          </CardHeader>
-          <CardContent>
-            <div className='text-2xl font-bold'>{stats?.totalVideos || 0}</div>
           </CardContent>
         </Card>
 
@@ -130,82 +106,6 @@ export default function DashboardPage() {
                     </h3>
                     <p className='text-sm text-muted-foreground'>
                       {new Date(blog.createdAt).toLocaleDateString()}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Recent Projects */}
-        <Card>
-          <CardHeader>
-            <CardTitle className='text-xl font-semibold'>
-              Recent Projects
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className='space-y-4'>
-              {projects?.map((project) => (
-                <Link
-                  href={`/projects/${project._id}`}
-                  key={project._id}
-                  className='flex items-center gap-3 group'
-                >
-                  <div className='relative w-12 h-12 rounded-lg overflow-hidden'>
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      className='object-cover'
-                    />
-                  </div>
-                  <div className='flex-1 min-w-0'>
-                    <h3 className='font-medium truncate group-hover:text-primary'>
-                      {project.title}
-                    </h3>
-                    <p className='text-sm text-muted-foreground truncate'>
-                      {project.description}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Recent Videos */}
-        <Card>
-          <CardHeader>
-            <CardTitle className='text-xl font-semibold'>
-              Recent Videos
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className='space-y-4'>
-              {videos?.map((video) => (
-                <Link
-                  href={video.link}
-                  key={video._id}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='flex items-center gap-3 group'
-                >
-                  <div className='relative w-12 h-12 rounded-lg overflow-hidden'>
-                    <Image
-                      src={video.image}
-                      alt={video.title}
-                      fill
-                      className='object-cover'
-                    />
-                  </div>
-                  <div className='flex-1 min-w-0'>
-                    <h3 className='font-medium truncate group-hover:text-primary'>
-                      {video.title}
-                    </h3>
-                    <p className='text-sm text-muted-foreground truncate'>
-                      {video.category}
                     </p>
                   </div>
                 </Link>

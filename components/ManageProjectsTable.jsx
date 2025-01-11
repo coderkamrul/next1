@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/table'
 import { toast } from '@/hooks/use-toast'
 import Image from 'next/image'
+import { Star } from 'lucide-react'
 
 export default function ManageProjectsTable() {
   const [projects, setProjects] = useState([])
@@ -74,6 +75,19 @@ export default function ManageProjectsTable() {
     {
       accessorKey: 'details.framework',
       header: 'Framework',
+    },
+    {
+      accessorKey: 'stars',
+      header: 'Stars',
+      cell: ({ row }) => {
+        const stars = row.getValue('stars')
+        return (
+          <div className='flex items-center gap-1'>
+            <Star className='h-4 w-4 text-yellow-500' />
+            <span>{Array.isArray(stars) ? stars.length : '0'}</span>
+          </div>
+        )
+      },
     },
     {
       id: 'actions',

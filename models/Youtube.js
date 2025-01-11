@@ -19,6 +19,13 @@ const YoutubeSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    setupinstructions: {
+      type: Object,
+      type: [],
+      time: Number,
+      blocks: [],
+      version: String,
+    },
     category: {
       type: String,
       required: true,

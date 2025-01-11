@@ -77,10 +77,26 @@ const Navbar = () => {
                   <DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
-                    <Link href='/dashboard'>Dashboard</Link>
+                    <Link
+                      href={
+                        session.user.role === 'admin'
+                          ? '/dashboard'
+                          : '/user/dashboard'
+                      }
+                    >
+                      Dashboard
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <Link href='/dashboard/settings'>Profile</Link>
+                    <Link
+                      href={
+                        session.user.role === 'admin'
+                          ? '/dashboard/settings'
+                          : '/user/dashboard/settings'
+                      }
+                    >
+                      Profile
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <button onClick={() => signOut()}>Logout</button>

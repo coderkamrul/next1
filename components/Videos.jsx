@@ -51,7 +51,9 @@ export default function VideosPage() {
     if (data.success) {
       setProjects(data.data)
       setIsLoading(false)
-      setFilters(data.data.map((project) => project.category).flat())
+      const tags = data.data.map((project) => project.category).flat()
+      const uniqueTags = Array.from(new Set(tags))
+      setFilters(uniqueTags)
     }
   }
 
@@ -184,7 +186,7 @@ export default function VideosPage() {
                 >
                   <Card className='group overflow-hidden'>
                     <CardContent className='p-0'>
-                      <Link href={project.link} target='_blank'>
+                      <Link href={`/videos/${project._id}`}>
                         <div className='relative'>
                           <Image
                             src={project.image}
