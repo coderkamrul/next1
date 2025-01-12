@@ -74,40 +74,16 @@ const experiencedata = [
   },
 ]
 
-const reviewdata = [
-  {
-    id: 1,
-    name: 'John Doe',
-    review:
-      'I had a great experience working with this developer. They were very responsive and helpful. I highly recommend them!',
-    star: 5,
-    image: '/file1.webp',
-  },
-  {
-    id: 2,
-    name: 'Jane Smith',
-    review:
-      'Collaborative and innovative! Their commitment to excellence shines through their work.',
-    star: 5,
-    image: '/file1.webp',
-  },
-  {
-    id: 3,
-    name: 'Michael Johnson',
-    review:
-      'A great collaborator! Thrives in teamwork and brings fresh perspectives to every project.',
-    star: 5,
-    image: '/file1.webp',
-  },
-]
-
 export default function Home() {
   const [youtubedata, setyoutubedata] = useState([])
   const [blogdata, setblogdata] = useState([])
+  const [reviewdata, setreviewdata] = useState([])
+  const [allReviews, setAllReviews] = useState([])
 
   useEffect(() => {
     fetchYoutubes()
     fetchBlogs()
+    fetchReviews()
   }, [])
   const fetchYoutubes = async () => {
     const res = await fetch('/api/youtube/all')
@@ -123,6 +99,20 @@ export default function Home() {
       setblogdata(data.data)
     }
   }
+  const fetchReviews = async () => {
+    const res = await fetch('/api/reviews')
+    const data = await res.json()
+    if (data.success) {
+      setAllReviews(data.data.slice(0, 3))
+      const sortedReviews = data.data.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      )
+      const latestTwoReviews = sortedReviews.slice(0, 2)
+      setreviewdata(latestTwoReviews)
+    }
+  }
+
+  console.log(reviewdata)
 
   const {
     register,
@@ -216,22 +206,17 @@ export default function Home() {
               </div>
               <div className='relative mt-4 lg:mt-0'>
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
-                  <ReviewCard
-                    from='Fiverr Buyer'
-                    name='Antonio'
-                    star='5'
-                    image='A'
-                    message='The seller understood my work very well. I entrusted him with the creation of 3 sections of my webapp and its deployment.'
-                    color='bg-primary'
-                  />
-                  <ReviewCard
-                    from='Fiverr Buyer'
-                    name='Antonio'
-                    star='5'
-                    image='Y'
-                    message='The seller understood my work very well. I entrusted him with the creation of 3 sections of my webapp and its deployment.'
-                    color='bg-green-500'
-                  />
+                  {reviewdata.map((review) => (
+                    <ReviewCard
+                      key={review._id}
+                      from='Fiverr Buyer'
+                      name={review.name}
+                      star={review.rating}
+                      image={review.profilePicture}
+                      message={review.review}
+                      color='bg-primary'
+                    />
+                  ))}
                 </div>
               </div>
             </div>
@@ -410,7 +395,7 @@ export default function Home() {
                 </p>
               </div>
               <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
-                {reviewdata.map((testimonial) => (
+                {allReviews.map((testimonial) => (
                   <div
                     key={testimonial.name}
                     className='group relative overflow-hidden rounded-xl bg-card p-6 shadow-md hover:shadow-xl transition-all duration-300'
@@ -420,13 +405,19 @@ export default function Home() {
                     </div>
                     <div className='flex items-center gap-4 mb-6'>
                       <div className='relative'>
-                        <Image
-                          src={testimonial.image}
-                          alt={testimonial.name}
-                          width={40}
-                          height={40}
-                          className='w-14 h-14 rounded-full object-cover ring-2 ring-primary/20'
-                        />
+                        {testimonial.profilePicture ? (
+                          <Image
+                            src={testimonial.profilePicture}
+                            alt={testimonial.name}
+                            width={40}
+                            height={40}
+                            className='w-14 h-14 rounded-full object-cover ring-2 ring-primary/20'
+                          />
+                        ) : (
+                          <span className='inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary text-white font-semibold'>
+                            {testimonial.name.slice(0, 1)}
+                          </span>
+                        )}
                         <div className='absolute hover:scale-110 transition-all duration-300 -bottom-1 -right-1 bg-primary text-white p-1 rounded-full'>
                           <Star className='w-3 h-3 text-secondary ' />
                         </div>
@@ -438,7 +429,7 @@ export default function Home() {
                         <p className='text-sm text-muted-foreground'>Client</p>
                       </div>
                     </div>
-                    <p className='text-muted-foreground leading-relaxed'>
+                    <p className='text-muted-foreground leading-relaxed line-clamp-5'>
                       {testimonial.review}
                     </p>
                   </div>

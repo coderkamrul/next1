@@ -14,10 +14,21 @@ const ReviewCard = ({ from, message, image, name, star, color }) => {
         shadow-[0_0_15px_rgba(0,0,0,0.1)] dark:shadow-[0_0_15px_rgba(0,0,0,0.3)] transform-gpu transition-colors duration-300 ease-in-out'
     >
       <div className='absolute -top-3 -left-3'>
-        <div
-          className={`w-10 h-10 ${color} rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg`}
-        >
-          {image}
+        <div className='w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg'>
+          {image !== '' ? (
+            <img
+              src={image}
+              alt={name}
+              className='w-full h-full rounded-full'
+            />
+          ) : (
+            <span
+              className={`${color} bg-[${color}] w-full h-full rounded-full flex items-center justify-center`}
+              style={{ backgroundImage: 'none' }}
+            >
+              {name.slice(0, 1)}
+            </span>
+          )}
         </div>
       </div>
       <div className='mt-4'>
@@ -26,7 +37,7 @@ const ReviewCard = ({ from, message, image, name, star, color }) => {
             <FaStar key={i} size={16} className='fill-yellow-400' />
           ))}
         </div>
-        <p className='text-gray-700 dark:text-gray-300 text-sm sm:text-base leading-relaxed'>
+        <p className='text-gray-700 dark:text-gray-300 text-sm sm:text-base leading-relaxed line-clamp-5'>
           {message}
         </p>
         <div className='mt-4 border-t border-gray-100 dark:border-gray-700 pt-4'>
