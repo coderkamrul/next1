@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-i
+
 import dbConnect from '@/lib/mongodb'
 import Components from '@/models/Components'
 
