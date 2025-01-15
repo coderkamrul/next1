@@ -6,11 +6,13 @@ import {
   BookOpen,
   Bot,
   Command,
+  Component,
   FolderCode,
   Frame,
   GalleryVerticalEnd,
   LayoutDashboard,
   Map,
+  MessageSquareDiff,
   Newspaper,
   PieChart,
   Settings2,
@@ -97,10 +99,16 @@ const data = {
       url: '/dashboard',
       icon: LayoutDashboard,
     },
+
     {
       name: 'Projects',
       url: '/dashboard/projects',
       icon: FolderCode,
+    },
+    {
+      name: 'Component',
+      url: '/dashboard/components',
+      icon: Component,
     },
     {
       name: 'Youtube',
@@ -115,7 +123,7 @@ const data = {
     {
       name: 'Reviews',
       url: '/dashboard/reviews',
-      icon: Newspaper,
+      icon: MessageSquareDiff,
     },
   ],
 }

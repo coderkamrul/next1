@@ -43,7 +43,9 @@ export default async function DashboardLayout({ children }) {
               </Breadcrumb>
             </div>
           </header> */}
-          <main className='flex-1 p-4 md:p-8 overflow-hidden'>{children}</main>
+          <main className='flex-1 p-4 md:p-8 overflow-auto max-h-[90vh]'>
+            {children}
+          </main>
         </SidebarInset>
       </SidebarProvider>
     </div>
