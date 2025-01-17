@@ -15,6 +15,7 @@ import {
   MessageSquareDiff,
   Newspaper,
   PieChart,
+  ReceiptIcon,
   Settings2,
   SquareTerminal,
   Youtube,
@@ -124,6 +125,11 @@ const data = {
       name: 'Reviews',
       url: '/dashboard/reviews',
       icon: MessageSquareDiff,
+    },
+    {
+      name: 'Affiliate',
+      url: '/dashboard/affiliates',
+      icon: ReceiptIcon,
     },
   ],
 }

@@ -24,6 +24,7 @@ import { PreviewModal } from '@/components/preview-modal'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
+import { LiveProvider, LiveEditor, LivePreview } from 'react-live'
 
 const DynamicComponent = dynamic(
   () =>
@@ -67,7 +68,7 @@ export default function ComponentCard({ component }) {
   }
 
   return (
-    <div className='max-w-7xl mx-auto p-6'>
+    <div className='max-w-7xl mx-auto p-6 '>
       <div className='flex mb-6 flex-col'>
         <div className='flex gap-2 justify-between mt-4'>
           <div>
@@ -152,9 +153,17 @@ export default function ComponentCard({ component }) {
                   height: previewSizes[previewMode].height,
                   transition: 'width 0.3s ease',
                 }}
-                className=' bg-background shadow-sm overflow-auto max-h-[500px]'
+                className='  overflow-auto max-h-[500px]'
               >
                 {component.code && <DynamicComponent code={component.code} />}
+                {/* {component.code && (
+                  <LiveProvider code={component.code}>
+                    <div className='grid grid-cols-2 gap-4'>
+                      <LiveEditor className='font-mono' />
+                      <LivePreview />
+                    </div>
+                  </LiveProvider>
+                )} */}
               </div>
             </div>
           ) : (

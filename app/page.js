@@ -206,17 +206,64 @@ export default function Home() {
               </div>
               <div className='relative mt-4 lg:mt-0'>
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
-                  {reviewdata.map((review) => (
-                    <ReviewCard
-                      key={review._id}
-                      from='Fiverr Buyer'
-                      name={review.name}
-                      star={review.rating}
-                      image={review.profilePicture}
-                      message={review.review}
-                      color='bg-primary'
-                    />
-                  ))}
+                  {reviewdata.length === 0 ? (
+                    <>
+                      <motion.div
+                        whileHover={{
+                          scale: [null, 1.05, 1.02, 1.05],
+                          translateY: [null, 0, 0, -5],
+                        }}
+                        transition={{ duration: 0.5 }}
+                        className='relative p-6 rounded-2xl bg-white/90 dark:bg-gray-950 backdrop-blur-sm
+                        shadow-[0_0_15px_rgba(0,0,0,0.1)] dark:shadow-[0_0_15px_rgba(0,0,0,0.3)] transform-gpu transition-colors duration-300 ease-in-out min-h-[260px]'
+                      >
+                        <div className='absolute -top-3 -left-3'>
+                          <div className='w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg'>
+                            <span className='bg-primary w-full h-full rounded-full flex items-center justify-center'>
+                              L
+                            </span>
+                          </div>
+                        </div>
+                        <div className='mt-20'>
+                          <div className='mt-4 border-t border-gray-100 dark:border-gray-700 pt-12'></div>
+                        </div>
+                        <div className='absolute -bottom-2 -right-2 w-4 h-4 bg-gradient-to-br from-primary to-primary-600 rounded-full'></div>
+                      </motion.div>
+                      <motion.div
+                        whileHover={{
+                          scale: [null, 1.05, 1.02, 1.05],
+                          translateY: [null, 0, 0, -5],
+                        }}
+                        transition={{ duration: 0.5 }}
+                        className='relative p-6 rounded-2xl bg-white/90 dark:bg-gray-950 backdrop-blur-sm
+                        shadow-[0_0_15px_rgba(0,0,0,0.1)] dark:shadow-[0_0_15px_rgba(0,0,0,0.3)] transform-gpu transition-colors duration-300 ease-in-out min-h-[260px]'
+                      >
+                        <div className='absolute -top-3 -left-3'>
+                          <div className='w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg'>
+                            <span className='bg-primary w-full h-full rounded-full flex items-center justify-center'>
+                              U
+                            </span>
+                          </div>
+                        </div>
+                        <div className='mt-20'>
+                          <div className='mt-4 border-t border-gray-100 dark:border-gray-700 pt-12'></div>
+                        </div>
+                        <div className='absolute -bottom-2 -right-2 w-4 h-4 bg-gradient-to-br from-primary to-primary-600 rounded-full'></div>
+                      </motion.div>
+                    </>
+                  ) : (
+                    reviewdata.map((review) => (
+                      <ReviewCard
+                        key={review._id}
+                        from='Fiverr Buyer'
+                        name={review.name}
+                        star={review.rating}
+                        image={review.profilePicture}
+                        message={review.review}
+                        color='bg-primary'
+                      />
+                    ))
+                  )}
                 </div>
               </div>
             </div>

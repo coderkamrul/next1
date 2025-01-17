@@ -84,7 +84,7 @@ export default function ImageUpload({ onImageUpload }) {
               <img
                 src={preview}
                 alt='Preview'
-                className='max-w-full h-auto rounded-md'
+                className='max-w-fit h-24 rounded-md'
               />
               <Button
                 variant='secondary'
