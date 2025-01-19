@@ -13,6 +13,8 @@ import useAddCopyButtons from '@/hooks/useAddCopyButtons'
 import InstructionBlock from '@/components/InstructionBlock'
 import { FaStar } from 'react-icons/fa'
 import { useSession } from 'next-auth/react'
+import { Dialog, DialogTrigger } from '@/components/ui/dialog'
+import Preview from '@/components/Preview'
 
 export default function ProjectPage({ params: paramsPromise, codeString }) {
   const params = React.use(paramsPromise)
@@ -22,6 +24,7 @@ export default function ProjectPage({ params: paramsPromise, codeString }) {
   const [starred, setStarred] = useState(false)
   const [stars, setStars] = useState(0)
   const { data: session } = useSession()
+  const [isOpen, setIsOpen] = useState(false)
   useEffect(() => {
     fetchProject()
   }, [params.id])
@@ -133,11 +136,21 @@ export default function ProjectPage({ params: paramsPromise, codeString }) {
 
           <div className='flex gap-4'>
             <AccessCode />
-            <Link href={project.link} target='_blank' rel='noopener noreferrer'>
+            {/* <Link href={project.link} target='_blank' rel='noopener noreferrer'>
               <Button className='w-full' variant='outline'>
                 Live Preview
               </Button>
-            </Link>
+            </Link> */}
+
+            <Dialog open={isOpen} onOpenChange={setIsOpen}>
+              <DialogTrigger asChild>
+                <Button variant='outline' onClick={() => setIsOpen(true)}>
+                  Live Preview
+                </Button>
+              </DialogTrigger>
+              <Preview link={project.link} setIsOpen={setIsOpen} />
+            </Dialog>
+
             <Button
               onClick={handleStar}
               className='w-full flex items-center justify-center gap-2'
