@@ -17,24 +17,34 @@ export async function PUT(req, { params }) {
       )
     }
 
-    const { id } = params
+    const { id } = await params
 
-    const project = await Project.findOneAndUpdate(
-      { _id: id },
-      {
-        $push: { stars: session.user.id },
-      },
-      { new: true }
-    )
+    let project = await Project.findOne({ _id: id })
 
-    if (!project) {
-      return NextResponse.json(
-        { success: false, error: 'Project not found' },
-        { status: 404 }
-      )
+    if (project) {
+      const isStarred = project.stars.includes(session.user.id)
+      const update = isStarred
+        ? { $pull: { stars: session.user.id } }
+        : { $addToSet: { stars: session.user.id } }
+
+      project = await Project.findOneAndUpdate({ _id: id }, update, {
+        new: true,
+      })
+
+      if (!project) {
+        return NextResponse.json(
+          { success: false, error: 'Project not found' },
+          { status: 404 }
+        )
+      }
+
+      return NextResponse.json({ success: true, data: project })
     }
 
-    return NextResponse.json({ success: true, data: project })
+    return NextResponse.json(
+      { success: false, error: 'Project not found' },
+      { status: 404 }
+    )
   } catch (error) {
     return NextResponse.json(
       { success: false, error: error.message },
@@ -55,7 +65,7 @@ export async function DELETE(req, { params }) {
       )
     }
 
-    const { id } = params
+    const { id } = await params
 
     const project = await Project.findOneAndUpdate(
       { _id: id },

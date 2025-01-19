@@ -94,7 +94,7 @@ export function NavigationMenus() {
               </Link>
             </NavigationMenuItem>
           ))}
-          <NavigationMenuItem>
+          {/* <NavigationMenuItem>
             <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className='grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]'>
@@ -141,7 +141,7 @@ export function NavigationMenus() {
                 ))}
               </ul>
             </NavigationMenuContent>
-          </NavigationMenuItem>
+          </NavigationMenuItem> */}
         </NavigationMenuList>
       </NavigationMenu>
 
@@ -173,7 +173,7 @@ export function NavigationMenus() {
                   {item.label}
                 </Link>
               ))}
-              <div className='pt-4'>
+              {/* <div className='pt-4'>
                 <h3 className='mb-2 text-lg font-semibold'>Getting Started</h3>
                 <ul className='space-y-2'>
                   <li>
@@ -213,7 +213,7 @@ export function NavigationMenus() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </div> */}
             </nav>
           </SheetContent>
         </Sheet>

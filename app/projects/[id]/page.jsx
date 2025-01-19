@@ -28,6 +28,11 @@ export default function ProjectPage({ params: paramsPromise, codeString }) {
   useEffect(() => {
     fetchProject()
   }, [params.id])
+  useEffect(() => {
+    if (session?.user.id && project?.stars.includes(session?.user.id)) {
+      setStarred(true)
+    }
+  }, [session?.user.id, project?.stars])
 
   useAddCopyButtons()
   const fetchProject = async () => {
@@ -42,7 +47,6 @@ export default function ProjectPage({ params: paramsPromise, codeString }) {
       if (data.success) {
         setProject(data.data)
         setStars(data.data.stars.length)
-        setStarred(data.data.stars.includes(session?.user.id))
       } else {
         throw new Error(data.error || 'Failed to fetch project')
       }
