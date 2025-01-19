@@ -153,11 +153,11 @@ export default function ProjectPage({ params: paramsPromise, codeString }) {
 
             <Button
               onClick={handleStar}
-              className='w-full flex items-center justify-center gap-2'
+              className='w-full flex items-center justify-between gap-2'
               variant={starred ? 'secondary' : 'outline'}
             >
-              <FaStar className='h-5 w-5' />
-              {stars}
+              <FaStar className={starred ? 'text-yellow-400' : ''} size={20} />
+              <span className='border-l pl-2'>Star</span> {stars}
             </Button>
           </div>
         </div>

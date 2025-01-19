@@ -22,8 +22,9 @@ import { useMediaQuery } from '@/hooks/use-media-quary'
 const HireOptions = () => (
   <div className='flex flex-col gap-3 py-4 px-4 md:px-0'>
     <Link
-      href='#'
+      href='https://www.fiverr.com/s/EgbKBBD'
       className='flex items-center gap-4 rounded-lg border p-4 transition-colors hover:bg-accent border-primary'
+      target='_blank'
     >
       <div className='flex h-10 w-10 items-center justify-center rounded-full bg-[#1DBF73]/10'>
         <SiFiverr size={25} />
@@ -42,8 +43,9 @@ const HireOptions = () => (
     </Link>
 
     <Link
-      href='#'
+      href='https://www.upwork.com/freelancers/~01190dc956db117d5d?mp_source=share'
       className='flex items-center gap-4 rounded-lg border p-4 transition-colors hover:bg-accent'
+      target='_blank'
     >
       <div className='flex h-10 w-10 items-center justify-center rounded-full bg-[#14A800]/10'>
         <SiUpwork size={22} />
@@ -57,7 +59,7 @@ const HireOptions = () => (
     </Link>
 
     <Link
-      href='mailto:contact@example.com'
+      href='mailto:kamrulhasan13020@gmail.com'
       className='flex items-center gap-4 rounded-lg border p-4 transition-colors hover:bg-accent'
     >
       <div className='flex h-10 w-10 items-center justify-center rounded-full bg-primary/10'>
