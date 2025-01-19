@@ -131,6 +131,11 @@ const data = {
       url: '/dashboard/affiliates',
       icon: ReceiptIcon,
     },
+    {
+      name: 'Submition',
+      url: '/dashboard/submissions',
+      icon: ReceiptIcon,
+    },
   ],
 }
 

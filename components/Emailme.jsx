@@ -25,13 +25,43 @@ import {
 } from '@/components/ui/drawer'
 import { useMediaQuery } from '@/hooks/use-media-quary'
 import { DialogClose } from '@radix-ui/react-dialog'
+import { toast } from '@/hooks/use-toast'
 
-const EmailForm = ({ onSubmit }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm()
+const EmailForm = () => {
+  const { register, handleSubmit, reset } = useForm()
+  const [loading, setLoading] = React.useState(false)
+
+  const onSubmit = async (data) => {
+    setLoading(true)
+    try {
+      const res = await fetch('/api/submissions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+
+      if (res.ok) {
+        toast({
+          title: 'Submission Successful',
+          description: 'Your submission has been send successfully.',
+        })
+        reset()
+      } else {
+        throw new Error('Failed to create submission')
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      toast({
+        title: 'Error',
+        description: 'Failed to create submission. Please try again.',
+        variant: 'destructive',
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='space-y-6 '>

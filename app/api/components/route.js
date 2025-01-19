@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import dbConnect from '@/lib/mongodb'
-import Components from '../../../models/Components'
+import Components from '../../../models/Components.js'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 
 export async function GET(req) {

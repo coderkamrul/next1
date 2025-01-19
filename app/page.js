@@ -34,6 +34,7 @@ import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { Textarea } from '@/components/ui/textarea'
 import { useEffect, useState } from 'react'
+import { toast } from '@/hooks/use-toast'
 
 const experiencedata = [
   {
@@ -112,13 +113,39 @@ export default function Home() {
     }
   }
 
-  console.log(reviewdata)
+  const { register, handleSubmit, reset } = useForm()
+  const [loading, setLoading] = useState(false)
+  const onSubmit = async (data) => {
+    setLoading(true)
+    try {
+      const res = await fetch('/api/submissions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm()
+      if (res.ok) {
+        toast({
+          title: 'Submission Successful',
+          description: 'Your submission has been send successfully.',
+        })
+        reset()
+      } else {
+        throw new Error('Failed to create submission')
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      toast({
+        title: 'Error',
+        description: 'Failed to create submission. Please try again.',
+        variant: 'destructive',
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className='relative z-0 mb-32'>
@@ -560,7 +587,7 @@ export default function Home() {
             </div>
             {/* form  */}
             <form
-              onSubmit={handleSubmit}
+              onSubmit={handleSubmit(onSubmit)}
               className='mt-8 space-y-6 bg-card p-6 rounded-xl shadow-lg'
             >
               <div className='space-y-4'>
