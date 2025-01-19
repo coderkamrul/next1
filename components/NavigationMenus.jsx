@@ -94,7 +94,7 @@ export function NavigationMenus() {
               </Link>
             </NavigationMenuItem>
           ))}
-          <NavigationMenuItem>
+{/*           <NavigationMenuItem>
             <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className='grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]'>
@@ -126,7 +126,7 @@ export function NavigationMenus() {
               </ul>
             </NavigationMenuContent>
           </NavigationMenuItem>
-          <NavigationMenuItem>
+          <NavigationMenuItem> */}
             <NavigationMenuTrigger>Components</NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className='grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] '>
@@ -173,7 +173,7 @@ export function NavigationMenus() {
                   {item.label}
                 </Link>
               ))}
-              <div className='pt-4'>
+{/*               <div className='pt-4'>
                 <h3 className='mb-2 text-lg font-semibold'>Getting Started</h3>
                 <ul className='space-y-2'>
                   <li>
@@ -198,22 +198,8 @@ export function NavigationMenus() {
                     </Link>
                   </li>
                 </ul>
-              </div>
-              <div className='pt-4'>
-                <h3 className='mb-2 text-lg font-semibold'>Components</h3>
-                <ul className='space-y-2'>
-                  {components.map((component) => (
-                    <li key={component.title}>
-                      <Link
-                        href={component.href}
-                        className='text-sm hover:underline'
-                      >
-                        {component.title}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              </div> */}
+              
             </nav>
           </SheetContent>
         </Sheet>
