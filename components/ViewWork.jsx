@@ -157,16 +157,24 @@ export default function ViewWork() {
                   <CardContent className='p-0'>
                     <Link href={`/projects/${project._id}`}>
                       <div className='relative overflow-hidden'>
-                        <motion.div className='overflow-hidden'>
-                          <Image
-                            src={project.image}
-                            alt={project.title}
-                            loading='lazy'
-                            width={500}
-                            height={500}
-                            className='w-full h-36 object-cover transition-transform duration-300 group-hover:scale-110'
-                          />
-                        </motion.div>
+                        <motion.div
+                          style={{
+                            height: '180px',
+                            overflow: 'hidden',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'top',
+                            backgroundImage: `url(${project.image})`,
+                            transition: 'all 4s ease-in-out',
+                          }}
+                          whileHover={{
+                            backgroundPosition: 'bottom',
+                            transition: {
+                              duration: 3, // Smooth, slow animation duration (3 seconds)
+                              ease: [0.42, 0, 0.58, 1], // Custom cubic-bezier for smoothness
+                            },
+                          }}
+                        />
+
                         <div className='flex flex-col p-4'>
                           <div className='flex justify-between items-center w-full'>
                             <h3 className='text-lg font-semibold hover:text-primary'>

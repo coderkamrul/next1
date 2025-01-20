@@ -93,21 +93,13 @@ const columns = [
       const { toast } = useToast()
 
       const handleDelete = (id) => {
-        axios
-          .delete(`/api/submissions/${id}`)
-          .then(() => {
-            toast({ description: 'Submission deleted successfully.' })
-            table.options.meta.setSubmissions((prevSubmissions) =>
-              prevSubmissions.filter((sub) => sub._id !== id)
-            )
-            DialogClose()
-          })
-          .catch((error) => {
-            toast({
-              description: 'Failed to delete submission.',
-              variant: 'destructive',
-            })
-          })
+        axios.delete(`/api/submissions/${id}`).then(() => {
+          toast({ description: 'Submission deleted successfully.' })
+          table.options.meta.setSubmissions((prevSubmissions) =>
+            prevSubmissions.filter((sub) => sub._id !== id)
+          )
+          DialogClose()
+        })
       }
 
       const [subject, setSubject] = useState('')

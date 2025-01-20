@@ -49,9 +49,12 @@ export default function ProjectsPage() {
     if (data.success) {
       setProjects(data.data)
       setIsLoading(false)
-      const tags = data.data.map((project) => project.tags).flat()
-      const uniqueTags = Array.from(new Set(tags))
-      setFilters(uniqueTags)
+      const tags = Array.from(
+        new Set(data.data.map((project) => project.tags).flat())
+      )
+      console.log(tags)
+
+      setFilters(tags)
     }
   }
 
@@ -191,12 +194,22 @@ export default function ProjectsPage() {
                       <Link href={`/projects/${project._id}`}>
                         <div className='relative'>
                           <div className='relative h-48 overflow-hidden'>
-                            <Image
-                              src={project.image}
-                              alt={project.title}
-                              width={500}
-                              height={300}
-                              className='absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105'
+                            <motion.div
+                              style={{
+                                height: '180px',
+                                overflow: 'hidden',
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'top',
+                                backgroundImage: `url(${project.image})`,
+                                transition: 'all 4s ease-in-out',
+                              }}
+                              whileHover={{
+                                backgroundPosition: 'bottom',
+                                transition: {
+                                  duration: 3, // Smooth, slow animation duration (3 seconds)
+                                  ease: [0.42, 0, 0.58, 1], // Custom cubic-bezier for smoothness
+                                },
+                              }}
                             />
                           </div>
                           <div className='p-4'>

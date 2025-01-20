@@ -15,7 +15,7 @@ import { FaStar } from 'react-icons/fa'
 import { useSession } from 'next-auth/react'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import Preview from '@/components/Preview'
-
+import { motion } from 'framer-motion'
 export default function ProjectPage({ params: paramsPromise, codeString }) {
   const params = React.use(paramsPromise)
   const [project, setProject] = useState(null)
@@ -169,12 +169,22 @@ export default function ProjectPage({ params: paramsPromise, codeString }) {
         {/* Scrollable Content */}
         <div className='space-y-8 py-4 md:px-8 md:border-l'>
           <div className='relative aspect-video w-full overflow-hidden rounded-lg border bg-muted'>
-            <Image
-              src={project.image}
-              alt={project.title}
-              fill
-              className='object-cover'
-              loading='lazy'
+            <motion.div
+              style={{
+                height: '100%',
+                overflow: 'hidden',
+                backgroundSize: 'cover',
+                backgroundPosition: 'top',
+                backgroundImage: `url(${project.image})`,
+                transition: 'all 4s ease-in-out',
+              }}
+              whileHover={{
+                backgroundPosition: 'bottom',
+                transition: {
+                  duration: 3, // Smooth, slow animation duration (3 seconds)
+                  ease: [0.42, 0, 0.58, 1], // Custom cubic-bezier for smoothness
+                },
+              }}
             />
           </div>
 
