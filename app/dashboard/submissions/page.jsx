@@ -102,12 +102,6 @@ const columns = [
             )
             DialogClose()
           })
-          .catch((error) => {
-            toast({
-              description: 'Failed to delete submission.',
-              variant: 'destructive',
-            })
-          })
       }
 
       const [subject, setSubject] = useState('')
