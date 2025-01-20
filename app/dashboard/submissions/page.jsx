@@ -93,7 +93,6 @@ const columns = [
       const { toast } = useToast()
 
       const handleDelete = (id) => {
-<<<<<<< HEAD
         axios.delete(`/api/submissions/${id}`).then(() => {
           toast({ description: 'Submission deleted successfully.' })
           table.options.meta.setSubmissions((prevSubmissions) =>
@@ -101,17 +100,6 @@ const columns = [
           )
           DialogClose()
         })
-=======
-        axios
-          .delete(`/api/submissions/${id}`)
-          .then(() => {
-            toast({ description: 'Submission deleted successfully.' })
-            table.options.meta.setSubmissions((prevSubmissions) =>
-              prevSubmissions.filter((sub) => sub._id !== id)
-            )
-            DialogClose()
-          })
->>>>>>> origin/main
       }
 
       const [subject, setSubject] = useState('')
