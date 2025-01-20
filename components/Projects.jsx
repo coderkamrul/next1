@@ -190,13 +190,15 @@ export default function ProjectsPage() {
                     <CardContent className='p-0'>
                       <Link href={`/projects/${project._id}`}>
                         <div className='relative'>
-                          <Image
-                            src={project.image}
-                            alt={project.title}
-                            width={500}
-                            height={300}
-                            className='w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105'
-                          />
+                          <div className='relative h-48 overflow-hidden'>
+                            <Image
+                              src={project.image}
+                              alt={project.title}
+                              width={500}
+                              height={300}
+                              className='absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105'
+                            />
+                          </div>
                           <div className='p-4'>
                             <h3 className='font-semibold mb-2 group-hover:text-purple-600'>
                               {project.title}

@@ -133,7 +133,7 @@ export default function CreateProjectForm() {
         <img
           src={formData.image}
           alt='Project'
-          className='mt-2 max-w-xs rounded-md'
+          className='mt-2 max-w-xs max-h-40 rounded-md'
         />
       )}
       <div className='grid grid-cols-2 gap-4'>
