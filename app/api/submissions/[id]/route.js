@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import dbConnect from '@/lib/mongodb'
 import Submission from '@/models/Submissions'
+import Email from '@/models/Email'
 
 export async function DELETE(req, { params }) {
   try {
@@ -12,6 +13,9 @@ export async function DELETE(req, { params }) {
         { status: 404 }
       )
     }
+
+    await Email.deleteMany({ submissionId: params.id })
+
     return NextResponse.json(
       { success: true, message: 'Submission deleted successfully' },
       { status: 200 }

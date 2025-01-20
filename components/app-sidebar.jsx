@@ -132,7 +132,7 @@ const data = {
       icon: ReceiptIcon,
     },
     {
-      name: 'Submition',
+      name: 'Submission',
       url: '/dashboard/submissions',
       icon: ReceiptIcon,
     },

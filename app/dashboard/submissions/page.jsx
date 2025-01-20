@@ -32,6 +32,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
+  DialogDescription,
+  DialogFooter,
 } from '@/components/ui/dialog'
 import { useToast } from '@/hooks/use-toast'
 import {
@@ -41,7 +44,27 @@ import {
   Eye,
   SortAsc,
   SortDesc,
+  Mail,
+  Paperclip,
+  Send,
+  Trash,
 } from 'lucide-react'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetClose,
+  SheetTrigger,
+  SheetDescription,
+  SheetFooter,
+} from '@/components/ui/sheet'
+import { Textarea } from '@/components/ui/textarea'
+import { toast } from '@/hooks/use-toast'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Label } from '@/components/ui/label'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Badge } from '@/components/ui/badge'
 
 const columns = [
   {
@@ -70,53 +93,251 @@ const columns = [
       const { toast } = useToast()
 
       const handleDelete = (id) => {
-        axios.delete(`/api/submissions/${id}`).then(() => {
-          toast({ description: 'Submission deleted successfully.' })
-          table.options.meta.setSubmissions((prevSubmissions) =>
-            prevSubmissions.filter((sub) => sub._id !== id)
-          )
-        })
+        axios
+          .delete(`/api/submissions/${id}`)
+          .then(() => {
+            toast({ description: 'Submission deleted successfully.' })
+            table.options.meta.setSubmissions((prevSubmissions) =>
+              prevSubmissions.filter((sub) => sub._id !== id)
+            )
+            DialogClose()
+          })
+          .catch((error) => {
+            toast({
+              description: 'Failed to delete submission.',
+              variant: 'destructive',
+            })
+          })
+      }
+
+      const [subject, setSubject] = useState('')
+      const [message, setMessage] = useState('')
+      const [emails, setEmails] = useState([])
+
+      const fetchEmails = async () => {
+        try {
+          const { data } = await axios.get(`/api/email/${submission._id}`)
+
+          setEmails(data)
+        } catch (error) {
+          console.error('Failed to get emails:', error)
+          return { error: 'Failed to get emails' }
+        }
+      }
+
+      const handleSendEmail = () => {
+        axios
+          .post('/api/email', {
+            to: submission.email,
+            subject,
+            message,
+            submissionId: submission._id,
+          })
+          .then(() => {
+            toast({ description: 'Email sent successfully.' })
+            fetchEmails()
+            setSubject('')
+            setMessage('')
+          })
+          .catch((error) => {
+            toast({
+              description: 'Failed to send email.',
+              variant: 'destructive',
+            })
+          })
+      }
+
+      const handleDeleteEmail = (id) => {
+        axios
+          .delete(`/api/email/${id}`)
+          .then(() => {
+            toast({ description: 'Email deleted successfully.' })
+            fetchEmails()
+          })
+          .catch((error) => {
+            toast({
+              description: 'Failed to delete email.',
+              variant: 'destructive',
+            })
+          })
       }
 
       return (
-        <div className='flex space-x-2'>
+        <div>
+          {' '}
+          <Sheet>
+            <SheetTrigger onClick={() => fetchEmails()} asChild>
+              <Button variant='outline' size='sm' className='mr-2'>
+                <Eye className='h-4 w-4' />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side='right' className='w-[600px] sm:w-[700px]'>
+              <SheetHeader>
+                <SheetTitle>New Message</SheetTitle>
+              </SheetHeader>
+              <div className='space-y-4 py-4'>
+                <div className='flex items-center space-x-4'>
+                  <Avatar>
+                    <AvatarImage
+                      src={`https://api.dicebear.com/6.x/initials/svg?seed=${submission.name}`}
+                    />
+                    <AvatarFallback>{submission.name.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <h4 className='text-sm font-semibold'>{submission.name}</h4>
+                    <p className='text-sm text-gray-500'>{submission.email}</p>
+                  </div>
+                </div>
+                <div className='bg-gray-50 dark:bg-gray-800 rounded-md p-4 space-y-2 flex justify-between items-start'>
+                  <div>
+                    <h5 className='text-sm font-semibold'>
+                      Submission Message
+                    </h5>
+                    <p className='text-sm text-gray-600 mt-1 dark:text-gray-300'>
+                      {submission.message}
+                    </p>
+                  </div>
+                  <div className='text-sm text-gray-500'>
+                    <p>Phone: {submission.phone}</p>
+                  </div>
+                </div>
+                <div className='space-y-2'>
+                  <Label htmlFor='subject'>Subject</Label>
+                  <Input
+                    id='subject'
+                    placeholder='Enter email subject'
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                  />
+                </div>
+                <div className='space-y-2'>
+                  <Label htmlFor='message'>Message</Label>
+                  <Textarea
+                    id='message'
+                    placeholder='Type your message here'
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    rows={8}
+                    className='resize-none'
+                  />
+                </div>
+              </div>
+              <SheetFooter>
+                <div className='flex justify-end gap-2 items-center'>
+                  <SheetClose asChild>
+                    <Button variant='outline' size='lg'>
+                      Cancel
+                    </Button>
+                  </SheetClose>
+                  <Button onClick={handleSendEmail}>
+                    <Send className='h-4 w-4 mr-2' />
+                    Send Email
+                  </Button>
+                </div>
+              </SheetFooter>
+              <ScrollArea className='space-y-2 max-h-[300px] h-full'>
+                <h5 className='text-sm font-semibold'>Previous Messages</h5>
+                <div className='space-y-2'>
+                  {emails.map((email) => (
+                    <div
+                      key={email._id}
+                      className='bg-gray-50 dark:bg-gray-800 w-full p-4 rounded-md flex items-start justify-between relative'
+                    >
+                      <div className='flex items-start justify-between space-x-2 w-full'>
+                        <div className='space-y-1 w-full'>
+                          <div className='flex justify-between items-center w-full'>
+                            <p className='text-sm font-semibold text-gray-600 dark:text-gray-300'>
+                              {email.from}
+                            </p>
+                            <p className='text-sm text-gray-500 self-end'>
+                              {new Intl.DateTimeFormat(undefined, {
+                                year: 'numeric',
+                                month: 'numeric',
+                                day: 'numeric',
+                              }).format(new Date(email.createdAt))}{' '}
+                              -
+                              {new Intl.DateTimeFormat(undefined, {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              }).format(new Date(email.createdAt))}
+                            </p>
+                          </div>
+                          <Badge
+                            variant='secondary'
+                            className='text-base whitespace-pre-wrap flex-col items-start'
+                          >
+                            <p className='text-sm font-semibold text-blue-600 dark:text-gray-300'>
+                              Sub: {email.subject}
+                            </p>
+                            {email.text}
+                          </Badge>
+                        </div>
+                      </div>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button
+                            variant='destructive'
+                            size='sm'
+                            className='absolute bottom-2 right-2 flex items-center'
+                          >
+                            <Trash className='h-4 w-4' />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Confirm Deletion</DialogTitle>
+                          </DialogHeader>
+                          <DialogDescription>
+                            Are you sure you want to delete this email?
+                          </DialogDescription>
+                          <DialogFooter>
+                            <DialogClose asChild>
+                              <Button variant='outline' size='sm'>
+                                Cancel
+                              </Button>
+                            </DialogClose>
+                            <Button
+                              onClick={() => handleDeleteEmail(email._id)}
+                              variant='destructive'
+                              size='sm'
+                            >
+                              Delete
+                            </Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+            </SheetContent>
+          </Sheet>
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant='outline' size='sm'>
-                <Eye className='h-4 w-4' />
+              <Button variant='destructive' size='sm'>
+                <Delete className='h-4 w-4' />
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Submission Details</DialogTitle>
+                <DialogTitle>Confirm Deletion</DialogTitle>
               </DialogHeader>
-              <div className='grid gap-4 py-4'>
-                <div className='grid grid-cols-4 items-center gap-4'>
-                  <strong className='text-right'>Name:</strong>
-                  <span className='col-span-3'>{submission.name}</span>
-                </div>
-                <div className='grid grid-cols-4 items-center gap-4'>
-                  <strong className='text-right'>Email:</strong>
-                  <span className='col-span-3'>{submission.email}</span>
-                </div>
-                <div className='grid grid-cols-4 items-center gap-4'>
-                  <strong className='text-right'>Phone:</strong>
-                  <span className='col-span-3'>{submission.phone}</span>
-                </div>
-                <div className='grid grid-cols-4 items-center gap-4'>
-                  <strong className='text-right'>Message:</strong>
-                  <span className='col-span-3'>{submission.message}</span>
-                </div>
+              <div className='py-4'>
+                Are you sure you want to delete this submission?
+              </div>
+              <div className='flex justify-end space-x-2'>
+                <DialogClose>
+                  <Button variant='outline'>Cancel</Button>
+                </DialogClose>
+                <Button
+                  variant='destructive'
+                  onClick={() => handleDelete(submission._id)}
+                >
+                  Confirm
+                </Button>
               </div>
             </DialogContent>
           </Dialog>
-          <Button
-            variant='destructive'
-            size='sm'
-            onClick={() => handleDelete(submission._id)}
-          >
-            <Delete className='h-4 w-4' />
-          </Button>
         </div>
       )
     },
@@ -161,7 +382,10 @@ export default function Page() {
   })
 
   return (
-    <div className='w-full'>
+    <div className='w-full my-10'>
+      <h1 className='text-2xl font-semibold tracking-tight'>
+        Manage Submissions
+      </h1>
       <div className='flex items-center py-4'>
         <Input
           placeholder='Filter by name or email...'
@@ -180,22 +404,18 @@ export default function Page() {
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end'>
             {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className='capitalize'
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                )
-              })}
+              .getAllLeafColumns()
+              .filter((column) => !['actions', 'name'].includes(column.id))
+              .map((column) => (
+                <DropdownMenuCheckboxItem
+                  key={column.id}
+                  className='capitalize'
+                  checked={column.getIsVisible()}
+                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                >
+                  {column.id}
+                </DropdownMenuCheckboxItem>
+              ))}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
