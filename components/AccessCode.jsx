@@ -17,7 +17,7 @@ import {
   DrawerClose,
   DrawerTrigger,
 } from '@/components/ui/drawer'
-import { useMediaQuery } from '@/hooks/use-media-quary'
+import { useMediaQuery } from '@/hooks/use-media-query'
 import { DialogTrigger } from '@radix-ui/react-dialog'
 
 const AccessCode = ({ isOpen, onClose }) => {

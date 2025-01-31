@@ -1,0 +1,111 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ExternalLink, Star } from "lucide-react";
+import Link from "next/link";
+
+export default function TestimonialCard({
+  isLoading = false,
+  imageUrl,
+  clientReview,
+  reply,
+  clientName,
+  avatarUrl,
+  projectUrl,
+  star
+}) {
+  if (isLoading) {
+    return (
+        <Card className="w-[320px] overflow-hidden">
+      <CardContent className="p-2 ">
+        <Skeleton className="w-full h-[200px] rounded-lg" />
+        <div className="pt-3 space-y-3">
+          <div className="space-y-4">
+            {/* Client Review Message Skeleton */}
+            <Skeleton className="h-[60px] w-[90%] rounded-2xl" />
+            {/* Reply Message Skeleton */}
+            <div className="flex justify-end">
+              <Skeleton className="h-[40px] w-[80%] rounded-2xl" />
+            </div>
+          </div>
+          <div className="flex items-center justify-between pt-4 border-t">
+            <div className="flex items-center gap-3">
+              <Skeleton className="h-10 w-10 rounded-full" />
+              <Skeleton className="h-4 w-[100px]" />
+            </div>
+            <Skeleton className="h-9 w-9 rounded-full" />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+    );
+  }
+
+  return (
+    <Card className="w-full max-w-[320px] h-full overflow-hidden">
+      <CardContent className="p-2 h-full flex justify-between flex-col">
+        <div className="w-full h-[200px] border border-zinc-200 rounded-lg overflow-hidden relative">
+          <img
+            src={imageUrl || "/placeholder.svg"}
+            alt="Project Preview"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className=" pt-3 space-y-3 flex flex-col justify-between">
+          <div className="space-y-4">
+            {/* Client Review Message */}
+
+            <div className=" bg-primary px-4 py-3 max-w-[90%] rounded-2xl">
+              <p className="text-sm text-primary-foreground line-clamp-3">{clientReview}</p>
+            </div>
+            {/* Reply Message */}
+            <div className="flex justify-end">
+              <div className="bg-muted px-4 py-3 rounded-2xl max-w-[80%] ml-12">
+                <p className="text-sm  ">
+                  {reply || "Thank you!"}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center justify-between pt-4 border-t">
+            <div className="flex items-center gap-3">
+              <Avatar>
+                <AvatarImage src={avatarUrl} alt={clientName} />
+                <AvatarFallback>
+                  {clientName
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")}
+                </AvatarFallback>
+              </Avatar>
+              <div>
+              <span className="font-medium">{clientName}</span>
+              <div className="flex items-center gap-1">
+                {Array.from({ length: 5 }, (_, i) => (
+                  <Star
+                    key={i}
+                    size={14}
+                    className={i < star ? "fill-yellow-400 text-yellow-400" : "fill-transparent text-gray-300"}
+                  />
+                ))}
+              </div>
+              
+              </div>
+            </div>
+            {projectUrl && (
+              
+            <Link
+              href={projectUrl}
+              className="p-2 hover:bg-accent rounded-full transition-colors"
+              title="View Project"
+              target="_blank"
+            >
+              <ExternalLink className="h-5 w-5" />
+            </Link>
+            )}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}

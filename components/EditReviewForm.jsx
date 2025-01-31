@@ -26,6 +26,7 @@ const Rating = ({ rating, onRatingChange }) => {
             value={i}
             checked={rating === i}
             onChange={handleChange}
+            className="hidden"
           />
           <span className='sr-only'>Rating {i}</span>
           <Star
@@ -43,12 +44,15 @@ const Rating = ({ rating, onRatingChange }) => {
 
 export default function EditReviewForm({ id }) {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    review: '',
+    name: "",
+    email: "",
+    phone: "",
+    projectImage: "",
+    profilePicture: "",
+    review: "",
+    reply: "",
     rating: 0,
-    profilePicture: '',
+    projectLink: "",
   })
   const router = useRouter()
 
@@ -75,6 +79,14 @@ export default function EditReviewForm({ id }) {
       profilePicture: imageUrl,
     }))
   }
+
+  const handleprojectImageUpload = (imageUrl) => {
+    setFormData((prevState) => ({
+      ...prevState,
+
+      projectImage: imageUrl,
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -143,14 +155,7 @@ export default function EditReviewForm({ id }) {
           onChange={handleChange}
         />
       </div>
-      <ImageUpload onImageUpload={handleImageUpload} />
-      {formData?.profilePicture && (
-        <img
-          src={formData.profilePicture}
-          alt='Profile Picture'
-          className='mt-2 max-w-xs rounded-md'
-        />
-      )}
+
       <div>
         <Label htmlFor='review'>Review</Label>
         <Textarea
@@ -162,6 +167,28 @@ export default function EditReviewForm({ id }) {
           rows='3'
         />
       </div>
+      <div>
+        <Label htmlFor="reply">Reply</Label>
+        <Textarea
+          name="reply"
+          id="reply"
+          required
+          value={formData.reply}
+          onChange={handleChange}
+          rows="3"
+        />
+      </div>
+      <div>
+        <Label htmlFor="projectLink">Project Link</Label>
+        <Input
+          type="url"
+          name="projectLink"
+          id="projectLink"
+          
+          value={formData.projectLink}
+          onChange={handleChange}
+        />
+      </div>
       <Rating
         rating={formData.rating}
         onRatingChange={(rating) =>
@@ -171,6 +198,30 @@ export default function EditReviewForm({ id }) {
           }))
         }
       />
+      <div className="flex w-full gap-2 flex-wrap md:flex-nowrap">
+              <div className="w-full">
+                <div className="py-2">Profile Picture</div>
+                <ImageUpload onImageUpload={handleImageUpload} />
+                {formData.profilePicture && (
+                  <img
+                    src={formData.profilePicture}
+                    alt="Profile Picture"
+                    className="mt-2 max-w-xs rounded-md"
+                  />
+                )}
+              </div>
+              <div className="w-full">
+                <div className="py-2">Project Image</div>
+                <ImageUpload onImageUpload={handleprojectImageUpload} />
+                {formData.projectImage && (
+                  <img
+                    src={formData.projectImage}
+                    alt="Profile Picture"
+                    className="mt-2 max-w-xs rounded-md"
+                  />
+                )}
+              </div>
+            </div>
       <Button type='submit'>Update Review</Button>
     </form>
   )

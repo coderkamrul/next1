@@ -17,7 +17,7 @@ import {
 import { SiFiverr, SiGmail, SiUpwork } from 'react-icons/si'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { useMediaQuery } from '@/hooks/use-media-quary'
+import { useMediaQuery } from '@/hooks/use-media-query'
 
 const HireOptions = () => (
   <div className='flex flex-col gap-3 py-4 px-4 md:px-0'>

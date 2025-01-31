@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang='en' suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${roboto.className} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${roboto.className} antialiased !overflow-x-hidden`}
       >
         <ThemeProvider
           attribute='class'

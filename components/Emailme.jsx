@@ -23,7 +23,7 @@ import {
   DrawerClose,
   DrawerTrigger,
 } from '@/components/ui/drawer'
-import { useMediaQuery } from '@/hooks/use-media-quary'
+import { useMediaQuery } from '@/hooks/use-media-query'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { toast } from '@/hooks/use-toast'
 
