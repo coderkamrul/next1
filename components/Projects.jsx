@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { ExternalLink, Github, Search, X, Youtube } from 'lucide-react'
+import { ExternalLink, Github, Search, User, X, Youtube } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -107,10 +107,12 @@ export default function ProjectsPage() {
           <p className='text-slate-400 mb-4'>
             Check out my YouTube channel for more content!
           </p>
-          <Button className='bg-purple-600 hover:bg-purple-700'>
-            <Youtube className='mr-2 h-4 w-4' />
-            View Videos
-          </Button>
+          <Link href="/client">
+            <Button variant="default">
+              <User className='mr-2 h-4 w-4' />
+              View Clients
+            </Button>
+          </Link>
         </div>
       </div>
 

@@ -115,7 +115,7 @@ const EmailForm = () => {
   )
 }
 
-const EmailMe = () => {
+const EmailMe = ({text}) => {
   const isMobile = useMediaQuery('(max-width: 768px)')
 
   const handleSubmit = async (data) => {
@@ -124,8 +124,13 @@ const EmailMe = () => {
   }
 
   const TriggerButton = React.forwardRef((props, ref) => (
-    <Button ref={ref} variant='animated' {...props} className='w-fit'>
-      E-mail me
+    <Button
+      ref={ref}
+      variant='animated'
+      {...props}
+      className={text ? 'w-full' : 'w-fit'}
+    >
+      {text ? text : 'E-mail me'}
       <motion.span
         animate={{ x: [0, 3, -3, 0] }}
         transition={{

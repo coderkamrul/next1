@@ -4,11 +4,13 @@ import * as React from 'react'
 import {
   AudioWaveform,
   BookOpen,
+  BookOpenCheck,
   Bot,
   Command,
   Component,
   FolderCode,
   Frame,
+  FrameIcon,
   GalleryVerticalEnd,
   LayoutDashboard,
   Map,
@@ -102,6 +104,16 @@ const data = {
     },
 
     {
+      name: 'Services',
+      url: '/dashboard/gig',
+      icon: FolderCode,
+    },
+    {
+      name: 'Orders',
+      url: '/dashboard/orders',
+      icon: FrameIcon,
+    },
+    {
       name: 'Projects',
       url: '/dashboard/projects',
       icon: FolderCode,
@@ -134,7 +146,7 @@ const data = {
     {
       name: 'Submission',
       url: '/dashboard/submissions',
-      icon: ReceiptIcon,
+      icon: BookOpenCheck,
     },
   ],
 }

@@ -51,8 +51,9 @@ export default function ManageProjectsTable() {
         <Image
           src={row.getValue('image')}
           alt={row.getValue('title')}
-          width={50}
+          width={80}
           height={50}
+          className='rounded overflow-hidden h-12'
         />
       ),
     },

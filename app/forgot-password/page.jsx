@@ -121,7 +121,7 @@ export default function ForgotPasswordPage() {
                   />
                 </div>
               </div>
-              <CardFooter className='flex justify-between'>
+              <CardFooter className='flex p-0 mt-4 justify-between'>
                 <Button type='submit'>Send OTP</Button>
               </CardFooter>
             </form>
@@ -139,7 +139,7 @@ export default function ForgotPasswordPage() {
                   />
                 </div>
               </div>
-              <CardFooter className='flex justify-between'>
+              <CardFooter className='flex p-0 mt-4 justify-between'>
                 <Button type='submit'>Verify OTP</Button>
               </CardFooter>
             </form>

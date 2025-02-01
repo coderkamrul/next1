@@ -96,7 +96,7 @@ export default function Blogs() {
           <p className="text-slate-400 mb-4">
             I write about my experiences and the things I learn.
           </p>
-          <Button className="bg-purple-600 hover:bg-purple-700">
+          <Button variant="default">
             <Youtube className="mr-2 h-4 w-4" />
             View Videos
           </Button>

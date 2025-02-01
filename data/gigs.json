@@ -1,0 +1,168 @@
+{
+    "gigs": [
+      {
+        "id": 1,
+        "title": "I will design a professional WordPress website",
+        "description": "Get a custom WordPress site tailored to your business needs. I specialize in creating responsive, SEO-friendly, and user-friendly websites that help businesses establish a strong online presence.",
+        "images": [
+          "/mern.webp",
+          "/mern.webp",
+          "/mern.webp"
+        ],
+        "price": 50,
+        "rating": 4.9,
+        "reviews": [
+          {
+            "id": 1,
+            "user": "John Doe",
+            "rating": 5,
+            "comment": "Excellent work! The website exceeded my expectations.",
+            "date": "2023-05-15"
+          },
+          {
+            "id": 2,
+            "user": "Jane Smith",
+            "rating": 4,
+            "comment": "Great communication and timely delivery. Would recommend.",
+            "date": "2023-05-10"
+          }
+        ],
+        "reviewsCount": 203,
+        "seller": {
+          "name": "JohnDev",
+          "avatar": "/mern.webp",
+          "level": 2,
+          "description": "Experienced WordPress developer with 5+ years of experience"
+        },
+        "packages": [
+          {
+            "name": "Basic",
+            "title": "Starter WordPress Site",
+            "description": "Get a basic WordPress site up and running quickly",
+            "deliveryTime": 3,
+            "revisions": 1,
+            "price": 50,
+            "features": ["Custom WordPress Theme", "Responsive Design", "3 Pages", "Contact Form"]
+          },
+          {
+            "name": "Standard",
+            "title": "Professional WordPress Site",
+            "description": "A comprehensive WordPress site with additional pages and features",
+            "deliveryTime": 5,
+            "revisions": 2,
+            "price": 100,
+            "features": ["Custom WordPress Theme", "Responsive Design", "5 Pages", "Contact Form", "Basic SEO Setup"]
+          },
+          {
+            "name": "Premium",
+            "title": "Advanced WordPress Solution",
+            "description": "A feature-rich WordPress site with e-commerce capabilities",
+            "deliveryTime": 7,
+            "revisions": 3,
+            "price": 150,
+            "features": [
+              "Custom WordPress Theme",
+              "Responsive Design",
+              "7 Pages",
+              "Contact Form",
+              "Advanced SEO Setup",
+              "E-commerce Integration"
+            ]
+          }
+        ],
+        "features": ["Custom WordPress Theme", "Responsive Design", "5 Pages", "Contact Form", "Basic SEO Setup"]
+      },
+      {
+        "id": 2,
+        "title": "I will design a professional WordPress website",
+        "description": "Get a custom WordPress site tailored to your business needs. I specialize in creating responsive, SEO-friendly, and user-friendly websites that help businesses establish a strong online presence.",
+        "images": [
+          "/mern.webp",
+          "/mern.webp",
+          "/mern.webp"
+        ],
+        "price": 50,
+        "rating": 4.9,
+        "reviews": [
+          {
+            "id": 1,
+            "user": "John Doe",
+            "rating": 5,
+            "comment": "Excellent work! The website exceeded my expectations.",
+            "date": "2023-05-15"
+          },
+          {
+            "id": 2,
+            "user": "Jane Smith",
+            "rating": 4,
+            "comment": "Great communication and timely delivery. Would recommend.",
+            "date": "2023-05-10"
+          }
+        ],
+        "reviewsCount": 203,
+        "seller": {
+          "name": "JohnDev",
+          "avatar": "/mern.webp",
+          "level": 2,
+          "description": "Experienced WordPress developer with 5+ years of experience"
+        },
+        "packages": [
+          {
+            "name": "Basic",
+            "title": "Starter WordPress Site",
+            "description": "Get a basic WordPress site up and running quickly",
+            "deliveryTime": 3,
+            "revisions": 1,
+            "price": 50,
+            "features": ["Custom WordPress Theme", "Responsive Design", "3 Pages", "Contact Form"]
+          },
+          {
+            "name": "Standard",
+            "title": "Professional WordPress Site",
+            "description": "A comprehensive WordPress site with additional pages and features",
+            "deliveryTime": 5,
+            "revisions": 2,
+            "price": 100,
+            "features": ["Custom WordPress Theme", "Responsive Design", "5 Pages", "Contact Form", "Basic SEO Setup"]
+          },
+          {
+            "name": "Premium",
+            "title": "Advanced WordPress Solution",
+            "description": "A feature-rich WordPress site with e-commerce capabilities",
+            "deliveryTime": 7,
+            "revisions": 3,
+            "price": 150,
+            "features": [
+              "Custom WordPress Theme",
+              "Responsive Design",
+              "7 Pages",
+              "Contact Form",
+              "Advanced SEO Setup",
+              "E-commerce Integration"
+            ]
+          }
+        ],
+        "features": ["Custom WordPress Theme", "Responsive Design", "5 Pages", "Contact Form", "Basic SEO Setup"]
+      },
+      {
+        "id": 3,
+        "title": "I will develop a custom React application",
+        "description": "Get a tailor-made React application built to your specifications with clean, efficient code.",
+        "images": [
+          "/mern.webp",
+          "/mern.webp",
+          "/mern.webp"
+        ],
+        "price": 100,
+        "rating": 5.0,
+        "reviewsCount": 89,
+        "seller": {
+          "name": "ReactMaster",
+          "avatar": "/mern.webp",
+          "level": 3
+        }
+      }
+    ]
+  }
+  
+  

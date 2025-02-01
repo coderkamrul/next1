@@ -5,44 +5,19 @@ import { ExternalLink, Star } from "lucide-react";
 import Link from "next/link";
 
 export default function TestimonialCard({
-  isLoading = false,
   imageUrl,
   clientReview,
   reply,
   clientName,
   avatarUrl,
   projectUrl,
-  star
+  star,
+
 }) {
-  if (isLoading) {
-    return (
-        <Card className="w-[320px] overflow-hidden">
-      <CardContent className="p-2 ">
-        <Skeleton className="w-full h-[200px] rounded-lg" />
-        <div className="pt-3 space-y-3">
-          <div className="space-y-4">
-            {/* Client Review Message Skeleton */}
-            <Skeleton className="h-[60px] w-[90%] rounded-2xl" />
-            {/* Reply Message Skeleton */}
-            <div className="flex justify-end">
-              <Skeleton className="h-[40px] w-[80%] rounded-2xl" />
-            </div>
-          </div>
-          <div className="flex items-center justify-between pt-4 border-t">
-            <div className="flex items-center gap-3">
-              <Skeleton className="h-10 w-10 rounded-full" />
-              <Skeleton className="h-4 w-[100px]" />
-            </div>
-            <Skeleton className="h-9 w-9 rounded-full" />
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-    );
-  }
+  
 
   return (
-    <Card className="w-full max-w-[320px] h-full overflow-hidden">
+    <Card className="w-full md:max-w-[320px] h-full overflow-hidden">
       <CardContent className="p-2 h-full flex justify-between flex-col">
         <div className="w-full h-[200px] border border-zinc-200 rounded-lg overflow-hidden relative">
           <img

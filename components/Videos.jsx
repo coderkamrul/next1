@@ -102,10 +102,15 @@ export default function VideosPage() {
           <p className='text-slate-400 mb-4'>
             Check out my YouTube channel for more content!
           </p>
-          <Button className='bg-purple-600 hover:bg-purple-700'>
-            <Youtube className='mr-2 h-4 w-4' />
-            View Videos
-          </Button>
+          <Link
+            href='https://www.youtube.com/@codingreact'
+            target='_blank'
+          >
+            <Button className='bg-purple-600 hover:bg-purple-700'>
+              <Youtube className='mr-2 h-4 w-4' />
+              View Videos
+            </Button>
+          </Link>
         </div>
       </div>
 
