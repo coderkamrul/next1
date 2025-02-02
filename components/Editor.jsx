@@ -113,7 +113,7 @@ const Editor = ({ setTextEditor, setEditorState, formData, setFormData }) => {
   const editorInstanceRef = useRef(null)
 
   const initialData = {
-    blocks: formData.setupinstructions?.[0]?.blocks || [],
+    blocks: formData.description ? [{ type: 'paragraph', data: { text: formData.description } }] : formData.setupinstructions?.[0]?.blocks || [],
   }
 
   const handleEditorChange = useCallback(async () => {

@@ -31,7 +31,9 @@ import {
 import OrderForm from "@/components/OrderForm";
 import { useSession } from "next-auth/react";
 import { Skeleton } from "@/components/ui/skeleton";
-
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { motion } from 'framer-motion'
+import InstructionBlock from "@/components/InstructionBlock";
 const GigDetails = ({ params }) => {
   const { id } = React.use(params);
   const { data: session, status } = useSession();
@@ -147,11 +149,16 @@ const GigDetails = ({ params }) => {
                     ))}
                   </div>
                   <div className="mb-4">
-                    <h3 className="text-2xl font-bold mb-2 ">
-                      ${gig.packages[currentPackage].price}
-                    </h3>
+                    <div className="flex justify-between items-center">
+                      <h3 className="text-base font-bold mb-2 dark:text-black">
+                        {gig.packages[currentPackage].title}
+                      </h3>
+                      <h3 className="text-2xl font-bold mb-2 dark:text-black">
+                        ${gig.packages[currentPackage].price}
+                      </h3>
+                    </div>
                     <p className="text-gray-600 mb-4">
-                      {gig.packages[currentPackage].title}
+                      {gig.packages[currentPackage].description}
                     </p>
                     <div className="text-sm text-gray-600 mb-4 ">
                       <div className="flex items-center mb-2">
@@ -203,11 +210,18 @@ const GigDetails = ({ params }) => {
 
             <div className="bg-white dark:bg-gray-700 shadow-md rounded-lg overflow-hidden mb-8">
               <div className="p-6">
-                <h2 className="text-xl font-semibold mb-4">About This Gig</h2>
-                <p className="text-gray-600 mb-6 dark:text-gray-200">
-                  {gig.description}
-                </p>
-                <h3 className="text-lg font-semibold mb-2">About The Seller</h3>
+                <h2 className="text-xl font-semibold mb-4">About This services</h2>
+                {gig.description[0].blocks.map((block, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <InstructionBlock instruction={block} />
+                </motion.div>
+              ))}
+                <h3 className="text-lg font-semibold pt-8 mb-2">About The Seller</h3>
                 <p className="text-gray-600 mb-4 dark:text-gray-200">
                   {gig.seller.description}
                 </p>
@@ -224,9 +238,9 @@ const GigDetails = ({ params }) => {
                         {gig.packages.map((pkg, index) => (
                           <th
                             key={index}
-                            className="border p-2 dark:bg-gray-700 bg-gray-100 text-center"
+                            className="border p-2 dark:bg-gray-700 bg-gray-100 text-left"
                           >
-                            <div className="font-bold">{pkg.title}</div>
+                            <div className="font-bold mb-2">{pkg.title}</div>
                             <div className="text-sm text-gray-600 dark:text-gray-300">
                               {pkg.description}
                             </div>
@@ -236,7 +250,7 @@ const GigDetails = ({ params }) => {
                     </thead>
                     <tbody>
                       <tr>
-                        <td className="border p-2 font-semibold">Price</td>
+                        <td className="border p-2 font-semibold w-40">Price</td>
                         {gig.packages.map((pkg, index) => (
                           <td key={index} className="border p-2 text-center">
                             ${pkg.price}
@@ -290,34 +304,81 @@ const GigDetails = ({ params }) => {
             <div className="bg-white dark:bg-gray-700 shadow-md rounded-lg overflow-hidden mb-8">
               <div className="p-6">
                 <h2 className="text-xl font-semibold mb-4">What's Included</h2>
-                <ul className="list-none mb-6">
-                  {gig.packages
-                    .flatMap((pkg) => pkg.features)
-                    .map((feature, index) => (
-                      <li
-                        key={index}
-                        className="flex items-center text-gray-600 mb-2 dark:text-gray-300"
-                      >
-                        <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                        {feature}
-                      </li>
-                    ))}
-                </ul>
+                {gig.packages
+                  .flatMap((pkg) => pkg.features)
+                  .length > 3 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {gig.packages
+                      .flatMap((pkg) => pkg.features)
+                      .map((feature, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center text-gray-600 dark:text-gray-300"
+                        >
+                          <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+                          {feature}
+                        </div>
+                      ))}
+                  </div>
+                ) : (
+                  <ul className="list-none mb-6">
+                    {gig.packages
+                      .flatMap((pkg) => pkg.features)
+                      .map((feature, index) => (
+                        <li
+                          key={index}
+                          className="flex items-center text-gray-600 mb-2 dark:text-gray-300"
+                        >
+                          <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+                          {feature}
+                        </li>
+                      ))}
+                  </ul>
+                )}
               </div>
             </div>
-            <div className=" shadow-md rounded-lg overflow-hidden dark:bg-gray-700">
-              <div className="p-6">
+            <div className="my-8">
+              <h2 className="text-xl font-semibold mb-4">Search Tags</h2>
+              <div className="flex flex-wrap gap-2">
+                {gig.tags.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="overflow-hidden ">
+              <div className="p-2">
                 <h2 className="text-xl font-semibold mb-4">Reviews</h2>
                 {gig.reviews &&
                   gig.reviews.map((review) => (
                     <div
                       key={review._id}
-                      className="mb-4 pb-4 border-b border-gray-200 last:border-b-0"
+                      className="mb-4 pb-4 border-b dark:bg-gray-800 rounded-lg shadow-md p-8 border-gray-200 last:border-b-0"
                     >
-                      <div className="flex items-center mb-2">
-                        <span className="font-semibold mr-2">
-                          {review.user}
-                        </span>
+                      <div className="flex flex-col mb-2">
+                        <div>
+                          <div className="flex items-center mb-2 pb-2 border-b border-gray-200">
+                            <Avatar className="h-10 w-10">
+                              <AvatarImage
+                                src={
+                                  review.userProfilePicture ||
+                                  "/default-avatar.png"
+                                }
+                                alt={review.user || "Anonymous"}
+                              />
+                              <AvatarFallback>
+                                {review.user?.charAt(0) || "A"}
+                              </AvatarFallback>
+                            </Avatar>
+                            <span className="font-semibold ml-2">
+                              {review.user}
+                            </span>
+                          </div>
+                        </div>
                         <div className="flex items-center text-yellow-500">
                           {[...Array(5)].map((_, i) => (
                             <StarIcon
@@ -328,11 +389,23 @@ const GigDetails = ({ params }) => {
                                   : "text-gray-300"
                               }`}
                             />
-                          ))}
+                          ))}{" "}
+                          <span className="ml-1">5</span>
+                          <span className="text-xs ml-4 text-gray-500 dark:text-gray-400">
+                            <time
+                              dateTime={review.createdAt}
+                              className="text-xs text-gray-500 dark:text-gray-400"
+                            >
+                              {new Intl.DateTimeFormat("en-US", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              }).format(new Date(review.createdAt))}
+                            </time>
+                          </span>
                         </div>
-                        <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">
-                          {review.date}
-                        </span>
                       </div>
                       <p className="text-gray-600 dark:text-gray-300">
                         {review.comment}
@@ -341,19 +414,6 @@ const GigDetails = ({ params }) => {
                   ))}
               </div>
             </div>
-          <div className="my-8">
-            <h2 className="text-xl font-semibold mb-4">Search Tags</h2>
-            <div className="flex flex-wrap gap-2">
-              {gig.tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
           </div>
 
           <div className="lg:col-span-1 hidden lg:block ">
@@ -390,11 +450,16 @@ const GigDetails = ({ params }) => {
                   ))}
                 </div>
                 <div className="mb-4">
-                  <h3 className="text-2xl font-bold mb-2 dark:text-black">
-                    ${gig.packages[currentPackage].price}
-                  </h3>
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-base font-bold mb-2 dark:text-black">
+                      {gig.packages[currentPackage].title}
+                    </h3>
+                    <h3 className="text-2xl font-bold mb-2 dark:text-black">
+                      ${gig.packages[currentPackage].price}
+                    </h3>
+                  </div>
                   <p className="text-gray-600 mb-4">
-                    {gig.packages[currentPackage].title}
+                    {gig.packages[currentPackage].description}
                   </p>
                   <div className="text-sm text-gray-600 mb-4">
                     <div className="flex items-center mb-2">

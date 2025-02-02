@@ -98,8 +98,11 @@ const ServiceSchema = new mongoose.Schema({
     validate: [arrayLimit, '{PATH} must contain exactly 3 packages']
   },
   description: {
-    type: String,
-    required: true
+    type: Object,
+    type: [],
+    time: Number,
+    blocks: [],
+    version: String,
   },
   seller: {
     type: SellerSchema,

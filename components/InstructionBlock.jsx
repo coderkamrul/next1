@@ -18,14 +18,14 @@ import {
 const List = ({ style, data }) => {
   return (
     <ol
-      className={`pl-5 space-y-4 ${
+      className={`pl-5 space-y-2 ml-2 ${
         style === 'unordered' ? 'list-disc' : 'list-decimal'
       }`}
     >
       {data.items.map((item, index) => (
         <li
           key={index}
-          className='my-4'
+          className=''
           dangerouslySetInnerHTML={{ __html: item.content }}
         />
       ))}

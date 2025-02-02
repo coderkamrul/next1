@@ -56,43 +56,43 @@ console.log(gig);
   };
 
   return (
-    <div>
-      <Card className="p-4 mb-4">
+    <div className="dark:bg-black text-white p-4 rounded-lg ">
+      <Card className="p-4 mb-4 dark:bg-gray-800">
         <div className="flex items-center justify-between mb-4">
           <h4 className="text-lg font-bold">
             <span className="text-primary">{packageDetails.name} -{" "}</span>
             {packageDetails.title}
           </h4>
-          <p className="text-base font-bold text-black">
+          <p className="text-base font-bold dark:text-white">
             ${packageDetails.price}
           </p>
         </div>
-        <p className="text-sm text-gray-600 mb-4">
+        <p className="text-sm dark:text-gray-400 text-gray-800 mb-4">
           {packageDetails.description}
         </p>
-        <div className="flex items-center text-sm text-gray-600">
+        <div className="flex items-center text-sm dark:text-gray-400 text-gray-600">
           <span className="flex items-center mr-2">
-          <Clock className="w-4 h-4 mr-2" />
+            <Clock className="w-4 h-4 mr-2" />
             Delivery in {packageDetails.deliveryTime}{" "}
             {packageDetails.deliveryTime > 1 ? "days" : "day"}
           </span>
           <span className="flex items-center">
-          <RefreshCcw className="w-4 h-4 mr-2" />
+            <RefreshCcw className="w-4 h-4 mr-2" />
             {packageDetails.revisions} revision
             {packageDetails.revisions > 1 ? "s" : ""}
           </span>
         </div>
       </Card>
 
-      <Label className="mb-2 block">Requirements:</Label>
-      <ul className="text-sm text-gray-600 list-disc pl-6 pb-4">
+      <Label className="mb-2 block dark:text-gray-300 text-black">Requirements:</Label>
+      <ul className="text-sm dark:text-gray-300 text-gray-800 list-disc pl-6 pb-4">
         {requirements.map((requirement, index) => (
           <li key={index}>{requirement}</li>
         ))}
       </ul>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <Label htmlFor="name">Name</Label>
+          <Label htmlFor="name" className="dark:text-gray-300 text-gray-600">Name</Label>
           <Input
             id="name"
             type="text"
@@ -100,10 +100,11 @@ console.log(gig);
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
+            className="dark:bg-gray-800 text-white dark:border-gray-700"
           />
         </div>
         <div>
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email" className="dark:text-gray-300 text-gray-600">Email</Label>
           <Input
             id="email"
             type="email"
@@ -111,10 +112,11 @@ console.log(gig);
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className="dark:bg-gray-800 text-white dark:border-gray-700"
           />
         </div>
         <div>
-          <Label htmlFor="phone">Phone</Label>
+          <Label htmlFor="phone" className="dark:text-gray-300 text-gray-600">Phone</Label>
           <Input
             id="phone"
             type="tel"
@@ -122,15 +124,16 @@ console.log(gig);
             required
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
+            className="dark:bg-gray-800 text-white dark:border-gray-700"
           />
         </div>
         <div>
-          <Label htmlFor="message">Message</Label>
+          <Label htmlFor="message" className="dark:text-gray-300 text-gray-600">Message</Label>
           <Textarea
             id="message"
             placeholder="Your message"
             required
-            className="max-h-40"
+            className="dark:bg-gray-800 text-white dark:border-gray-700 max-h-40"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
@@ -139,6 +142,7 @@ console.log(gig);
           type="submit"
           variant="darkAnimated"
           disabled={loading}
+          className=""
         >
           {loading ? "Loading..." : "Submit Order"}
         </Button>

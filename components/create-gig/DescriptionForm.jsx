@@ -1,9 +1,10 @@
-import { useState } from "react"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Star } from "lucide-react"
+import { useState } from "react";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Star } from "lucide-react";
+import Editor from "../Editor";
 
 export default function DescriptionForm({ onNext, onBack, data }) {
   const [formData, setFormData] = useState({
@@ -11,11 +12,19 @@ export default function DescriptionForm({ onNext, onBack, data }) {
     sellerInfo: data.seller?.description || "",
     reviews: data.reviews || [],
     reviewsCount: data.reviewsCount || 0,
+  });
+  const [description, setDescription] = useState({
+    setupinstructions: data.description || "",
   })
+  console.log(description);
+  
+
+  const [editorState, setEditorState] = useState('editor')
+  const [textEditor, setTextEditor] = useState({ isReady: false })
 
   const handleChange = (name, value) => {
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleAddReview = () => {
     setFormData((prev) => ({
@@ -28,20 +37,20 @@ export default function DescriptionForm({ onNext, onBack, data }) {
           comment: "",
         },
       ],
-    }))
-  }
+    }));
+  };
 
   const handleRemoveReview = (index) => {
     setFormData((prev) => ({
       ...prev,
       reviews: prev.reviews.filter((_, i) => i !== index),
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (
-      formData.description.trim() !== "" &&
+      formData.description !== "" &&
       formData.sellerInfo.trim() !== "" &&
       formData.reviewsCount > 0 &&
       formData.reviews.every(
@@ -52,27 +61,33 @@ export default function DescriptionForm({ onNext, onBack, data }) {
       )
     ) {
       onNext({
-        description: formData.description,
+        description: description.setupinstructions,
         seller: { ...data.seller, description: formData.sellerInfo },
         reviews: formData.reviews,
         reviewsCount: formData.reviewsCount,
-      })
+      });
     } else {
-      alert("Please fill in all fields before proceeding.")
+      alert("Please fill in all fields before proceeding.");
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
         <Label htmlFor="description">Gig Description</Label>
-        <Textarea
+        {/* <Textarea
           id="description"
           value={formData.description}
           onChange={(e) => handleChange("description", e.target.value)}
           placeholder="Describe your gig in detail"
           rows={6}
           required
+        /> */}
+        <Editor
+          setTextEditor={setTextEditor}
+          setEditorState={setEditorState}
+          formData={description}
+          setFormData={setDescription}
         />
       </div>
       <div>
@@ -125,7 +140,9 @@ export default function DescriptionForm({ onNext, onBack, data }) {
                 <Star
                   key={rating}
                   className={`cursor-pointer ${
-                    review.rating >= rating ? "text-yellow-500 stroke-current" : "text-gray-400"
+                    review.rating >= rating
+                      ? "text-yellow-500 stroke-current"
+                      : "text-gray-400"
                   }`}
                   size={24}
                   onClick={() =>
@@ -168,18 +185,16 @@ export default function DescriptionForm({ onNext, onBack, data }) {
         </div>
       ))}
       <div className="flex justify-center">
-      <Button type="button" variant="outline" onClick={handleAddReview}>
+        <Button type="button" variant="outline" onClick={handleAddReview}>
           Add Review
         </Button>
-        </div>
+      </div>
       <div className="flex justify-between">
-        
         <Button type="button" variant="outline" onClick={onBack}>
           Back
         </Button>
         <Button type="submit">Save & Continue</Button>
       </div>
     </form>
-  )
+  );
 }
-
