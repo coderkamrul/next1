@@ -14,7 +14,7 @@ import {
   Youtube,
 } from "lucide-react";
 import Link from "next/link";
-import { FaGithub, FaDiscord, FaYoutube, FaStar } from "react-icons/fa";
+import { FaGithub, FaDiscord, FaYoutube, FaStar, FaWhatsapp } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Services from "@/components/Services";
 import ViewWork from "@/components/ViewWork";
@@ -196,9 +196,9 @@ export default function Home() {
                   I'm <span className="text-primary">Shahin Alam</span>
                 </motion.h1>
                 <p className="mt-4 text-text dark:text-gray-200 text-lg sm:text-xl">
-                  A <b>Next.js</b>, React and <b>MERN</b> stack developer and
-                  <b>Youtuber</b> with over 4 years of experience in creating
-                  robust and scalable web applications.
+                  A <b>Next.js</b>, React, Wordpress, Go High Level and <b>MERN</b> stack developer and
+                  <b> Youtuber</b> with over 5 years of experience in creating
+                  robust and scalable web applications. I'm a <b>Fiverr Level 2 seller</b> with a 5-star rating.
                 </p>
                 <div className="mt-8 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                   <div className="w-full sm:w-auto hover:scale-105 transition-all duration-300">
@@ -214,23 +214,26 @@ export default function Home() {
                 </div>
                 <div className="mt-8 flex items-center justify-center lg:justify-start gap-6">
                   <Link
-                    href="https://github.com/shahinalam"
+                    href="https://github.com/coderkamrul"
                     rel="noopener noreferrer"
                     className="text-text text-2xl sm:text-3xl dark:text-gray-300 hover:text-primary duration-300 hover:scale-125 hover:rotate-12 transition-all "
+                    target="_blank"
                   >
                     <FaGithub size={30} />
                   </Link>
                   <Link
-                    href="https://github.com/shahinalam"
+                    href="https://wa.me/+8801302032326"
                     rel="noopener noreferrer"
                     className="text-text text-2xl sm:text-3xl dark:text-gray-300 hover:text-primary duration-300 hover:scale-125 hover:rotate-12 transition-all "
+                    target="_blank"
                   >
-                    <FaDiscord size={30} />
+                    <FaWhatsapp size={30} />
                   </Link>
                   <Link
-                    href="https://github.com/shahinalam"
+                    href="https://www.youtube.com/@codingreact"
                     rel="noopener noreferrer"
                     className="text-text text-2xl sm:text-3xl dark:text-gray-300 hover:text-primary duration-300 hover:scale-125 hover:rotate-12 transition-all "
+                    target="_blank"
                   >
                     <FaYoutube size={30} />
                   </Link>
