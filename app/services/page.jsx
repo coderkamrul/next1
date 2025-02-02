@@ -81,7 +81,9 @@ export default function GigsPage() {
   useEffect(() => {
     fetch("/api/gigs")
       .then((res) => res.json())
-      .then((data) => setGigs(data.data));
+      .then((data) =>
+        setGigs(data.data.filter((gig) => gig.status === "active"))
+      );
   }, []);
 
   const toggleFilter = (filter) => {
