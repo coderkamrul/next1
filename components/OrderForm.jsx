@@ -100,7 +100,7 @@ console.log(gig);
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="dark:bg-gray-800 text-white dark:border-gray-700"
+            className="dark:bg-gray-800  dark:border-gray-700"
           />
         </div>
         <div>
@@ -112,7 +112,7 @@ console.log(gig);
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="dark:bg-gray-800 text-white dark:border-gray-700"
+            className="dark:bg-gray-800  dark:border-gray-700"
           />
         </div>
         <div>
@@ -124,7 +124,7 @@ console.log(gig);
             required
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className="dark:bg-gray-800 text-white dark:border-gray-700"
+            className="dark:bg-gray-800  dark:border-gray-700"
           />
         </div>
         <div>
@@ -133,7 +133,7 @@ console.log(gig);
             id="message"
             placeholder="Your message"
             required
-            className="dark:bg-gray-800 text-white dark:border-gray-700 max-h-40"
+            className="dark:bg-gray-800  dark:border-gray-700 max-h-40"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
