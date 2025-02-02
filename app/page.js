@@ -14,7 +14,13 @@ import {
   Youtube,
 } from "lucide-react";
 import Link from "next/link";
-import { FaGithub, FaDiscord, FaYoutube, FaStar, FaWhatsapp } from "react-icons/fa";
+import {
+  FaGithub,
+  FaDiscord,
+  FaYoutube,
+  FaStar,
+  FaWhatsapp,
+} from "react-icons/fa";
 import { motion } from "framer-motion";
 import Services from "@/components/Services";
 import ViewWork from "@/components/ViewWork";
@@ -197,9 +203,11 @@ export default function Home() {
                   I'm <span className="text-primary">Shahin Alam</span>
                 </motion.h1>
                 <p className="mt-4 text-text dark:text-gray-200 text-lg sm:text-xl">
-                  A <b>Next.js</b>, React, Wordpress, Go High Level and <b>MERN</b> stack developer and
+                  A <b>Next.js</b>, React, Wordpress, Go High Level and{" "}
+                  <b>MERN</b> stack developer and
                   <b> Youtuber</b> with over 5 years of experience in creating
-                  robust and scalable web applications. I'm a <b>Fiverr Level 2 seller</b> with a 5-star rating.
+                  robust and scalable web applications. I'm a{" "}
+                  <b>Fiverr Level 2 seller</b> with a 5-star rating.
                 </p>
                 <div className="mt-8 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                   <div className="w-full sm:w-auto hover:scale-105 transition-all duration-300">
@@ -487,146 +495,151 @@ export default function Home() {
         </section>
 
         {/* Youtube  */}
-        <section className="py-16 bg-gradient-to-b from-background to-muted/20">
-          <div className="max-w-6xl mx-auto space-y-10 max-sm:px-4">
-            <div className="text-center space-y-6">
-              <h2 className="text-2xl font-semibold text-foreground lg:text-3xl">
-                Uploaded to Youtube
-              </h2>
-              <div className="flex justify-center items-center space-x-1">
-                <span className="h-1 bg-primary rounded-full w-40"></span>
-                <span className="h-1 bg-primary rounded-full w-3"></span>
-                <span className="h-1 bg-primary rounded-full w-1"></span>
-              </div>
-              <p className="max-w-2xl mx-auto text-muted-foreground">
-                Watch on demand videos I have uploaded to Youtube.
-              </p>
-            </div>
-            <div className="flex justify-center items-center gap-4">
-              <Button variant="animated" className="w-fit h-10">
-                <Youtube />
-                Subscribe
-              </Button>
-              <Link href="/videos">
-                <Button variant="outline" className="w-fit h-10">
-                  All Videos
-                  <motion.span
-                    animate={{ x: [0, 3, -3, 0] }}
-                    transition={{
-                      repeat: Infinity,
-                      duration: 1.5,
-                      ease: "linear",
-                    }}
-                  >
-                    <MoveRight />
-                  </motion.span>
-                </Button>
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {youtubedata.map((video, index) => (
-                <div
-                  className="group relative overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-all duration-300"
-                  key={index}
-                >
-                  <Link
-                    href={`/videos/${video._id}`}
-                    className="flex flex-col h-full"
-                  >
-                    <div className="relative aspect-video overflow-hidden">
-                      <Image
-                        src={video.image}
-                        alt={video.title}
-                        className="h-full w-full object-cover group-hover:scale-110 transition-all duration-300"
-                        width={500}
-                        height={500}
-                      />
-                    </div>
-                    <div className="flex-grow p-4">
-                      <h3 className="text-base sm:text-lg font-semibold line-clamp-2 group-hover:text-primary transition-colors duration-300">
-                        {video.title}
-                      </h3>
-                      <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
-                        {video.description}
-                      </p>
-                    </div>
-                    <div className="w-full bg-muted/50 p-3 border-t">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium text-muted-foreground">
-                          {video.category}
-                        </span>
-                        <button variant="ghost" href={video.link}>
-                          <ExternalLink className="h-5 w-5 text-primary hover:scale-110 transition-all duration-300" />
-                        </button>
-                      </div>
-                    </div>
-                  </Link>
+        {youtubedata.length > 0 && (
+          <section className="py-16 bg-gradient-to-b from-background to-muted/20">
+            <div className="max-w-6xl mx-auto space-y-10 max-sm:px-4">
+              <div className="text-center space-y-6">
+                <h2 className="text-2xl font-semibold text-foreground lg:text-3xl">
+                  Uploaded to Youtube
+                </h2>
+                <div className="flex justify-center items-center space-x-1">
+                  <span className="h-1 bg-primary rounded-full w-40"></span>
+                  <span className="h-1 bg-primary rounded-full w-3"></span>
+                  <span className="h-1 bg-primary rounded-full w-1"></span>
                 </div>
-              ))}
+                <p className="max-w-2xl mx-auto text-muted-foreground">
+                  Watch on demand videos I have uploaded to Youtube.
+                </p>
+              </div>
+              <div className="flex justify-center items-center gap-4">
+                <Link href="https://www.youtube.com/channel/UC6n7lks7DmpXMJxS_g73sqg?sub_confirmation=1">
+                  <Button variant="animated" className="w-fit h-10">
+                    <Youtube />
+                    Subscribe
+                  </Button>
+                </Link>
+                <Link href="/videos">
+                  <Button variant="outline" className="w-fit h-10">
+                    All Videos
+                    <motion.span
+                      animate={{ x: [0, 3, -3, 0] }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 1.5,
+                        ease: "linear",
+                      }}
+                    >
+                      <MoveRight />
+                    </motion.span>
+                  </Button>
+                </Link>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {youtubedata.map((video, index) => (
+                  <div
+                    className="group relative overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-all duration-300"
+                    key={index}
+                  >
+                    <Link
+                      href={`/videos/${video._id}`}
+                      className="flex flex-col h-full"
+                    >
+                      <div className="relative aspect-video overflow-hidden">
+                        <Image
+                          src={video.image}
+                          alt={video.title}
+                          className="h-full w-full object-cover group-hover:scale-110 transition-all duration-300"
+                          width={500}
+                          height={500}
+                        />
+                      </div>
+                      <div className="flex-grow p-4">
+                        <h3 className="text-base sm:text-lg font-semibold line-clamp-2 group-hover:text-primary transition-colors duration-300">
+                          {video.title}
+                        </h3>
+                        <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
+                          {video.description}
+                        </p>
+                      </div>
+                      <div className="w-full bg-muted/50 p-3 border-t">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-medium text-muted-foreground">
+                            {video.category}
+                          </span>
+                          <button variant="ghost" href={video.link}>
+                            <ExternalLink className="h-5 w-5 text-primary hover:scale-110 transition-all duration-300" />
+                          </button>
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* Blog  */}
-        <section className="py-16 bg-gradient-to-b from-background to-muted/20">
-          <div className="max-w-6xl mx-auto space-y-10 max-sm:px-4">
-            <div className="text-center space-y-6">
-              <h2 className="text-2xl font-semibold text-foreground lg:text-3xl">
-                Latest Blog Posts
-              </h2>
-              <div className="flex justify-center items-center space-x-1">
-                <span className="h-1 bg-primary rounded-full w-40"></span>
-                <span className="h-1 bg-primary rounded-full w-3"></span>
-                <span className="h-1 bg-primary rounded-full w-1"></span>
-              </div>
-              <p className="max-w-2xl mx-auto text-muted-foreground">
-                Check out my latest blog posts.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {blogdata.map((blog, index) => (
-                <div
-                  className="group relative overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-all duration-300"
-                  key={index}
-                >
-                  <Link
-                    href={`/blogs/${blog._id}`}
-                    className="flex flex-col h-full"
-                  >
-                    <div className="relative aspect-video overflow-hidden">
-                      <Image
-                        src={blog.image}
-                        alt={blog.title}
-                        className="h-full w-full object-cover group-hover:scale-110 transition-all duration-300"
-                        width={500}
-                        height={500}
-                      />
-                    </div>
-                    <div className="flex-grow p-4">
-                      <h3 className="text-base sm:text-lg font-semibold line-clamp-2 group-hover:text-primary transition-colors duration-300">
-                        {blog.title}
-                      </h3>
-                      <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
-                        {blog.description}
-                      </p>
-                    </div>
-                    <div className="w-full bg-muted/50 p-3 border-t">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium text-muted-foreground">
-                          {blog.tags && blog.tags[0]}
-                        </span>
-                        <button variant="ghost" href={blog.link}>
-                          <ExternalLink className="h-5 w-5 text-primary hover:scale-110 transition-all duration-300" />
-                        </button>
-                      </div>
-                    </div>
-                  </Link>
+        {blogdata.length > 0 && (
+          <section className="py-16 bg-gradient-to-b from-background to-muted/20">
+            <div className="max-w-6xl mx-auto space-y-10 max-sm:px-4">
+              <div className="text-center space-y-6">
+                <h2 className="text-2xl font-semibold text-foreground lg:text-3xl">
+                  Latest Blog Posts
+                </h2>
+                <div className="flex justify-center items-center space-x-1">
+                  <span className="h-1 bg-primary rounded-full w-40"></span>
+                  <span className="h-1 bg-primary rounded-full w-3"></span>
+                  <span className="h-1 bg-primary rounded-full w-1"></span>
                 </div>
-              ))}
+                <p className="max-w-2xl mx-auto text-muted-foreground">
+                  Check out my latest blog posts.
+                </p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {blogdata.map((blog, index) => (
+                  <div
+                    className="group relative overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-all duration-300"
+                    key={index}
+                  >
+                    <Link
+                      href={`/blogs/${blog._id}`}
+                      className="flex flex-col h-full"
+                    >
+                      <div className="relative aspect-video overflow-hidden">
+                        <Image
+                          src={blog.image}
+                          alt={blog.title}
+                          className="h-full w-full object-cover group-hover:scale-110 transition-all duration-300"
+                          width={500}
+                          height={500}
+                        />
+                      </div>
+                      <div className="flex-grow p-4">
+                        <h3 className="text-base sm:text-lg font-semibold line-clamp-2 group-hover:text-primary transition-colors duration-300">
+                          {blog.title}
+                        </h3>
+                        <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
+                          {blog.description}
+                        </p>
+                      </div>
+                      <div className="w-full bg-muted/50 p-3 border-t">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-medium text-muted-foreground">
+                            {blog.tags && blog.tags[0]}
+                          </span>
+                          <button variant="ghost" href={blog.link}>
+                            <ExternalLink className="h-5 w-5 text-primary hover:scale-110 transition-all duration-300" />
+                          </button>
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
-
+          </section>
+        )}
         {/* Contact me  */}
         <section className="py-16 bg-gradient-to-b from-background to-muted/20">
           <div className=" max-w-4xl mx-auto">
@@ -695,7 +708,6 @@ export default function Home() {
           </div>
         </section>
 
-        
         <div
           className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)] pointer-events-none"
           aria-hidden="true"
