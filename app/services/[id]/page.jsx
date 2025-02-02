@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   StarIcon,
@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/drawer";
 import OrderForm from "@/components/OrderForm";
 import { useSession } from 'next-auth/react';
-
+import { Skeleton } from "@/components/ui/skeleton";
 
 
 
@@ -41,6 +41,7 @@ const GigDetails = ({ params }) => {
   const [currentPackage, setCurrentPackage] = useState(0);
   const [gig, setGig] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   React.useEffect(() => {
     const fetchGig = async () => {
@@ -48,6 +49,7 @@ const GigDetails = ({ params }) => {
       const data = await response.json();
 
       setGig(data.data);
+      setLoading(false);
     };
     fetchGig();
   }, [id]);
@@ -55,6 +57,16 @@ const GigDetails = ({ params }) => {
   const handleSuccess = () => {
     setIsOpen(false);
   };
+
+  if (loading) {
+    return (
+      <div className="max-w-7xl min-h-screen flex justify-center items-center mx-auto py-6 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-center">
+          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900 dark:border-gray-100"></div>
+        </div>
+      </div>
+    );
+  }
 
   if (!gig) {
     return (
