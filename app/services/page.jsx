@@ -60,17 +60,16 @@ const GigCard = ({ gig }) => {
 
 const categories = [
   "web-development",
-  "mobile-app-development",
-  "desktop-app-development",
-  "game-development",
-  "database-administration",
-  "devops",
-  "qa-testing",
-  "network-administration",
-  "artificial-intelligence",
-  "machine-learning",
-  "data-science",
-  "cyber-security",
+  "portfolio-websites",
+  "business-websites",
+  "landing-pages",
+  "ecommerce-websites",
+  "blogging-websites",
+  "service-websites",
+  "educational-websites",
+  "nonprofit-websites",
+  "event-booking-websites",
+  "classifieds-websites",
 ];
 
 export default function GigsPage() {
@@ -100,7 +99,10 @@ export default function GigsPage() {
 
   const filteredGigs = gigs.filter((gig) => {
     const matchesCategory = category === "all" || gig.category === category;
-    const matchesSearchQuery = gig.title.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearchQuery =
+      gig.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      gig.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      gig.subcategory.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesActiveFilters =
       activeFilters.length === 0 || activeFilters.includes(gig.category);
     return matchesCategory && matchesSearchQuery && matchesActiveFilters;
@@ -154,11 +156,17 @@ export default function GigsPage() {
               {categories.map((filter) => (
                 <Button
                   key={filter}
-                  variant={activeFilters.includes(filter) ? "default" : "outline"}
+                  variant={
+                    activeFilters.includes(filter) ? "default" : "outline"
+                  }
                   className="cursor-pointer flex-grow"
                   onClick={() => toggleFilter(filter)}
                 >
-                  {filter.replace(/-/g, " ")}
+                  {filter
+                    .replace(/-/g, " ")
+                    .split(" ")
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ")}
                 </Button>
               ))}
             </div>
