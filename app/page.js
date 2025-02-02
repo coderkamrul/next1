@@ -45,6 +45,7 @@ import TestimonialCard from "@/components/TestimonialCard";
 import { Marquee } from "@/components/ui/marquee";
 import { CustomCarousel } from "@/components/ui/custom-carousel";
 import { SiFiverr } from "react-icons/si";
+import ViewServices from "@/components/ViewServices";
 
 const experiencedata = [
   {
@@ -322,12 +323,14 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Services  */}
+        {/* Services platform  */}
         <section className="py-12">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <Services />
           </div>
         </section>
+
+        
 
         {/* Work  */}
         <ViewWork />
@@ -402,6 +405,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Services  */}
+        <ViewServices />
 
         {/* textimonials  */}
         <section className="flex justify-center items-center mt-8">

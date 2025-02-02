@@ -16,7 +16,7 @@ export default function DescriptionForm({ onNext, onBack, data }) {
   const [description, setDescription] = useState({
     setupinstructions: data.description || "",
   })
-  console.log(description);
+ 
   
 
   const [editorState, setEditorState] = useState('editor')
@@ -50,7 +50,7 @@ export default function DescriptionForm({ onNext, onBack, data }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
-      formData.description !== "" &&
+      formData.description.setupinstructions !== "" &&
       formData.sellerInfo.trim() !== "" &&
       formData.reviewsCount > 0 &&
       formData.reviews.every(
