@@ -29,10 +29,8 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import OrderForm from "@/components/OrderForm";
-import { useSession } from 'next-auth/react';
+import { useSession } from "next-auth/react";
 import { Skeleton } from "@/components/ui/skeleton";
-
-
 
 const GigDetails = ({ params }) => {
   const { id } = React.use(params);
@@ -343,7 +341,21 @@ const GigDetails = ({ params }) => {
                   ))}
               </div>
             </div>
+          <div className="my-8">
+            <h2 className="text-xl font-semibold mb-4">Search Tags</h2>
+            <div className="flex flex-wrap gap-2">
+              {gig.tags.map((tag, index) => (
+                <span
+                  key={index}
+                  className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
+          </div>
+
           <div className="lg:col-span-1 hidden lg:block ">
             {gig.userId._id === session?.user?.id && (
               <Link href={`/dashboard/gig/${gig._id}/edit`}>

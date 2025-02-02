@@ -104,7 +104,7 @@ export default function GigsPage() {
     const matchesSearchQuery =
       gig.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       gig.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      gig.subcategory.toLowerCase().includes(searchQuery.toLowerCase());
+      gig.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchesActiveFilters =
       activeFilters.length === 0 || activeFilters.includes(gig.category);
     return matchesCategory && matchesSearchQuery && matchesActiveFilters;
