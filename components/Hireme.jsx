@@ -18,7 +18,7 @@ import { SiFiverr, SiGmail, SiUpwork } from 'react-icons/si'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { useMediaQuery } from '@/hooks/use-media-query'
-
+import { TbLetterSSmall } from "react-icons/tb";
 const HireOptions = () => (
   <div className='flex flex-col gap-3 py-4 px-4 md:px-0'>
     <Link
@@ -54,6 +54,20 @@ const HireOptions = () => (
         <span className='font-medium'>Hire on Upwork</span>
         <p className='text-sm text-muted-foreground'>
           Starting from $10 per hour.
+        </p>
+      </div>
+    </Link>
+    <Link
+      href='/services'
+      className='flex items-center gap-4 rounded-lg border p-4 transition-colors hover:bg-accent'
+    >
+      <div className='flex h-10 w-10 items-center justify-center rounded-full bg-[#14A800]'>
+        <TbLetterSSmall  size={50}  className='text-white'/>
+      </div>
+      <div className='flex-1'>
+        <span className='font-medium'>Hire on Website</span>
+        <p className='text-sm text-muted-foreground'>
+          No extra charges, unlike Fiverr or Upwork.
         </p>
       </div>
     </Link>
