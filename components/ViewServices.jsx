@@ -170,7 +170,7 @@ export default function ViewServices() {
           className="text-purple-600 text-lg font-medium hover:text-purple-700"
           asChild
         >
-          <a href="/gigs">View More Services</a>
+          <a href="/services">View More Services</a>
         </Button>
       </motion.div>
     </section>
