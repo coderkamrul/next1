@@ -38,6 +38,7 @@ import { toast } from "@/hooks/use-toast";
 import TestimonialCard from "@/components/TestimonialCard";
 import { Marquee } from "@/components/ui/marquee";
 import { CustomCarousel } from "@/components/ui/custom-carousel";
+import { SiFiverr } from "react-icons/si";
 
 const experiencedata = [
   {
@@ -228,6 +229,14 @@ export default function Home() {
                     target="_blank"
                   >
                     <FaWhatsapp size={30} />
+                  </Link>
+                  <Link
+                    href="https://www.fiverr.com/s/ZmWbGzj"
+                    rel="noopener noreferrer"
+                    className="text-text text-2xl sm:text-3xl dark:text-gray-300 hover:text-primary duration-300 hover:scale-125 hover:rotate-12 transition-all "
+                    target="_blank"
+                  >
+                    <SiFiverr size={30} />
                   </Link>
                   <Link
                     href="https://www.youtube.com/@codingreact"
