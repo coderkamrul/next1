@@ -61,27 +61,32 @@ export default function OverviewForm({ onNext, data }) {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="web-development">Web Development</SelectItem>
-            <SelectItem value="mobile-app-development">
-              Mobile App Development
+            <SelectItem value="portfolio-websites">
+              Portfolio Websites
             </SelectItem>
-            <SelectItem value="desktop-app-development">
-              Desktop App Development
+            <SelectItem value="business-websites">Business Websites</SelectItem>
+            <SelectItem value="landing-pages">Landing Pages</SelectItem>
+            <SelectItem value="ecommerce-websites">
+              E-commerce Websites
             </SelectItem>
-            <SelectItem value="game-development">Game Development</SelectItem>
-            <SelectItem value="database-administration">
-              Database Administration
+            <SelectItem value="blogging-websites">
+              Blogging & Content Websites
             </SelectItem>
-            <SelectItem value="devops">DevOps</SelectItem>
-            <SelectItem value="qa-testing">QA Testing</SelectItem>
-            <SelectItem value="network-administration">
-              Network Administration
+            <SelectItem value="service-websites">
+              Service-Based Websites
             </SelectItem>
-            <SelectItem value="artificial-intelligence">
-              Artificial Intelligence
+            <SelectItem value="educational-websites">
+              Educational Websites
             </SelectItem>
-            <SelectItem value="machine-learning">Machine Learning</SelectItem>
-            <SelectItem value="data-science">Data Science</SelectItem>
-            <SelectItem value="cyber-security">Cyber Security</SelectItem>
+            <SelectItem value="nonprofit-websites">
+              Non-Profit & Community Websites
+            </SelectItem>
+            <SelectItem value="event-booking-websites">
+              Event & Booking Websites
+            </SelectItem>
+            <SelectItem value="classifieds-websites">
+              Classifieds & Directory Websites
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -97,138 +102,163 @@ export default function OverviewForm({ onNext, data }) {
           <SelectContent>
             {formData.category === "web-development" && (
               <>
-                <SelectItem value="frontend-development">
-                  Frontend Development
+                <SelectItem value="portfolio-websites">
+                  Portfolio Websites
                 </SelectItem>
-                <SelectItem value="backend-development">
-                  Backend Development
+                <SelectItem value="business-websites">
+                  Business Websites
                 </SelectItem>
-                <SelectItem value="fullstack-development">
-                  Fullstack Development
+                <SelectItem value="landing-pages">Landing Pages</SelectItem>
+                <SelectItem value="ecommerce-websites">
+                  E-commerce Websites
                 </SelectItem>
-                <SelectItem value="e-commerce-development">
-                  E-commerce Development
+                <SelectItem value="blogging-websites">
+                  Blogging & Content Websites
                 </SelectItem>
-                <SelectItem value="cms-development">CMS Development</SelectItem>
-                <SelectItem value="wordpress-development">
-                  Wordpress Development
+                <SelectItem value="service-websites">
+                  Service-Based Websites
                 </SelectItem>
-                <SelectItem value="gohighlevel-development">
-                  GoHighLevel Development
+                <SelectItem value="educational-websites">
+                  Educational Websites
                 </SelectItem>
-              </>
-            )}
-            {formData.category === "mobile-app-development" && (
-              <>
-                <SelectItem value="ios-development">iOS Development</SelectItem>
-                <SelectItem value="android-development">
-                  Android Development
+                <SelectItem value="nonprofit-websites">
+                  Non-Profit & Community Websites
                 </SelectItem>
-              </>
-            )}
-            {formData.category === "desktop-app-development" && (
-              <>
-                <SelectItem value="windows-development">
-                  Windows Development
+                <SelectItem value="event-booking-websites">
+                  Event & Booking Websites
                 </SelectItem>
-                <SelectItem value="mac-development">Mac Development</SelectItem>
-                <SelectItem value="linux-development">
-                  Linux Development
+                <SelectItem value="classifieds-websites">
+                  Classifieds & Directory Websites
                 </SelectItem>
               </>
             )}
-            {formData.category === "game-development" && (
+
+            {formData.category === "portfolio-websites" && (
               <>
-                <SelectItem value="unity-development">
-                  Unity Development
+                <SelectItem value="personal-portfolio">
+                  Personal Portfolio
                 </SelectItem>
-                <SelectItem value="unreal-engine-development">
-                  Unreal Engine Development
+                <SelectItem value="resume-cv">Resume / CV Website</SelectItem>
+                <SelectItem value="photography-portfolio">
+                  Photography Portfolio
                 </SelectItem>
               </>
             )}
-            {formData.category === "database-administration" && (
+
+            {formData.category === "business-websites" && (
               <>
-                <SelectItem value="mysql-administration">
-                  MySQL Administration
+                <SelectItem value="small-business">
+                  Small Business Website
                 </SelectItem>
-                <SelectItem value="mongodb-administration">
-                  MongoDB Administration
+                <SelectItem value="corporate-website">
+                  Corporate Website
                 </SelectItem>
-                <SelectItem value="postgresql-administration">
-                  PostgreSQL Administration
+                <SelectItem value="real-estate">Real Estate Website</SelectItem>
+              </>
+            )}
+
+            {formData.category === "landing-pages" && (
+              <>
+                <SelectItem value="product-launch">
+                  Product Launch Page
+                </SelectItem>
+                <SelectItem value="lead-generation">
+                  Lead Generation Page
+                </SelectItem>
+                <SelectItem value="sales-funnel">Sales Funnel Page</SelectItem>
+              </>
+            )}
+
+            {formData.category === "ecommerce-websites" && (
+              <>
+                <SelectItem value="shopify-store">Shopify Store</SelectItem>
+                <SelectItem value="woocommerce-store">
+                  WooCommerce Store
+                </SelectItem>
+                <SelectItem value="dropshipping-store">
+                  Dropshipping Store
                 </SelectItem>
               </>
             )}
-            {formData.category === "devops" && (
+
+            {formData.category === "blogging-websites" && (
               <>
-                <SelectItem value="aws-devops">AWS Devops</SelectItem>
-                <SelectItem value="azure-devops">Azure Devops</SelectItem>
-                <SelectItem value="google-cloud-devops">
-                  Google Cloud Devops
+                <SelectItem value="personal-blog">Personal Blog</SelectItem>
+                <SelectItem value="affiliate-blog">
+                  Affiliate Marketing Blog
+                </SelectItem>
+                <SelectItem value="news-magazine">
+                  News & Magazine Website
                 </SelectItem>
               </>
             )}
-            {formData.category === "qa-testing" && (
+
+            {formData.category === "service-websites" && (
               <>
-                <SelectItem value="manual-testing">Manual Testing</SelectItem>
-                <SelectItem value="automated-testing">
-                  Automated Testing
+                <SelectItem value="appointment-booking">
+                  Appointment Booking Website
+                </SelectItem>
+                <SelectItem value="home-services">
+                  Home Services Website
+                </SelectItem>
+                <SelectItem value="fitness-gym">
+                  Fitness & Gym Website
                 </SelectItem>
               </>
             )}
-            {formData.category === "network-administration" && (
+
+            {formData.category === "educational-websites" && (
               <>
-                <SelectItem value="network-security">
-                  Network Security
+                <SelectItem value="online-courses">
+                  Online Course Platform (LMS)
                 </SelectItem>
-                <SelectItem value="network-architecture">
-                  Network Architecture
+                <SelectItem value="tutor-booking">
+                  Tutor & Coaching Website
+                </SelectItem>
+                <SelectItem value="school-university">
+                  School & University Website
                 </SelectItem>
               </>
             )}
-            {formData.category === "artificial-intelligence" && (
+
+            {formData.category === "nonprofit-websites" && (
               <>
-                <SelectItem value="machine-learning">
-                  Machine Learning
+                <SelectItem value="charity-donation">
+                  Charity & Donation Website
                 </SelectItem>
-                <SelectItem value="natural-language-processing">
-                  Natural Language Processing
+                <SelectItem value="church-religious">
+                  Church & Religious Website
+                </SelectItem>
+                <SelectItem value="community-forum">
+                  Community Forum & Membership Website
                 </SelectItem>
               </>
             )}
-            {formData.category === "machine-learning" && (
+
+            {formData.category === "event-booking-websites" && (
               <>
-                <SelectItem value="supervised-learning">
-                  Supervised Learning
+                <SelectItem value="event-management">
+                  Event Management Website
                 </SelectItem>
-                <SelectItem value="unsupervised-learning">
-                  Unsupervised Learning
+                <SelectItem value="wedding-planning">
+                  Wedding & Party Planning Website
                 </SelectItem>
-                <SelectItem value="reinforcement-learning">
-                  Reinforcement Learning
+                <SelectItem value="hotel-booking">
+                  Hotel & Travel Booking Website
                 </SelectItem>
               </>
             )}
-            {formData.category === "data-science" && (
+
+            {formData.category === "classifieds-websites" && (
               <>
-                <SelectItem value="data-analysis">Data Analysis</SelectItem>
-                <SelectItem value="data-visualization">
-                  Data Visualization
+                <SelectItem value="business-directory">
+                  Local Business Directory
                 </SelectItem>
-                <SelectItem value="data-mining">Data Mining</SelectItem>
-              </>
-            )}
-            {formData.category === "cyber-security" && (
-              <>
-                <SelectItem value="penetration-testing">
-                  Penetration Testing
+                <SelectItem value="real-estate-listing">
+                  Real Estate Listing Website
                 </SelectItem>
-                <SelectItem value="vulnerability-assessment">
-                  Vulnerability Assessment
-                </SelectItem>
-                <SelectItem value="incident-response">
-                  Incident Response
+                <SelectItem value="automobile-marketplace">
+                  Automobile Marketplace
                 </SelectItem>
               </>
             )}
