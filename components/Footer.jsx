@@ -1,7 +1,7 @@
 import { Github } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
-import { FaDiscord, FaGithub, FaYoutube } from 'react-icons/fa'
+import { FaDiscord, FaGithub, FaWhatsapp, FaYoutube } from 'react-icons/fa'
 
 const Footer = () => {
   return (
@@ -21,7 +21,7 @@ const Footer = () => {
         </ul>
         <ul className='my-4 flex justify-center gap-6 sm:mt-0 lg:justify-end'>
           <li>
-            <Link href='https://github.com/eclarkkhalid' target='_blank'>
+            <Link href='https://github.com/coderkamrul' target='_blank'>
               <FaGithub
                 className='text-gray-500 transition hover:text-primary'
                 size={24}
@@ -29,15 +29,15 @@ const Footer = () => {
             </Link>
           </li>
           <li>
-            <Link href='https://github.com/eclarkkhalid' target='_blank'>
-              <FaDiscord
+            <Link href='https://wa.me/+8801302032326' target='_blank'>
+              <FaWhatsapp
                 className='text-gray-500 transition hover:text-primary'
                 size={24}
               />
             </Link>
           </li>
           <li>
-            <Link href='https://github.com/eclarkkhalid' target='_blank'>
+            <Link href='https://www.youtube.com/@codingreact' target='_blank'>
               <FaYoutube
                 className='text-gray-500 transition hover:text-primary'
                 size={24}
