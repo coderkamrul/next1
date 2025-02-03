@@ -24,9 +24,10 @@ const OrderSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      default: 'Active',
+      default: 'pending',
       required: true,
     },
+    viewed:{ type: Boolean, default: false },
   },
   {
     timestamps: true,

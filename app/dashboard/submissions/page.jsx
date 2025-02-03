@@ -91,21 +91,22 @@ const columns = [
     cell: ({ row, table }) => {
       const submission = row.original
       const { toast } = useToast()
-
+      const [dialogOpen, setDialogOpen] = useState(false)
       const handleDelete = (id) => {
         axios.delete(`/api/submissions/${id}`).then(() => {
           toast({ description: 'Submission deleted successfully.' })
+          setDialogOpen(false)
           table.options.meta.setSubmissions((prevSubmissions) =>
             prevSubmissions.filter((sub) => sub._id !== id)
           )
-          DialogClose()
+          
         })
       }
 
       const [subject, setSubject] = useState('')
       const [message, setMessage] = useState('')
       const [emails, setEmails] = useState([])
-
+      
       const fetchEmails = async () => {
         try {
           const { data } = await axios.get(`/api/email/${submission._id}`)
@@ -145,6 +146,7 @@ const columns = [
           .then(() => {
             toast({ description: 'Email deleted successfully.' })
             fetchEmails()
+            
           })
           .catch((error) => {
             toast({
@@ -265,7 +267,7 @@ const columns = [
                           </Badge>
                         </div>
                       </div>
-                      <Dialog>
+                      <Dialog >
                         <DialogTrigger asChild>
                           <Button
                             variant='destructive'
@@ -304,7 +306,7 @@ const columns = [
               </ScrollArea>
             </SheetContent>
           </Sheet>
-          <Dialog>
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
               <Button variant='destructive' size='sm'>
                 <Delete className='h-4 w-4' />

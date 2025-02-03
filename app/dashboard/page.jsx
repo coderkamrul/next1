@@ -1,234 +1,209 @@
-// import React from 'react'
+"use client"
 
-// export default function Page() {
-//   return (
-//     <div className='flex flex-1 flex-col gap-4 p-4 pt-0'>
-//       <div className='grid auto-rows-min gap-4 md:grid-cols-3'>
-//         <div className='aspect-video rounded-xl bg-muted/50' />
-//         <div className='aspect-video rounded-xl bg-muted/50' />
-//         <div className='aspect-video rounded-xl bg-muted/50' />
-//       </div>
-//       <div className='min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min' />
-//     </div>
-//   )
-// }
+import { useEffect, useState } from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { CalendarDays, FileText, Briefcase, ShoppingCart, InboxIcon, Eye } from "lucide-react"
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
+import Link from "next/link"
 
-'use client'
 
-import { useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { CalendarDays, FileText, Film, Folder, Eye } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
-
-export default function DashboardPage() {
-  const { data: session, status } = useSession()
+export default function Page() {
   const [dashboardData, setDashboardData] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [recentActivity, setRecentActivity] = useState(null)
+
+  const fetchNotifications = async () => {
+    const [orderResponse, submissionsResponse] = await Promise.all([
+      fetch("/api/order"),
+      fetch("/api/submissions"),
+    ]);
+
+    const orderData = await orderResponse.json();
+    const submissionsData = await submissionsResponse.json();
+
+    if (orderData.success && submissionsData.success) {
+      const orders = orderData.data.map((order) => ({
+        ...order,
+        type: "order",
+      }));
+      const submissions = submissionsData.data.map((submission) => ({
+        ...submission,
+        type: "submission",
+      }));
+
+      let allNotifications = [...orders, ...submissions].sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
+      const notViewedCount = allNotifications.filter(notification => !notification.viewed).length;
+      if (notViewedCount <= 5) {
+        allNotifications = allNotifications.slice(0, 6);
+      }
+
+      setRecentActivity(allNotifications);
+    }
+  };
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const response = await fetch('/api/dashboard')
+        const response = await fetch("/api/dashboard")
         const data = await response.json()
         setDashboardData(data)
       } catch (error) {
-        console.error('Error fetching dashboard data:', error)
+        console.error("Error fetching dashboard data:", error)
       } finally {
         setLoading(false)
       }
     }
+    fetchNotifications()
+    fetchDashboardData()
+  }, [])
+  
+  
 
-    if (session) {
-      fetchDashboardData()
-    }
-  }, [session])
-
-  if (status === 'loading' || loading) {
-    return <p className='text-center py-10'>Loading...</p>
+  if (loading) {
+    return <p className="text-center py-10">Loading...</p>
   }
 
-  if (!session) {
-    return (
-      <p className='text-center py-10'>
-        You need to be signed in to view this page.
-      </p>
-    )
-  }
+  const { stats } = dashboardData || {}
 
-  const { blogs, projects, videos, stats } = dashboardData || {}
+  const chartData = [
+    { name: "Projects", value: stats?.totalProjects || 0 },
+    { name: "Services", value: stats?.totalGigs || 0 },
+    { name: "Blogs", value: stats?.totalBlogs || 0 },
+    { name: "Orders", value: stats?.totalOrders || 0 },
+    { name: "Submissions", value: stats?.totalSubmissions || 0 },
+  ]
+
+
+console.log(recentActivity);
 
   return (
-    <div className='p-8'>
-      <h1 className='text-3xl font-bold mb-8'>
-        Welcome back, {session.user?.name}!
-      </h1>
+    <div className="">
+    
 
       {/* Stats Overview */}
-      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8'>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 mb-8">
         <Card>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Total Blogs</CardTitle>
-            <FileText className='h-4 w-4 text-muted-foreground' />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Projects</CardTitle>
+            <Briefcase className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>{stats?.totalBlogs || 0}</div>
+            <div className="text-2xl font-bold">{stats?.totalProjects || 0}</div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>
-              Total Projects
-            </CardTitle>
-            <Folder className='h-4 w-4 text-muted-foreground' />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Services</CardTitle>
+            <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>
-              {stats?.totalProjects || 0}
-            </div>
+            <div className="text-2xl font-bold">{stats?.totalGigs || 0}</div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Total Videos</CardTitle>
-            <Film className='h-4 w-4 text-muted-foreground' />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Blogs</CardTitle>
+            <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>{stats?.totalVideos || 0}</div>
+            <div className="text-2xl font-bold">{stats?.totalBlogs || 0}</div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Total Views</CardTitle>
-            <Eye className='h-4 w-4 text-muted-foreground' />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
+            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>
-              {stats?.totalViews?.toLocaleString() || 0}
-            </div>
+            <div className="text-2xl font-bold">{stats?.totalOrders || 0}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Submissions</CardTitle>
+            <InboxIcon className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats?.totalSubmissions || 0}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Views</CardTitle>
+            <Eye className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats?.totalViews?.toLocaleString() || 0}</div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Recent Content Sections */}
-      <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
-        {/* Recent Blogs */}
-        <Card>
-          <CardHeader>
-            <CardTitle className='text-xl font-semibold'>
-              Recent Blogs
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className='space-y-4'>
-              {blogs?.map((blog) => (
-                <Link
-                  href={`/blogs/${blog._id}`}
-                  key={blog._id}
-                  className='flex items-center gap-3 group'
-                >
-                  <div className='relative w-12 h-12 rounded-lg overflow-hidden'>
-                    <Image
-                      src={blog.image}
-                      alt={blog.title}
-                      fill
-                      className='object-cover'
-                    />
-                  </div>
-                  <div className='flex-1 min-w-0'>
-                    <h3 className='font-medium truncate group-hover:text-primary'>
-                      {blog.title}
-                    </h3>
-                    <p className='text-sm text-muted-foreground'>
-                      {new Date(blog.createdAt).toLocaleDateString()}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+      {/* Chart */}
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle>Overview</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="value" fill="#8884d8" />
+            </BarChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
 
-        {/* Recent Projects */}
-        <Card>
-          <CardHeader>
-            <CardTitle className='text-xl font-semibold'>
-              Recent Projects
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className='space-y-4'>
-              {projects?.map((project) => (
-                <Link
-                  href={`/projects/${project._id}`}
-                  key={project._id}
-                  className='flex items-center gap-3 group'
-                >
-                  <div className='relative w-12 h-12 rounded-lg overflow-hidden'>
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      className='object-cover'
-                    />
-                  </div>
-                  <div className='flex-1 min-w-0'>
-                    <h3 className='font-medium truncate group-hover:text-primary'>
-                      {project.title}
-                    </h3>
-                    <p className='text-sm text-muted-foreground truncate'>
-                      {project.description}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+      {/* Recent Activity */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Activity</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-8">
+            {recentActivity?.map((activity, index) => (
+              <div key={index} className="flex items-center">
+                {activity.type === 'order' ? (
+                  <Link href={`/dashboard/orders`}>
+                    <ShoppingCart className="mr-4 h-4 w-4 opacity-70" />
+                    <div className="space-y-1">
+                      <div className="flex items-center space-x-2">
+                        <p className="text-sm font-medium leading-none">{activity.package.title}</p>
+                        <p className="text-sm font-medium leading-none">${activity.package.price}</p>
+                      </div>
 
-        {/* Recent Videos */}
-        <Card>
-          <CardHeader>
-            <CardTitle className='text-xl font-semibold'>
-              Recent Videos
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className='space-y-4'>
-              {videos?.map((video) => (
-                <Link
-                  href={video.link}
-                  key={video._id}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='flex items-center gap-3 group'
-                >
-                  <div className='relative w-12 h-12 rounded-lg overflow-hidden'>
-                    <Image
-                      src={video.image}
-                      alt={video.title}
-                      fill
-                      className='object-cover'
-                    />
-                  </div>
-                  <div className='flex-1 min-w-0'>
-                    <h3 className='font-medium truncate group-hover:text-primary'>
-                      {video.title}
-                    </h3>
-                    <p className='text-sm text-muted-foreground truncate'>
-                      {video.category}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+                      <p className="text-sm text-muted-foreground">Order Number: {activity.orderNumber}</p>
+                      <p className="text-sm text-muted-foreground">Client: {activity.client.name} <span className="text-primary-foreground" href={`mailto:${activity.client.email}`}>{activity.client.email}</span></p>
+                      <p className="text-sm text-muted-foreground">Status: {activity.status}</p>
+                    </div>
+                  </Link>
+                ) : (
+                  <Link href={`/dashboard/submissions`}>
+                    <InboxIcon className="mr-4 h-4 w-4 opacity-70" />
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium leading-none">{activity.name}</p>
+                      <p className="text-sm text-muted-foreground">Email: {activity.email}</p>
+                      <p className="text-sm text-muted-foreground">{activity.message}</p>
+                    </div>
+                  </Link>
+                )}
+                <div className="ml-auto font-medium">{new Date(activity.createdAt).toLocaleDateString()}</div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
+

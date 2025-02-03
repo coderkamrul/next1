@@ -16,6 +16,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import Link from 'next/link'
+import { Header } from '@/components/dashboardHeader/Header'
 
 export default async function DashboardLayout({ children }) {
   const session = await getServerSession()
@@ -44,6 +45,7 @@ export default async function DashboardLayout({ children }) {
             </div>
           </header> */}
           <main className='flex-1 p-4 md:p-8 overflow-auto max-h-[90vh]'>
+          <Header />
             {children}
           </main>
         </SidebarInset>

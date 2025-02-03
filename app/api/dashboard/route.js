@@ -3,6 +3,9 @@ import dbConnect from '@/lib/mongodb'
 import Blog from '@/models/Blog'
 import Project from '@/models/Project'
 import Youtube from '@/models/Youtube'
+import Submission from '@/models/Submissions'
+import Order from '@/models/Order'
+import { Gig } from '@/models/gigModels'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 
@@ -26,10 +29,13 @@ export async function GET() {
     ])
 
     // Get total counts
-    const [totalBlogs, totalProjects, totalVideos] = await Promise.all([
+    const [totalBlogs, totalProjects, totalVideos, totalSubmissions, totalOrders, totalGigs] = await Promise.all([
       Blog.countDocuments({ userId }),
       Project.countDocuments({ userId }),
       Youtube.countDocuments({ userId }),
+      Submission.countDocuments(),
+      Order.countDocuments(),
+      Gig.countDocuments(),
     ])
 
     // Calculate total views from blogs
@@ -44,9 +50,13 @@ export async function GET() {
         totalProjects,
         totalVideos,
         totalViews,
+        totalSubmissions,
+        totalOrders,
+        totalGigs,
       },
     })
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }
+
