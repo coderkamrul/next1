@@ -110,10 +110,11 @@ export async function POST(request) {
                 <p><strong>Order Number:</strong> ${orderNumber}</p>
                 <p><strong>Service:</strong> Web Development</p>
                 <p><strong>Package:</strong> ${body.package.title}</p>
-                <p><strong>Price:</strong> $${body.package.price}</p>
+                <p><strong>Price:</strong> $${body.package.price} - UNPAID </p>
                 <p><strong>Estimated Delivery Time:</strong> ${body.package.deliveryTime} days</p>
             </div>
 
+            <p>We will contact you via email or phone number for a meeting to discuss the details of your project.</p>
             <p>If you have any questions or need further assistance, feel free to contact us.</p>
 
             <p>Best Regards,</p>
