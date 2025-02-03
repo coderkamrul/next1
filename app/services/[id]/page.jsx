@@ -304,12 +304,10 @@ const GigDetails = ({ params }) => {
             <div className="bg-white dark:bg-gray-700 shadow-md rounded-lg overflow-hidden mb-8">
               <div className="p-6">
                 <h2 className="text-xl font-semibold mb-4">What's Included</h2>
-                {gig.packages
-                  .flatMap((pkg) => pkg.features)
+                {Array.from(new Set(gig.packages.flatMap((pkg) => pkg.features)))
                   .length > 3 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {gig.packages
-                      .flatMap((pkg) => pkg.features)
+                    {Array.from(new Set(gig.packages.flatMap((pkg) => pkg.features)))
                       .map((feature, index) => (
                         <div
                           key={index}
@@ -322,8 +320,7 @@ const GigDetails = ({ params }) => {
                   </div>
                 ) : (
                   <ul className="list-none mb-6">
-                    {gig.packages
-                      .flatMap((pkg) => pkg.features)
+                    {Array.from(new Set(gig.packages.flatMap((pkg) => pkg.features)))
                       .map((feature, index) => (
                         <li
                           key={index}
