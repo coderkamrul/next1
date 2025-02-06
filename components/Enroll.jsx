@@ -46,16 +46,15 @@ const Enroll = ({ course }) => {
           ...formData,
           courseId: course._id,
         });
- 
           // Save to localStorage
-          router.reload();
-
+          
           toast({
             title: "Subscribed successfully",
             description: "Your submission has been send successfully.",
             variant: "success",
           });
           setIsOpen(false); // Close the dialog/drawer after successful submission
+          
         
       } catch (error) {
         if (error.response?.status === 401) {
