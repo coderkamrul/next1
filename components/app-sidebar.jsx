@@ -3,6 +3,7 @@
 import * as React from 'react'
 import {
   AudioWaveform,
+  Book,
   BookOpen,
   BookOpenCheck,
   Bot,
@@ -17,6 +18,7 @@ import {
   MessageSquareDiff,
   Newspaper,
   PieChart,
+  PieChartIcon,
   ReceiptIcon,
   Settings2,
   SquareTerminal,
@@ -129,6 +131,11 @@ const data = {
       icon: Youtube,
     },
     {
+      name: 'Course',
+      url: '/dashboard/course',
+      icon: Book,
+    },
+    {
       name: 'Blogs',
       url: '/dashboard/blogs',
       icon: Newspaper,
@@ -147,6 +154,11 @@ const data = {
       name: 'Submission',
       url: '/dashboard/submissions',
       icon: BookOpenCheck,
+    },
+    {
+      name: 'Subscrition',
+      url: '/dashboard/subscrition',
+      icon: PieChartIcon,
     },
   ],
 }

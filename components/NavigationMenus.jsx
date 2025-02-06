@@ -71,6 +71,7 @@ export function NavigationMenus() {
     { href: '/services', label: 'Services' },
     { href: '/projects', label: 'Project' },
     { href: '/client', label: 'Clients' },
+    { href: '/courses', label: 'Courses' },
     { href: '/videos', label: 'Video' },
     { href: '/blogs', label: 'Blog' },
     { href: '/components', label: 'Component' },
