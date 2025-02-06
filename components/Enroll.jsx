@@ -48,6 +48,7 @@ const Enroll = ({ course }) => {
         });
         if (data.success) {
           // Save to localStorage
+          router.reload();
 
           toast({
             title: "Subscribed successfully",
@@ -58,7 +59,7 @@ const Enroll = ({ course }) => {
         } else {
           toast({
             title: data.message,
-            description: data.message,
+            description: "Failed to subscribe. Please try again.",
             variant: "destructive",
           });
         }
