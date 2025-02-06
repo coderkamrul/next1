@@ -46,7 +46,7 @@ const Enroll = ({ course }) => {
           ...formData,
           courseId: course._id,
         });
-        if (data.success) {
+ 
           // Save to localStorage
           router.reload();
 
@@ -55,14 +55,8 @@ const Enroll = ({ course }) => {
             description: "Your submission has been send successfully.",
             variant: "success",
           });
-        //   setIsOpen(false); // Close the dialog/drawer after successful submission
-        } else {
-          toast({
-            title: data.message,
-            description: "Failed to subscribe. Please try again.",
-            variant: "destructive",
-          });
-        }
+          setIsOpen(false); // Close the dialog/drawer after successful submission
+        
       } catch (error) {
         if (error.response?.status === 401) {
           router.push("/login");
