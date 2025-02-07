@@ -275,8 +275,7 @@ const GigDetails = ({ params }) => {
                           </td>
                         ))}
                       </tr>
-                      {gig.packages
-                        .flatMap((pkg) => pkg.features)
+                      {Array.from(new Set(gig.packages.flatMap((pkg) => pkg.features)))
                         .map((feature, featureIndex) => (
                           <tr key={featureIndex}>
                             <td className="border p-2 font-semibold">
