@@ -240,7 +240,7 @@ export default function Home() {
                     <FaWhatsapp size={30} />
                   </Link>
                   <Link
-                    href="https://www.fiverr.com/s/ZmWbGzj"
+                    href="https://www.fiverr.com/mojidm"
                     rel="noopener noreferrer"
                     className="text-text text-2xl sm:text-3xl dark:text-gray-300 hover:text-primary duration-300 hover:scale-125 hover:rotate-12 transition-all "
                     target="_blank"
