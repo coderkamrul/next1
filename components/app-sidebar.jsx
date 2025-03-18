@@ -104,7 +104,11 @@ const data = {
       url: '/dashboard',
       icon: LayoutDashboard,
     },
-
+    {
+      name: 'Projects Manage',
+      url: '/dashboard/projects-manage',
+      icon: FolderCode,
+    },
     {
       name: 'Services',
       url: '/dashboard/gig',
