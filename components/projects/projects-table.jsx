@@ -76,11 +76,7 @@ export function ProjectsTable() {
     const fetchProjects = async () => {
       try {
         setLoading(true)
-        const response = await fetch("/api/project")
-        if (!response.ok) {
-          throw new Error("Failed to fetch projects")
-        }
-        const data = await response.json()
+        const data = await getProjects()
         setProjects(data)
       } catch (error) {
         console.error("Failed to fetch projects:", error)
