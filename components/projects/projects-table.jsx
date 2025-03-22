@@ -75,6 +75,7 @@ export function ProjectsTable() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
+        setLoading(true)
         const data = await getProjects()
         setProjects(data)
       } catch (error) {
@@ -90,7 +91,7 @@ export function ProjectsTable() {
     }
 
     fetchProjects()
-  }, [toast])
+  }, [toast, getProjects])
 
   // Column definitions
   const columns = [

@@ -78,6 +78,30 @@ export async function createClient(client) {
   return response.json()
 }
 
+export async function deleteClient(id) {
+  const response = await fetch(`/api/clients/${id}`, {
+    method: "DELETE",
+  })
+  if (!response.ok) {
+    throw new Error("Failed to delete client")
+  }
+  return response.json()
+}
+
+export async function updateClient(clientId, updates) {
+  const response = await fetch(`/api/clients/${clientId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updates),
+  })
+  if (!response.ok) {
+    throw new Error("Failed to update client")
+  }
+  return response.json()
+}
+
 // Kanban API
 export async function getKanbanBoard(projectId) {
   const response = await fetch(`/api/project/${projectId}/kanban`)

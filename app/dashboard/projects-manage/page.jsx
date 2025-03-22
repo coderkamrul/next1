@@ -10,6 +10,7 @@ import { Suspense,  useEffect, useState } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
 import { getDashboardStats} from "@/lib/api"
 import { toast } from "@/hooks/use-toast"
+import { ClientSheet } from "@/components/projects/ClientSheet"
 
 export default function Dashboard() {
   const [stats, setStats] = useState(null)
@@ -43,12 +44,15 @@ export default function Dashboard() {
           <h1 className="text-3xl font-bold tracking-tight">Project Dashboard</h1>
           <p className="text-muted-foreground">Manage your projects and track their progress</p>
         </div>
+        <div className="flex gap-2">
+        <ClientSheet/>
         <Link href="/dashboard/projects-manage/new">
           <Button>
             <PlusCircle className="mr-2 h-4 w-4" />
             New Project
           </Button>
         </Link>
+        </div>
       </div>
 
       <Suspense fallback={<StatsCardsSkeleton />}>
