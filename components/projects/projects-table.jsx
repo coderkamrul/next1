@@ -91,7 +91,7 @@ export function ProjectsTable() {
     }
 
     fetchProjects()
-  }, [toast, getProjects])
+  }, [toast])
 
   // Column definitions
   const columns = [

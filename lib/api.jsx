@@ -10,11 +10,26 @@ export async function getProjects() {
 }
 
 export async function getProject(id) {
-  const response = await fetch(`/api/project/${id}`)
-  if (!response.ok) {
-    throw new Error("Failed to fetch project")
+  const controller = new AbortController()
+  const signal = controller.signal
+
+  const timeout = setTimeout(() => {
+    controller.abort()
+  }, 10000)
+
+  try {
+    const response = await fetch(`/api/project/${id}`, { signal })
+    clearTimeout(timeout)
+    if (!response.ok) {
+      throw new Error("Failed to fetch project")
+    }
+    return response.json()
+  } catch (error) {
+    if (error.name === "AbortError") {
+      throw new Error("Timed out while fetching project")
+    }
+    throw error
   }
-  return response.json()
 }
 
 export async function createProject(project) {
