@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server"
 import dbConnect from "@/lib/mongodb"
 import { Project } from "@/models/Projects"
+import { Client } from "@/models/Client" // Ensure Client model is imported
 
 export async function GET() {
   try {
     await dbConnect()
-    const projects = await Project.find({}).populate("client").sort({ createdAt: -1 })
+    const projects = await Project.find({}).populate("Client").sort({ createdAt: -1 })
 
     return NextResponse.json(projects)
   } catch (error) {
@@ -21,8 +22,6 @@ export async function POST(request) {
 
     // Extract client from the data to handle it properly
     const { clientId, ...projectData } = data
-
-  
 
     const project = await Project.create({
       ...projectData,

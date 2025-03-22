@@ -10,22 +10,11 @@ export async function getProjects() {
 }
 
 export async function getProject(id) {
-  try {
-    const response = await fetch(`/api/project/${id}`);
-
-    if (!response.ok) {
-      // Include more details in the error message
-      const errorText = await response.text(); // Try to get the error message from the server
-      throw new Error(
-        `Failed to fetch project (status: ${response.status}): ${errorText}`
-      );
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Error fetching project:", error); // Log the error for debugging
-    throw error; // Re-throw the error so the caller knows something went wrong
+  const response = await fetch(`/api/project/${id}`)
+  if (!response.ok) {
+    throw new Error("Failed to fetch project")
   }
+  return response.json()
 }
 
 export async function createProject(project) {
