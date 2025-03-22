@@ -1,5 +1,5 @@
 import { Schema, model, models } from "mongoose"
-
+import { Client } from "./Client"
 const ProjectSchema = new Schema(
   {
     title: { type: String, required: true },
