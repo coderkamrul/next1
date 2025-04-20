@@ -100,7 +100,7 @@ export default function DevTools() {
                 Api Test
               </TabsTrigger>
               <TabsTrigger value="GenerateTitle" className="flex-1 md:flex-none whitespace-nowrap">
-              Generate Title
+              Generate Metadata
               </TabsTrigger>
             </TabsList>
           </div>

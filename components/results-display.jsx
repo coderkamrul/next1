@@ -81,7 +81,9 @@ export default function ResultsDisplay({ results }) {
               <div className="md:col-span-2 space-y-4">
                 <Card className="p-4">
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-medium">Title</h3>
+                    <h3 className="font-medium">
+                      Title <span className="text-xs">({result.title.split(" ").length} words)</span>
+                    </h3>
                     <Button variant="ghost" size="sm" onClick={() => copyToClipboard(result.title)}>
                       <Copy size={14} />
                     </Button>
@@ -91,7 +93,12 @@ export default function ResultsDisplay({ results }) {
 
                 <Card className="p-4">
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-medium">Description</h3>
+                    <h3 className="font-medium">
+                      Description{" "}
+                      <span className="text-xs">
+                        ({result.description.split(" ").length} words)
+                      </span>
+                    </h3>
                     <Button variant="ghost" size="sm" onClick={() => copyToClipboard(result.description)}>
                       <Copy size={14} />
                     </Button>

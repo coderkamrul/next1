@@ -57,7 +57,7 @@ async function generateWithGemini(imageBase64, apiKey, filename) {
         {
           parts: [
             {
-              text: "Analyze this image and generate SEO metadata for a stock photo website. Provide a concise title (max 10 words), a detailed description (2-3 sentences), and 10 relevant tags separated by commas. Format the response as JSON with keys 'title', 'description', and 'tags' (as an array).",
+              text: "Analyze this image and generate SEO metadata for a stock photo website. Provide a concise title (max 32 words), a detailed description (2-3 sentences), and 10 relevant tags separated by commas. Format the response as JSON with keys 'title', 'description', and 'tags' (as an array).",
             },
             {
               inline_data: {
@@ -154,7 +154,7 @@ async function generateWithOpenAI(imageBase64, apiKey, filename) {
           content: [
             {
               type: "text",
-              text: "Analyze this image and generate SEO metadata for a stock photo website. Provide a concise title (max 10 words), a detailed description (2-3 sentences), and 10 relevant tags separated by commas. Format the response as JSON with keys 'title', 'description', and 'tags' (as an array).",
+              text: "Analyze this image and generate SEO metadata for a stock photo website. Provide a concise title (max 32 words), a detailed description (2-3 sentences), and 10 relevant tags separated by commas. Format the response as JSON with keys 'title', 'description', and 'tags' (as an array).",
             },
             {
               type: "image_url",
