@@ -10,6 +10,8 @@ import { Card } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { toast } from "@/hooks/use-toast"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import ApiTool from "@/components/tools/ApiTool"
+import GenerateTitle from "@/components/tools/GenerateTitle"
 
 export default function DevTools() {
   const { theme, setTheme } = useTheme()
@@ -94,6 +96,12 @@ export default function DevTools() {
               <TabsTrigger value="palette" className="flex-1 md:flex-none whitespace-nowrap">
                 Color Palette
               </TabsTrigger>
+              <TabsTrigger value="ApiTool" className="flex-1 md:flex-none whitespace-nowrap">
+                Api Test
+              </TabsTrigger>
+              <TabsTrigger value="GenerateTitle" className="flex-1 md:flex-none whitespace-nowrap">
+              Generate Title
+              </TabsTrigger>
             </TabsList>
           </div>
 
@@ -115,6 +123,12 @@ export default function DevTools() {
 
           <TabsContent value="palette">
             <ColorPaletteGenerator state={paletteState} setState={setPaletteState} />
+          </TabsContent>
+          <TabsContent value="ApiTool">
+            <ApiTool />
+          </TabsContent>
+          <TabsContent value="GenerateTitle">
+            <GenerateTitle />
           </TabsContent>
         </Tabs>
       </div>
