@@ -96,9 +96,46 @@ const InstructionBlock = ({ instruction }) => {
     )
   }
 
-  if (type === 'image') {
-    const { caption, withBorder, withBackground, stretched, file } = data
+  // if (type === 'image') {
+  //   const { caption, withBorder, withBackground, stretched, file } = data
 
+  //   const imageClasses = [
+  //     'w-full',
+  //     'object-cover',
+  //     'transition-all',
+  //     'hover:scale-105',
+  //     withBorder ? 'border' : '',
+  //     withBackground ? 'bg-background scale-80' : '',
+  //     stretched ? 'h-full' : '',
+  //   ].join(' ')
+
+  //   return (
+  //     <figure className='my-8'>
+  //       <div>
+  //         <Image
+  //           src={file.url}
+  //           alt={caption}
+  //           width={1000}
+  //           height={1000}
+  //           className={imageClasses}
+  //         />
+  //       </div>
+  //       {caption && (
+  //         <figcaption className='mt-2 text-center text-sm text-muted-foreground'>
+  //           {caption}
+  //         </figcaption>
+  //       )}
+  //     </figure>
+  //   )
+  // }
+
+
+
+
+  if (type === 'image') {
+    const { caption, link, alignment, size, withBorder, withBackground, stretched, file } = data;
+
+    // Define image classes with Tailwind CSS
     const imageClasses = [
       'w-full',
       'object-cover',
@@ -107,27 +144,114 @@ const InstructionBlock = ({ instruction }) => {
       withBorder ? 'border' : '',
       withBackground ? 'bg-background scale-80' : '',
       stretched ? 'h-full' : '',
-    ].join(' ')
+    ].filter(Boolean).join(' ');
+
+    // Apply size as a percentage
+    const imageStyle = { width: `${size}%` };
+
+    // Define alignment classes for the figure element
+    const alignmentClasses = {
+      left: 'justify-start',
+      center: 'justify-center',
+      right: 'justify-end',
+    };
+    const figureClasses = [
+      'my-8 flex',
+      alignmentClasses[alignment || 'center'], // Default to center if alignment is not specified
+    ].join(' ');
+
+    // Render the image, optionally wrapped in a link
+    const imageElement = (
+      <Image
+        src={file.url}
+        alt={caption || 'Image'} // Use caption as alt if provided, otherwise default
+        width={1000}
+        height={1000}
+        
+        className={imageClasses}
+      />
+    );
 
     return (
-      <figure className='my-8'>
-        <div>
-          <Image
-            src={file.url}
-            alt={caption}
-            width={1000}
-            height={1000}
-            className={imageClasses}
-          />
+      <figure >
+        <div className="flex flex-col items-center gap-4 w-full">
+          <div className={figureClasses}>
+            {link ? (
+              <a href={link} target="_blank" rel="noopener noreferrer" style={imageStyle} className='block'>
+                {imageElement}
+              </a>
+            ) : (
+              imageElement
+            )}
+          </div>
+          {caption && (
+            <figcaption className="mt-2 text-center text-sm text-muted-foreground">
+              {caption}
+            </figcaption>
+          )}
         </div>
-        {caption && (
-          <figcaption className='mt-2 text-center text-sm text-muted-foreground'>
-            {caption}
-          </figcaption>
-        )}
       </figure>
-    )
+    );
   }
+  
+  if (type === 'button') {
+    const { text, url, alignment, backgroundColor, textColor, textSize, buttonSize, isStretched } = data;
+
+    // Define button classes with Tailwind CSS
+    const textSizeClasses = {
+      sm: 'text-sm',
+      md: 'text-base',
+      lg: 'text-lg',
+    };
+    const buttonSizeClasses = {
+      sm: 'px-2 py-1',
+      md: 'px-4 py-2',
+      lg: 'px-6 py-3',
+    };
+    const buttonClasses = [
+      'inline-block',
+      'rounded-lg',
+      'transition',
+      'hover:scale-105',
+      textSizeClasses[textSize || 'md'],
+      buttonSizeClasses[buttonSize || 'md'],
+      isStretched ? 'w-full text-center' : 'w-auto', // Apply full-width if stretched
+    ].join(' ');
+
+    // Apply background and text color as inline styles
+    const buttonStyles = {
+      backgroundColor: backgroundColor || '#3b82f6',
+      color: textColor || '#ffffff',
+    };
+
+    // Define alignment classes for the container
+    const alignmentClasses = {
+      left: 'text-left',
+      center: 'text-center',
+      right: 'text-right',
+    };
+    const containerClasses = [
+      'my-4',
+      alignmentClasses[alignment || 'center'], // Default to center if alignment is not specified
+    ].join(' ');
+
+    return (
+      <div className={containerClasses}>
+        <a
+          href={url || '#'}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={buttonClasses}
+          style={buttonStyles}
+        >
+          {text || 'Click Me'}
+        </a>
+      </div>
+    );
+  }
+
+
+  
 
   if (type === 'quote') {
     return (
