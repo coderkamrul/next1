@@ -915,6 +915,116 @@ class CustomButtonTool {
   }
 }
 
+class InlineTextColor {
+  static get isInline() {
+    return true;
+  }
+
+  constructor({ api, config }) {
+    this.api = api;
+    this.config = config || {};
+    this.button = null;
+    this.state = false;
+    this.tag = 'SPAN';
+    this.className = 'inline-text-color';
+    this.color = null; // Will store the selected color
+  }
+
+  render() {
+    this.button = document.createElement('button');
+    this.button.type = 'button';
+    this.button.classList.add(this.api.styles.inlineToolButton);
+    this.button.innerHTML = `
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+        <circle cx="13.5" cy="6.5" r="1.5"/>
+        <circle cx="17.5" cy="10.5" r="1.5"/>
+        <circle cx="8.5" cy="7.5" r="1.5"/>
+        <circle cx="6.5" cy="12.5" r="1.5"/>
+      </svg>
+    `;
+    return this.button;
+  }
+
+  surround(range) {
+    if (this.state) {
+      this.unwrap(range);
+      return;
+    }
+
+    this.wrap(range);
+  }
+
+  wrap(range) {
+    const selectedText = range.extractContents();
+    const span = document.createElement(this.tag);
+    span.classList.add(this.className);
+    span.style.color = this.color || '#000000'; // Default to black if no color is selected
+    span.appendChild(selectedText);
+    range.insertNode(span);
+    this.api.selection.expandToTag(span);
+  }
+
+  unwrap(range) {
+    const span = this.api.selection.findParentTag(this.tag, this.className);
+    if (span) {
+      const text = span.firstChild;
+      span.parentNode.replaceChild(text, span);
+      range.selectNode(text);
+    }
+  }
+
+  checkState(selection) {
+    const span = this.api.selection.findParentTag(this.tag, this.className);
+    this.state = !!span;
+    if (span) {
+      this.color = span.style.color || '#000000';
+    }
+    this.button.classList.toggle(this.api.styles.inlineToolButtonActive, this.state);
+    return this.state;
+  }
+
+  renderActions() {
+    this.actionContainer = document.createElement('div');
+    this.actionContainer.classList.add('inline-tool-actions', 'flex', 'gap-2', 'p-2', 'bg-white', 'rounded-lg', 'shadow-sm');
+
+    const colorInput = document.createElement('input');
+    colorInput.type = 'color';
+    colorInput.classList.add('inline-tool-color-picker', 'w-8', 'h-8', 'p-0', 'border-none', 'cursor-pointer');
+    colorInput.value = this.color || '#000000'; // Default to black
+
+    colorInput.addEventListener('input', (e) => {
+      this.color = e.target.value;
+      const span = this.api.selection.findParentTag(this.tag, this.className);
+      if (span) {
+        span.style.color = this.color;
+      } else {
+        const range = this.api.selection.getRange();
+        if (range && !range.collapsed) {
+          this.wrap(range);
+        }
+      }
+    });
+
+    this.actionContainer.appendChild(colorInput);
+    return this.actionContainer;
+  }
+
+  clear() {
+    this.color = null;
+    this.state = false;
+  }
+
+  static get sanitize() {
+    return {
+      span: {
+        class: 'inline-text-color',
+        style: true,
+      },
+    };
+  }
+}
+
 const uploadImageByFile = async (file) => {
   const formData = new FormData();
   formData.append('file', file);
@@ -966,11 +1076,12 @@ const getEditorConfig = (holder, onChange, initialData) => ({
         levels: [2, 3],
         defaultLevel: 2,
       },
-      inlineToolbar: true,
+      inlineToolbar: ['bold', 'italic', 'inlineCode', 'marker', 'inlineTextColor'],
     },
     checklist: Checklist,
     embed: Embed,
     table: Table,
+    inlineTextColor: InlineTextColor,
     image: {
       class: CustomImageTool,
       config: {
