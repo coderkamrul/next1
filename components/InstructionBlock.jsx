@@ -2,7 +2,7 @@
 
 import { CheckCheck, Copy, Minus } from 'lucide-react'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -96,38 +96,7 @@ const InstructionBlock = ({ instruction }) => {
     )
   }
 
-  // if (type === 'image') {
-  //   const { caption, withBorder, withBackground, stretched, file } = data
 
-  //   const imageClasses = [
-  //     'w-full',
-  //     'object-cover',
-  //     'transition-all',
-  //     'hover:scale-105',
-  //     withBorder ? 'border' : '',
-  //     withBackground ? 'bg-background scale-80' : '',
-  //     stretched ? 'h-full' : '',
-  //   ].join(' ')
-
-  //   return (
-  //     <figure className='my-8'>
-  //       <div>
-  //         <Image
-  //           src={file.url}
-  //           alt={caption}
-  //           width={1000}
-  //           height={1000}
-  //           className={imageClasses}
-  //         />
-  //       </div>
-  //       {caption && (
-  //         <figcaption className='mt-2 text-center text-sm text-muted-foreground'>
-  //           {caption}
-  //         </figcaption>
-  //       )}
-  //     </figure>
-  //   )
-  // }
 
 
 
@@ -251,6 +220,194 @@ const InstructionBlock = ({ instruction }) => {
   }
 
 
+ 
+
+  if (type === 'iframe') {
+    const { url, width, height, alignment, withBorder, withBackground } = data;
+
+    // Define iframe classes with Tailwind CSS
+    const iframeClasses = ['rounded-lg', 'w-full'].join(' ');
+
+    // Define container classes for alignment and styling
+    const alignmentClasses = {
+      left: 'text-left',
+      center: 'text-center',
+      right: 'text-right',
+    };
+    const containerClasses = [
+      'my-8',
+      'max-w-full',
+      alignmentClasses[alignment || 'center'], // Default to center if alignment is not specified
+      withBorder ? 'border-2 border-gray-200 p-2' : '',
+      withBackground ? 'bg-gray-100 p-2' : '',
+    ].join(' ');
+
+    // Prepare iframe attributes
+    const iframeProps = {
+      src: url,
+      width: width || '100%',
+      height: height || '400px',
+      frameBorder: '0',
+      allowFullScreen: true,
+      className: iframeClasses,
+    };
+
+    // Handle Fiverr SDK for Fiverr widget iframes
+    const iframeRef = useRef(null);
+
+    useEffect(() => {
+      if (url.includes('fiverr.com/gig_widgets') && iframeRef.current) {
+        const script = document.createElement('script');
+        script.src = 'https://www.fiverr.com/gig_widgets/sdk';
+        script.async = true;
+        script.addEventListener('load', () => {
+          if (window.FW_SDK && iframeRef.current) {
+            window.FW_SDK.register(iframeRef.current);
+          }
+        });
+        document.body.appendChild(script);
+
+        // Cleanup
+        return () => {
+          if (script.parentNode) {
+            script.parentNode.removeChild(script);
+          }
+        };
+      }
+    }, [url]);
+
+    return (
+      <div className={containerClasses}>
+        <div style={{ overflow: 'auto', maxHeight: '80vh' }}>
+          <iframe ref={iframeRef} {...iframeProps} />
+        </div>
+      </div>
+    );
+  }
+
+  if (type === 'amazonProductCard') {
+    const { products, alignment, withBorder, withBackground } = data;
+
+    const alignmentClasses = {
+      left: 'justify-start',
+      center: 'justify-center',
+      right: 'justify-end',
+    };
+    const containerClasses = [
+      'my-8',
+      'max-w-7xl',
+      'mx-auto',
+      alignmentClasses[alignment || 'center'],
+      withBorder ? 'border-2 border-gray-200 rounded-lg' : '',
+      withBackground ? 'bg-gray-50 p-6' : 'p-4',
+    ].join(' ');
+
+    if (products.length === 1) {
+      const product = products[0];
+      return (
+        <div className={containerClasses}>
+          <Card className="flex flex-col sm:flex-row overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all duration-300 max-w-4xl mx-auto gap-1 md:gap-4">
+            <div className="relative w-full sm:w-1/2 h-64 sm:h-auto">
+              <Image
+                src={product.imageUrl}
+                alt={product.name}
+                fill
+                className="object-cover rounded-t-lg sm:rounded-t-none sm:rounded-l-lg"
+              />
+            </div>
+            <div className="p-6 w-full sm:w-1/2 flex flex-col justify-between">
+              <div>
+              <a
+                  href={product.affiliateLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className=' hover:underline'
+                >
+                <h3 className="text-xl hover:text-orange-600 font-semibold text-gray-900 line-clamp-2">{product.name}</h3>
+                </a>
+                {product.price && (
+                  <p className="text-lg font-bold mt-1 text-orange-600">$ {product.price}</p>
+                )}
+                {product.description && (
+                  <p className="text-sm text-gray-600 mt-2 line-clamp-2">{product.description}</p>
+                )}
+              </div>
+              <Button
+                asChild
+                className="mt-4 w-full rounded-md py-2 text-sm font-medium bg-orange-600 hover:bg-orange-700 transition-colors"
+                
+              >
+                <a
+                  href={product.affiliateLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:bg-orange-700"
+                >
+                  {product.buttonText || 'Buy Now'}
+                </a>
+              </Button>
+            </div>
+          </Card>
+        </div>
+      );
+    } else {
+      const gridClasses = {
+        2: 'grid-cols-1 sm:grid-cols-2',
+        3: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+      }[products.length] || 'grid-cols-1';
+
+      return (
+        <div className={containerClasses}>
+          <div className={`grid ${gridClasses} gap-6`}>
+            {products.map((product, index) => (
+              <Card
+                key={index}
+                className="flex flex-col overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all duration-300 "
+              >
+                <div className="relative h-48">
+                  <Image
+                    src={product.imageUrl}
+                    alt={product.name}
+                    fill
+                    className="object-cover rounded-t-lg"
+                  />
+                </div>
+                <div className="p-4 flex flex-col flex-grow">
+                <a
+                  href={product.affiliateLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className=' hover:underline'
+                >
+                <h3 className="text-md hover:text-orange-600 font-semibold text-gray-900 line-clamp-2">{product.name}</h3>
+                </a>
+                  {product.price && (
+                    <p className="text-lg mt-1 font-bold text-orange-600">$ {product.price}</p>
+                  )}
+                  {product.description && (
+                    <p className="text-sm text-gray-600 mt-2 line-clamp-2 flex-grow">{product.description}</p>
+                  )}
+                  <Button
+                    asChild
+                    className="mt-4 w-full rounded-md py-2 text-sm font-medium bg-orange-600 hover:bg-orange-700 transition-colors"
+                  >
+                    <a
+                      href={product.affiliateLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:bg-orange-700"
+                    >
+                      {product.buttonText || 'Buy Now'}
+                    </a>
+                  </Button>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      );
+    }
+  }
   
 
   if (type === 'quote') {
@@ -371,3 +528,37 @@ const InstructionBlock = ({ instruction }) => {
 }
 
 export default InstructionBlock
+
+
+  // if (type === 'image') {
+  //   const { caption, withBorder, withBackground, stretched, file } = data
+
+  //   const imageClasses = [
+  //     'w-full',
+  //     'object-cover',
+  //     'transition-all',
+  //     'hover:scale-105',
+  //     withBorder ? 'border' : '',
+  //     withBackground ? 'bg-background scale-80' : '',
+  //     stretched ? 'h-full' : '',
+  //   ].join(' ')
+
+  //   return (
+  //     <figure className='my-8'>
+  //       <div>
+  //         <Image
+  //           src={file.url}
+  //           alt={caption}
+  //           width={1000}
+  //           height={1000}
+  //           className={imageClasses}
+  //         />
+  //       </div>
+  //       {caption && (
+  //         <figcaption className='mt-2 text-center text-sm text-muted-foreground'>
+  //           {caption}
+  //         </figcaption>
+  //       )}
+  //     </figure>
+  //   )
+  // }

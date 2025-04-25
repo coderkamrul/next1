@@ -1025,6 +1025,536 @@ class InlineTextColor {
   }
 }
 
+// Custom Iframe Tool
+class IframeTool {
+  constructor({ data, config, api }) {
+    this.api = api;
+    this.config = config || {};
+    this.data = {
+      url: '',
+      width: '100%',
+      height: '400px',
+      alignment: 'center',
+      withBorder: false,
+      withBackground: false,
+      ...data,
+    };
+
+    this.wrapper = null;
+    this.settings = [
+      { name: 'withBorder', icon: lucideIcons.square, title: 'With Border', tooltip: 'Add a border around the iframe' },
+      { name: 'withBackground', icon: lucideIcons.image, title: 'Background', tooltip: 'Add a background to the iframe' },
+      { name: 'alignLeft', icon: lucideIcons.alignLeft, title: 'Align Left', tooltip: 'Align the iframe to the left' },
+      { name: 'alignCenter', icon: lucideIcons.alignCenter, title: 'Align Center', tooltip: 'Center the iframe' },
+      { name: 'alignRight', icon: lucideIcons.alignRight, title: 'Align Right', tooltip: 'Align the iframe to the right' },
+    ];
+  }
+
+  static get toolbox() {
+    return {
+      title: 'Iframe',
+      icon: `
+        <svg width="17" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+          <path d="M8 7l4 4-4 4"/>
+        </svg>
+      `,
+    };
+  }
+
+  render() {
+    this.wrapper = document.createElement('div');
+    this.wrapper.classList.add('ce-block--iframe', 'mx-auto', 'max-w-full', 'p-2', 'rounded-lg', 'bg-gray-50', 'shadow-sm');
+
+    if (!this.data.url) {
+      // Render input for iframe URL
+      const inputWrapper = document.createElement('div');
+      inputWrapper.className = 'iframe-tool__input-wrapper flex flex-col gap-2';
+
+      const urlInput = document.createElement('input');
+      urlInput.className = 'iframe-tool__url-input w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-700 bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200';
+      urlInput.placeholder = 'Paste iframe URL or embed code...';
+      urlInput.value = this.data.url || '';
+      inputWrapper.appendChild(urlInput);
+
+      const addButton = document.createElement('button');
+      addButton.className = 'iframe-tool__add-button px-3 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600 transition disabled:bg-gray-300 disabled:cursor-not-allowed';
+      addButton.textContent = 'Add Iframe';
+      addButton.disabled = !urlInput.value;
+      addButton.addEventListener('click', () => {
+        this.data.url = urlInput.value;
+        if (this.data.url) {
+          this.wrapper.innerHTML = '';
+          this.wrapper.appendChild(this.renderIframeBlock());
+        }
+      });
+      inputWrapper.appendChild(addButton);
+
+      urlInput.addEventListener('input', () => {
+        addButton.disabled = !urlInput.value;
+      });
+
+      this.wrapper.appendChild(inputWrapper);
+    } else {
+      this.wrapper.appendChild(this.renderIframeBlock());
+    }
+
+    return this.wrapper;
+  }
+
+  renderIframeBlock() {
+    const container = document.createElement('div');
+    container.classList.add('iframe-tool', 'flex', 'flex-col', 'gap-2');
+    if (this.data.withBorder) container.classList.add('border-2', 'border-gray-200', 'p-2');
+    if (this.data.withBackground) container.classList.add('bg-gray-100', 'p-2');
+    container.setAttribute('data-alignment', this.data.alignment);
+
+    const iframeWrapper = document.createElement('div');
+    iframeWrapper.className = 'iframe-tool__iframe-wrapper w-full';
+    const iframe = document.createElement('iframe');
+    iframe.src = this.data.url;
+    iframe.className = 'w-full rounded-lg';
+    iframe.style.height = this.data.height;
+    iframe.frameBorder = '0';
+    iframe.allowFullscreen = true;
+    iframeWrapper.appendChild(iframe);
+
+    const fieldsWrapper = document.createElement('div');
+    fieldsWrapper.className = 'iframe-tool__fields-wrapper w-full flex flex-col gap-2';
+
+    const urlInput = document.createElement('input');
+    urlInput.className = 'iframe-tool__url p-2 border border-gray-300 rounded-lg text-sm text-gray-700 bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200';
+    urlInput.placeholder = 'Enter iframe URL...';
+    urlInput.value = this.data.url || '';
+    urlInput.addEventListener('input', (e) => {
+      this.data.url = e.target.value;
+      iframe.src = this.data.url;
+    });
+    fieldsWrapper.appendChild(urlInput);
+
+    const widthInput = document.createElement('input');
+    widthInput.className = 'iframe-tool__width p-2 border border-gray-300 rounded-lg text-sm text-gray-700 bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200';
+    widthInput.placeholder = 'Width (e.g., 100%, 500px)';
+    widthInput.value = this.data.width || '100%';
+    widthInput.addEventListener('input', (e) => {
+      this.data.width = e.target.value;
+      iframe.style.width = this.data.width;
+    });
+    fieldsWrapper.appendChild(widthInput);
+
+    const heightInput = document.createElement('input');
+    heightInput.className = 'iframe-tool__height p-2 border border-gray-300 rounded-lg text-sm text-gray-700 bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200';
+    heightInput.placeholder = 'Height (e.g., 400px)';
+    heightInput.value = this.data.height || '400px';
+    heightInput.addEventListener('input', (e) => {
+      this.data.height = e.target.value;
+      iframe.style.height = this.data.height;
+    });
+    fieldsWrapper.appendChild(heightInput);
+
+    container.appendChild(iframeWrapper);
+    container.appendChild(fieldsWrapper);
+
+    return container;
+  }
+
+  save(blockContent) {
+    return this.data;
+  }
+
+  renderSettings() {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'iframe-tool__settings-wrapper flex flex-col gap-1 p-1';
+
+    this.settings.forEach((setting) => {
+      const settingItem = document.createElement('div');
+      settingItem.className = 'iframe-tool__setting-item flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-gray-100 transition';
+      settingItem.title = setting.tooltip;
+
+      const icon = document.createElement('span');
+      icon.className = 'iframe-tool__setting-icon';
+      icon.innerHTML = setting.icon;
+
+      const text = document.createElement('span');
+      text.className = 'iframe-tool__setting-text text-sm';
+      text.textContent = setting.title;
+
+      settingItem.appendChild(icon);
+      settingItem.appendChild(text);
+
+      if (setting.name.startsWith('align')) {
+        const alignmentValue = setting.name.replace('align', '').toLowerCase();
+        const isActive = this.data.alignment === alignmentValue;
+        settingItem.classList.toggle('bg-blue-100', isActive);
+        settingItem.classList.toggle('text-blue-500', isActive);
+        settingItem.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.data.alignment = alignmentValue;
+          this.wrapper.querySelector('.iframe-tool').setAttribute('data-alignment', this.data.alignment);
+          wrapper.querySelectorAll('.iframe-tool__setting-item').forEach((item) =>
+            item.classList.remove('bg-blue-100', 'text-blue-500')
+          );
+          settingItem.classList.add('bg-blue-100', 'text-blue-500');
+        });
+      } else {
+        settingItem.classList.toggle('bg-blue-100', this.data[setting.name]);
+        settingItem.classList.toggle('text-blue-500', this.data[setting.name]);
+        settingItem.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.data[setting.name] = !this.data[setting.name];
+          this.wrapper.querySelector('.iframe-tool').classList.toggle(setting.name, this.data[setting.name]);
+          settingItem.classList.toggle('bg-blue-100', this.data[setting.name]);
+          settingItem.classList.toggle('text-blue-500', this.data[setting.name]);
+        });
+      }
+
+      wrapper.appendChild(settingItem);
+    });
+
+    return wrapper;
+  }
+
+  static get sanitize() {
+    return {
+      iframe: {
+        src: true,
+        width: true,
+        height: true,
+        frameborder: true,
+        allowfullscreen: true,
+      },
+    };
+  }
+}
+
+
+class AmazonProductCardTool {
+  static get toolbox() {
+    return {
+      title: 'Amazon Product Card',
+      icon: '<svg width="17" height="15" viewBox="0 0 17 15"><path d="M0 0h17v15H0z" fill="none"/><path d="M8.5 2.5a6 6 0 100 12 6 6 0 000-12zm3.5 6H9.5v2.5h-1V8.5H6v-1h2.5V5h1v2.5H12v1z"/></svg>'
+    };
+  }
+
+  constructor({ data, api, config }) {
+    this.api = api;
+    this.config = config || {};
+    this.data = {
+      products: data.products || [{ affiliateLink: '', name: '', imageUrl: '', price: '', description: '', buttonText: 'Shop Now' }],
+      alignment: data.alignment || 'center',
+      withBorder: data.withBorder || false,
+      withBackground: data.withBackground || false
+    };
+    this.wrapper = null;
+    this.maxProducts = 3;
+    this.isUploading = [];
+  }
+
+  render() {
+    this.wrapper = document.createElement('div');
+    this.wrapper.classList.add('amazon-product-card-tool', 'p-4', 'border', 'rounded', 'bg-white');
+
+    const countWrapper = document.createElement('div');
+    countWrapper.classList.add('mb-4');
+    const countLabel = document.createElement('label');
+    countLabel.textContent = 'Number of Products: ';
+    countLabel.classList.add('mr-2');
+    const countSelect = document.createElement('select');
+    countSelect.classList.add('border', 'rounded', 'p-1');
+    for (let i = 1; i <= this.maxProducts; i++) {
+      const option = document.createElement('option');
+      option.value = i;
+      option.textContent = i;
+      if (i === this.data.products.length) option.selected = true;
+      countSelect.appendChild(option);
+    }
+    countSelect.addEventListener('change', () => {
+      const newCount = parseInt(countSelect.value);
+      while (this.data.products.length < newCount) {
+        this.data.products.push({ affiliateLink: '', name: '', imageUrl: '', price: '', description: '', buttonText: 'Shop Now' });
+        this.isUploading.push(false);
+      }
+      while (this.data.products.length > newCount) {
+        this.data.products.pop();
+        this.isUploading.pop();
+      }
+      this._renderForm();
+    });
+    countWrapper.appendChild(countLabel);
+    countWrapper.appendChild(countSelect);
+
+    const formContainer = document.createElement('div');
+    formContainer.classList.add('product-form');
+
+    const settingsWrapper = document.createElement('div');
+    settingsWrapper.classList.add('mt-4', 'border-t', 'pt-4');
+    const alignmentLabel = document.createElement('label');
+    alignmentLabel.textContent = 'Alignment: ';
+    alignmentLabel.classList.add('mr-2');
+    const alignmentSelect = document.createElement('select');
+    alignmentSelect.classList.add('border', 'rounded', 'p-1', 'mr-4');
+    ['left', 'center', 'right'].forEach(align => {
+      const option = document.createElement('option');
+      option.value = align;
+      option.textContent = align.charAt(0).toUpperCase() + align.slice(1);
+      if (align === this.data.alignment) option.selected = true;
+      alignmentSelect.appendChild(option);
+    });
+    alignmentSelect.addEventListener('change', () => {
+      this.data.alignment = alignmentSelect.value;
+    });
+
+    const borderLabel = document.createElement('label');
+    borderLabel.textContent = 'With Border: ';
+    borderLabel.classList.add('mr-2');
+    const borderCheckbox = document.createElement('input');
+    borderCheckbox.type = 'checkbox';
+    borderCheckbox.checked = this.data.withBorder;
+    borderCheckbox.addEventListener('change', () => {
+      this.data.withBorder = borderCheckbox.checked;
+    });
+
+    const backgroundLabel = document.createElement('label');
+    backgroundLabel.textContent = 'With Background: ';
+    backgroundLabel.classList.add('mr-2', 'ml-4');
+    const backgroundCheckbox = document.createElement('input');
+    backgroundCheckbox.type = 'checkbox';
+    backgroundCheckbox.checked = this.data.withBackground;
+    backgroundCheckbox.addEventListener('change', () => {
+      this.data.withBackground = backgroundCheckbox.checked;
+    });
+
+    settingsWrapper.appendChild(alignmentLabel);
+    settingsWrapper.appendChild(alignmentSelect);
+    settingsWrapper.appendChild(borderLabel);
+    settingsWrapper.appendChild(borderCheckbox);
+    settingsWrapper.appendChild(backgroundLabel);
+    settingsWrapper.appendChild(backgroundCheckbox);
+
+    this.wrapper.appendChild(countWrapper);
+    this.wrapper.appendChild(formContainer);
+    this.wrapper.appendChild(settingsWrapper);
+
+    this.formContainer = formContainer;
+    this._renderForm();
+
+    return this.wrapper;
+  }
+
+  _renderForm() {
+    this.formContainer.innerHTML = '';
+    this.data.products.forEach((product, index) => {
+      const productWrapper = document.createElement('div');
+      productWrapper.classList.add('product-item', 'mb-4', 'p-4', 'border', 'rounded');
+
+      const title = document.createElement('h3');
+      title.textContent = `Product ${index + 1}`;
+      title.classList.add('font-bold', 'mb-2');
+
+      const imageWrapper = document.createElement('div');
+      imageWrapper.classList.add('mb-4');
+      if (!product.imageUrl) {
+        const uploadArea = document.createElement('div');
+        uploadArea.className = 'image-tool__upload-area border-2 border-dashed border-gray-300 rounded-lg p-5 text-center cursor-pointer hover:border-blue-500 transition';
+        uploadArea.innerHTML = `
+          <div class="image-tool__upload-placeholder flex flex-col items-center gap-2 text-gray-500">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <p>Drag & drop an image here or click to upload</p>
+          </div>
+        `;
+
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+        fileInput.className = 'image-tool__file-input hidden';
+        fileInput.addEventListener('change', async (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            await this.handleUpload(file, uploadArea, index, product);
+          }
+        });
+
+        uploadArea.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          uploadArea.classList.add('border-blue-500');
+        });
+        uploadArea.addEventListener('dragleave', () => {
+          uploadArea.classList.remove('border-blue-500');
+        });
+        uploadArea.addEventListener('drop', async (e) => {
+          e.preventDefault();
+          uploadArea.classList.remove('border-blue-500');
+          const file = e.dataTransfer.files[0];
+          if (file) {
+            await this.handleUpload(file, uploadArea, index, product);
+          }
+        });
+
+        uploadArea.addEventListener('click', () => {
+          fileInput.click();
+        });
+
+        imageWrapper.appendChild(uploadArea);
+        imageWrapper.appendChild(fileInput);
+
+        const urlInputWrapper = document.createElement('div');
+        urlInputWrapper.className = 'image-tool__url-input-wrapper flex flex-col gap-2 mt-2';
+
+        const urlInput = document.createElement('input');
+        urlInput.className = 'image-tool__url-input w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-700 bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200';
+        urlInput.placeholder = 'Paste an image URL...';
+        urlInput.value = product.imageUrl || '';
+        urlInput.addEventListener('input', (e) => {
+          const url = e.target.value;
+          if (url) {
+            urlInputWrapper.querySelector('.image-tool__url-upload-button').textContent = 'Upload Image';
+          }
+        });
+        urlInputWrapper.appendChild(urlInput);
+
+        const urlUploadButton = document.createElement('button');
+        urlUploadButton.className = 'image-tool__url-upload-button px-3 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600 transition disabled:bg-gray-300 disabled:cursor-not-allowed';
+        urlUploadButton.textContent = 'Upload Image';
+        urlUploadButton.addEventListener('click', async (e) => {
+          e.preventDefault();
+          const url = urlInput.value;
+          if (url) {
+            try {
+              this.isUploading[index] = true;
+              urlUploadButton.textContent = 'Uploading...';
+              urlUploadButton.disabled = true;
+              urlInput.disabled = true;
+              if (this.config.uploader?.uploadByUrl) {
+                const response = await this.config.uploader.uploadByUrl(url);
+                if (response.success) {
+                  product.imageUrl = response.file.url;
+                } else {
+                  throw new Error('URL upload failed');
+                }
+              } else {
+                product.imageUrl = url;
+              }
+              this._renderForm();
+            } catch (error) {
+              alert(error.message);
+            } finally {
+              this.isUploading[index] = false;
+              urlUploadButton.textContent = 'Upload Image';
+              urlUploadButton.disabled = false;
+              urlInput.disabled = false;
+            }
+          }
+        });
+        urlInputWrapper.appendChild(urlUploadButton);
+
+        imageWrapper.appendChild(urlInputWrapper);
+      } else {
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'image-tool flex flex-col gap-2 items-center';
+        const imageWrapperInner = document.createElement('div');
+        imageWrapperInner.className = 'image-tool__image-wrapper w-full text-center';
+        const image = document.createElement('img');
+        image.src = product.imageUrl;
+        image.className = 'max-w-full h-auto rounded';
+        imageWrapperInner.appendChild(image);
+        imageContainer.appendChild(imageWrapperInner);
+
+        const changeImageButton = document.createElement('button');
+        changeImageButton.className = 'px-3 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600 transition';
+        changeImageButton.textContent = 'Change Image';
+        changeImageButton.addEventListener('click', () => {
+          product.imageUrl = '';
+          this._renderForm();
+        });
+        imageContainer.appendChild(changeImageButton);
+
+        imageWrapper.appendChild(imageContainer);
+      }
+
+      const fields = [
+        { label: 'Affiliate Link', key: 'affiliateLink', type: 'url', required: true },
+        { label: 'Product Name', key: 'name', type: 'text', required: true },
+        { label: 'Price', key: 'price', type: 'text' },
+        { label: 'Description', key: 'description', type: 'text' },
+        { label: 'Button Text', key: 'buttonText', type: 'text', required: true }
+      ];
+
+      fields.forEach(field => {
+        const fieldWrapper = document.createElement('div');
+        fieldWrapper.classList.add('mb-2');
+        const label = document.createElement('label');
+        label.textContent = field.label + (field.required ? ' *' : '');
+        label.classList.add('block', 'mb-1');
+        const input = document.createElement('input');
+        input.type = field.type;
+        input.classList.add('w-full', 'border', 'rounded', 'p-2');
+        input.value = product[field.key] || '';
+        if (field.required) input.required = true;
+        input.addEventListener('input', () => {
+          product[field.key] = input.value;
+        });
+        fieldWrapper.appendChild(label);
+        fieldWrapper.appendChild(input);
+        productWrapper.appendChild(fieldWrapper);
+      });
+
+      productWrapper.appendChild(title);
+      productWrapper.appendChild(imageWrapper);
+      this.formContainer.appendChild(productWrapper);
+    });
+  }
+
+  async handleUpload(file, uploadArea, index, product) {
+    try {
+      this.isUploading[index] = true;
+      uploadArea.innerHTML = '<p class="text-gray-500">Uploading...</p>';
+      if (this.config.uploader?.uploadByFile) {
+        const response = await this.config.uploader.uploadByFile(file);
+        if (response.success) {
+          product.imageUrl = response.file.url;
+          this.formContainer.innerHTML = '';
+          this._renderForm();
+        } else {
+          throw new Error('Image upload failed');
+        }
+      } else {
+        throw new Error('No uploader configured');
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      this.isUploading[index] = false;
+    }
+  }
+
+  save() {
+    return {
+      products: this.data.products.filter(product => product.affiliateLink && product.name && product.imageUrl && product.buttonText),
+      alignment: this.data.alignment,
+      withBorder: this.data.withBorder,
+      withBackground: this.data.withBackground
+    };
+  }
+
+  validate(savedData) {
+    return savedData.products.length > 0 && savedData.products.every(product =>
+      product.affiliateLink && product.name && product.imageUrl && product.buttonText
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
 const uploadImageByFile = async (file) => {
   const formData = new FormData();
   formData.append('file', file);
@@ -1125,6 +1655,34 @@ const getEditorConfig = (holder, onChange, initialData) => ({
     },
     button: {
       class: CustomButtonTool,
+    },
+    iframe: {
+      class: IframeTool,
+      config: {
+        // Optional: Add any configuration for iframe tool if needed
+      },
+    },
+    amazonProductCard: {
+      class: AmazonProductCardTool,
+      config: {
+        uploader: {
+          uploadByFile: async (file) => {
+            const maxSize = 5 * 1024 * 1024;
+            if (file.size > maxSize) throw new Error('File size exceeds 5MB limit');
+            if (!['image/jpeg', 'image/png', 'image/gif'].includes(file.type)) {
+              throw new Error('Only JPEG, PNG, and GIF files are allowed');
+            }
+            return uploadImageByFile(file);
+          },
+          uploadByUrl: uploadImageByURL,
+          additionalRequestHeaders: {
+            'Custom-Header': 'Value',
+          },
+          additionalRequestData: {
+            folder: 'editor_uploads',
+          },
+          field: 'image',
+        },}
     },
     quote: {
       class: Quote,

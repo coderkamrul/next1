@@ -5,11 +5,35 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+      {
+        protocol: "https",
+        hostname: "a.media-amazon.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "fiverr-res.cloudinary.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
         protocol: 'https',
-        hostname: 'res.cloudinary.com',
+        hostname: 'images-na.ssl-images-amazon.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+        pathname: '/**',
       },
     ],
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;
