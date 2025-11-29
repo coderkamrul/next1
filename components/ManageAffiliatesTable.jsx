@@ -38,6 +38,7 @@ import {
 import EditAffiliateForm from './EditAffiliateForm'
 import { Copy } from 'lucide-react'
 import { IoCheckmark } from 'react-icons/io5'
+import { Switch } from '@/components/ui/switch'
 
 export default function ManageAffiliatesTable({ affiliates, fetchAffiliates }) {
   const [sorting, setSorting] = useState([])
@@ -45,6 +46,31 @@ export default function ManageAffiliatesTable({ affiliates, fetchAffiliates }) {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const [selectedAffiliate, setSelectedAffiliate] = useState(null)
   const [isOpenDeleteDialog, setIsOpenDeleteDialog] = useState(false)
+
+  const handleToggleActive = async (affiliate, checked) => {
+    try {
+      const updatedAffiliate = { ...affiliate, isActive: checked, id: affiliate._id }
+      const response = await axios.put(`/api/affiliates/${affiliate._id}`, updatedAffiliate)
+      if (response.data.success) {
+        fetchAffiliates()
+        toast({
+          title: 'Status updated',
+          description: `Affiliate ${affiliate.affiliateName} is now ${
+            checked ? 'active' : 'inactive'
+          }.`,
+        })
+      } else {
+        throw new Error(response.data.message || 'Failed to update status')
+      }
+    } catch (error) {
+      console.error(error)
+      toast({
+        title: 'Error',
+        description: error.response?.data?.message || 'Failed to update affiliate status. Please try again.',
+        variant: 'destructive',
+      })
+    }
+  }
 
   const columns = [
     {
@@ -93,7 +119,6 @@ export default function ManageAffiliatesTable({ affiliates, fetchAffiliates }) {
             variant='outline'
             onClick={() => {
               navigator.clipboard.writeText(row.getValue('affiliateLink'))
-
               toast({
                 title: 'Copied to clipboard',
                 description:
@@ -117,6 +142,10 @@ export default function ManageAffiliatesTable({ affiliates, fetchAffiliates }) {
         const affiliate = row.original
         return (
           <div className='flex items-center gap-2'>
+            <Switch
+              checked={affiliate.isActive}
+              onCheckedChange={(checked) => handleToggleActive(affiliate, checked)}
+            />
             <Button
               variant='outline'
               size='sm'
@@ -171,7 +200,7 @@ export default function ManageAffiliatesTable({ affiliates, fetchAffiliates }) {
     } else {
       toast({
         title: 'Error',
-        description: 'Failed to delete affiliate. Please try again.',
+        description: data.message || 'Failed to delete affiliate. Please try again.',
         variant: 'destructive',
       })
     }
@@ -312,3 +341,12 @@ export default function ManageAffiliatesTable({ affiliates, fetchAffiliates }) {
     </>
   )
 }
+
+
+
+
+
+
+
+
+

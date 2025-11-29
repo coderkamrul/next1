@@ -55,7 +55,7 @@ export default function ApiKeyInput({ apiKey, apiType, onApiKeyChange }) {
 
         <TabsContent value="gemini" className="mt-4">
           <p className="text-sm text-gray-600 mb-2">
-            Enter your Gemini API Key to generate metadata for your images. This app uses the Gemini 1.5 Flash model.
+            Enter your Gemini API Key to generate metadata for your images. This app uses the Gemini 2.5 Flash model.
           </p>
         </TabsContent>
 

@@ -1286,3 +1286,7 @@ function ColorPaletteGenerator({ state, setState }) {
     </div>
   )
 }
+
+
+
+

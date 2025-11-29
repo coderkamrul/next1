@@ -7,6 +7,7 @@ import { Loader2, Star } from "lucide-react"
 import ImageUploader from "@/components/image-uploader"
 import ApiKeyInput from "@/components/api-key-input"
 import ResultsDisplay from "@/components/results-display"
+import MetadataSettings from "@/components/metadata-settings"
 
 export default function GenerateTitle() {
   const [apiKey, setApiKey] = useState("")
@@ -14,6 +15,15 @@ export default function GenerateTitle() {
   const [images, setImages] = useState([])
   const [isProcessing, setIsProcessing] = useState(false)
   const [results, setResults] = useState([])
+  
+  const [settings, setSettings] = useState({
+    mode: "metadata",
+    platform: "general",
+    titleLength: 20,
+    descriptionLength: 40,
+    tagCount: 30,
+    negativeKeywords: "",
+  })
 
   useEffect(() => {
     // Load API key from localStorage on component mount
@@ -81,6 +91,7 @@ export default function GenerateTitle() {
             apiKey,
             apiType,
             filename: image.name,
+            settings,
           }),
         })
 
@@ -216,7 +227,12 @@ export default function GenerateTitle() {
           </div>
 
           <div className="mb-8">
-            <h2 className="text-lg font-semibold mb-4">02. Upload Images and Process</h2>
+            <h2 className="text-lg font-semibold mb-4">02. Configure Settings</h2>
+            <MetadataSettings settings={settings} onSettingsChange={setSettings} />
+          </div>
+
+          <div className="mb-8">
+            <h2 className="text-lg font-semibold mb-4">03. Upload Images and Process</h2>
             <ImageUploader onImagesSelected={handleImageUpload} />
 
             <div className="mt-4 flex justify-center">
@@ -231,7 +247,7 @@ export default function GenerateTitle() {
                     Processing...
                   </>
                 ) : (
-                  "Generate Metadata"
+                  settings.mode === "prompt" ? "Generate Prompt" : "Generate Metadata"
                 )}
               </Button>
             </div>
@@ -239,7 +255,7 @@ export default function GenerateTitle() {
 
           {results.length > 0 && (
             <div>
-              <h2 className="text-lg font-semibold mb-4">03. Your Generated Metadata</h2>
+              <h2 className="text-lg font-semibold mb-4">04. Your Generated Metadata</h2>
               <ResultsDisplay results={results} />
             </div>
           )}

@@ -41,7 +41,8 @@ export default function ImageUploader({ onImagesSelected }) {
   const handleFiles = (files) => {
     const validFiles = Array.from(files)
       .filter((file) => file.type.startsWith("image/"))
-      .slice(0, 10) // Limit to 10 images
+      .filter((file) => file.type.startsWith("image/"))
+      .slice(0, 50) // Limit to 50 images
 
     setSelectedImages(validFiles)
     onImagesSelected(validFiles)
@@ -72,7 +73,7 @@ export default function ImageUploader({ onImagesSelected }) {
         <input ref={inputRef} type="file" multiple accept="image/*" onChange={handleChange} className="hidden" />
 
         <Upload className="mx-auto h-12 w-12 text-gray-400" />
-        <p className="mt-2 text-sm text-gray-600">Drag and drop up to 10 images here or click to upload</p>
+        <p className="mt-2 text-sm text-gray-600">Drag and drop up to 50 images here or click to upload</p>
         <Button variant="outline" onClick={openFileDialog} className="mt-4">
           Select Images
         </Button>

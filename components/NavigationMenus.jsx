@@ -74,8 +74,9 @@ export function NavigationMenus() {
     { href: '/courses', label: 'Courses' },
     { href: '/videos', label: 'Video' },
     { href: '/blogs', label: 'Blog' },
-    { href: '/components', label: 'Component' },
+    { href: '/affiliate', label: 'Affiliate' },
     { href: '/tools', label: 'Tools' },
+    { href: '/components', label: 'Component' },
   ]
 
   return (
