@@ -266,6 +266,7 @@ export default function EditAffiliateForm({ affiliate, onClose }) {
 }
 
 
+<<<<<<< HEAD
 
 
 
@@ -533,3 +534,5 @@ export default function EditAffiliateForm({ affiliate, onClose }) {
 //     </form>
 //   );
 // }
+=======
+>>>>>>> 5adcda23de33dc0d2b01bb83ab42253812f6cb57
